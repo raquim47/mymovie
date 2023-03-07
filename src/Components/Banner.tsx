@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { IMovie } from '../api';
+import { IVideo } from '../api';
 import { makeImagePath } from '../utils';
 
 const Wrapper = styled.div`
@@ -60,7 +60,7 @@ interface BannerPropsI<T> {
   bannerRightData?: T;
 }
 
-function Banner<T extends IMovie>({
+function Banner<T extends IVideo>({
   bannerLeftData,
   bannerRightData,
 }: BannerPropsI<T>) {

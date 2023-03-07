@@ -3,15 +3,25 @@ import styled from 'styled-components';
 import {
   getMovieDetail,
   getMoviesLatest,
+  getMoviesTopRated,
+  getMoviesTrending,
   getMoviesUpcoming,
-  IGetMoviesResult,
-  IMovie,
+  IGetVideoResult,
+  IVideo,
 } from '../api';
 import Banner from '../Components/Banner';
+import Slider from '../Components/Slider';
 
 const Wrapper = styled.main`
-  padding: 40px;
+  padding: 30px 30px 50px;
   border: 1px solid red;
+`;
+
+const Title = styled.h2`
+  font-size: 30px;
+  font-weight: 600;
+  color: ${(props) => props.theme.white.white};
+  margin-bottom: 20px;
 `;
 
 const Loader = styled.div`
@@ -20,9 +30,8 @@ const Loader = styled.div`
   justify-content: center;
   align-items: center;
 `;
-
-function useMovieDetailQuery(movie?: IMovie) {
-  return useQuery<IMovie>(
+function useMovieDetailQuery(movie?: IVideo) {
+  return useQuery<IVideo>(
     ['movieDetail', movie?.id],
     () => getMovieDetail(movie?.id!),
     {
@@ -30,47 +39,89 @@ function useMovieDetailQuery(movie?: IMovie) {
     }
   );
 }
-
 function Movie() {
+  // useQuery for Latest Movie
   const {
-    data: dataLatest,
-    isLoading: loadingLatest,
+    data: latestData,
+    isLoading: latestLoading,
     error: latestError,
-  } = useQuery<IGetMoviesResult>(['movies', 'latest'], getMoviesLatest);
-
+  } = useQuery<IGetVideoResult>(['movies', 'latest'], getMoviesLatest);
+  // useQuery for Upcoming Movie
   const {
-    data: dataUpcommming,
-    isLoading: loadingUpcommming,
+    data: upcomingData,
+    isLoading: upcomingLoading,
     error: upcomingError,
-  } = useQuery<IGetMoviesResult>(['movies', 'upcomming'], getMoviesUpcoming);
+  } = useQuery<IGetVideoResult>(['movies', 'upcoming'], getMoviesUpcoming);
+  // useQuery for Trending Movie
+  const {
+    data: trendingData,
+    isLoading: trendingLoading,
+    error: trendingError,
+  } = useQuery<IGetVideoResult>(['movies', 'trending'], getMoviesTrending);
+  // useQuery for TopRated
+  const {
+    data: topRatedData,
+    isLoading: topRatedLoading,
+    error: topRatedError,
+  } = useQuery<IGetVideoResult>(['movies', 'topRated'], getMoviesTopRated);
 
+  // useQuery for Banner
   const {
     data: bannerLeftData,
     isLoading: bannerLeftLoading,
     error: bannerLeftError,
-  } = useMovieDetailQuery(dataLatest?.results[0]);
+  } = useMovieDetailQuery(latestData?.results[0]);
   const {
     data: bannerRightData,
     isLoading: bannerRightLoading,
     error: bannerRightError,
-  } = useMovieDetailQuery(dataUpcommming?.results[0]);
+  } = useMovieDetailQuery(upcomingData?.results[0]);
 
   const loadings =
-    loadingLatest ||
-    loadingUpcommming ||
+    latestLoading ||
+    upcomingLoading ||
+    trendingLoading ||
+    topRatedLoading ||
     bannerLeftLoading ||
     bannerRightLoading;
-
   const error =
-    latestError || upcomingError || bannerLeftError || bannerRightError;
+    latestError ||
+    upcomingError ||
+    trendingError ||
+    topRatedError ||
+    bannerLeftError ||
+    bannerRightError;
 
   if (loadings) return <p>Loading...</p>;
   if (error) return <p>Error: {(error as Error).message}</p>;
-
   return (
     <Wrapper>
-      <h2>홈</h2>
-      <Banner bannerLeftData={bannerLeftData} bannerRightData={bannerRightData} />
+      {loadings ? (
+        <Loader>Loading...</Loader>
+      ) : (
+        <>
+          <Title>영화</Title>
+          <Banner<IVideo>
+            bannerLeftData={bannerLeftData}
+            bannerRightData={bannerRightData}
+          />
+          <Slider
+            data={latestData as IGetVideoResult}
+            rowIndex={1}
+            title="최신 개봉"
+          />
+          <Slider
+            data={trendingData as IGetVideoResult}
+            rowIndex={0}
+            title="요즘 인기"
+          />
+          <Slider
+            data={topRatedData as IGetVideoResult}
+            rowIndex={0}
+            title="Top 평점"
+          />
+        </>
+      )}
     </Wrapper>
   );
 }
