@@ -35,7 +35,6 @@ const Desc = styled.div`
     font-size: 18px;
     overflow: hidden;
     text-overflow: ellipsis;
-    /* font-weight: 400; */
     color: ${(props) => props.theme.white.darker};
   }
 `;
@@ -56,32 +55,36 @@ const Loader = styled.div`
   align-items: center;
 `;
 
-function Banner({
-  dataLeft
-}: {
-  dataLeft : IMovie
-}) {
+interface BannerPropsI<T> {
+  bannerLeftData?: T;
+  bannerRightData?: T;
+}
+
+function Banner<T extends IMovie>({
+  bannerLeftData,
+  bannerRightData,
+}: BannerPropsI<T>) {
   return (
     <Wrapper>
       <Item>
         <Desc>
           <small>신작 소개</small>
-          <h3>{dataLeft?.title}</h3>
-          <p>{dataLeft?.tagline}</p>
+          <h3>{bannerLeftData?.title}</h3>
+          <p>{bannerLeftData?.tagline}</p>
         </Desc>
         <Figure>
-          <img src={makeImagePath(dataLeft?.backdrop_path || 'w500')} alt="" />
+          <img src={makeImagePath(bannerLeftData?.backdrop_path || 'w500')} alt="" />
         </Figure>
       </Item>
       <Item>
-        {/* <Desc>
+        <Desc>
           <small>개봉 예정</small>
-          <h3>{dataRight?.title}</h3>
-          <p>{dataRight?.tagline}</p>
+          <h3>{bannerRightData?.title}</h3>
+          <p>{bannerRightData?.tagline}</p>
         </Desc>
         <Figure>
-          <img src={makeImagePath(dataRight?.backdrop_path || 'w500')} alt="" />
-        </Figure> */}
+          <img src={makeImagePath(bannerRightData?.backdrop_path || 'w500')} alt="" />
+        </Figure>
       </Item>
     </Wrapper>
   );
