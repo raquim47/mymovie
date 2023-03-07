@@ -55,7 +55,7 @@ const Loader = styled.div`
   align-items: center;
 `;
 
-interface BannerPropsI<T> {
+interface IBannerProps<T> {
   bannerLeftData?: T;
   bannerRightData?: T;
 }
@@ -63,7 +63,7 @@ interface BannerPropsI<T> {
 function Banner<T extends IVideo>({
   bannerLeftData,
   bannerRightData,
-}: BannerPropsI<T>) {
+}: IBannerProps<T>) {
   return (
     <Wrapper>
       <Item>
