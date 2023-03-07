@@ -7,32 +7,42 @@ const Wrapper = styled.div`
 `;
 
 const Item = styled.div`
+  position: relative;
   display: inline-block;
-  width: 50%;
-  padding: 0 8px;
-`;
-
-const Desc = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  margin-bottom: 5px;
-  color: ${(props) => props.theme.white.white};
-
-  small {
-    font-size: 12px;
-    font-weight: 300;
-  }
+  width: calc(50% - 16px);
+  margin: 0 8px;
+  border-radius: 10px;
+  overflow: hidden;
 
   h3 {
     font-size: 22px;
     font-weight: 500;
+    color: ${(props) => props.theme.white.darker};
+    margin-bottom: 12px;
+  }
+`;
+
+const Caption = styled.figcaption`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  position: absolute;
+  bottom: 8%;
+  width: 100%;
+  padding-left: 4%;
+  z-index: 10;
+
+  h4 {
+    font-size: 36px;
+    font-weight: 600;
+    color: ${(props) => props.theme.white.white};
   }
 
   p {
     width: 100%;
     white-space: nowrap;
-    font-size: 18px;
+    font-size: 22px;
+    font-weight: 400;
     overflow: hidden;
     text-overflow: ellipsis;
     color: ${(props) => props.theme.white.darker};
@@ -40,19 +50,31 @@ const Desc = styled.div`
 `;
 
 const Figure = styled.figure`
+  position: relative;
   border-radius: 4px;
   overflow: hidden;
+  cursor: pointer;
 
   img {
     width: 100%;
     object-fit: cover;
   }
-`;
-const Loader = styled.div`
-  height: 20vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+
+  ::before {
+    display: block;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-image: linear-gradient(rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.8));
+    content: '';
+  }
+
+  :hover::before {
+    background-image: linear-gradient(
+      rgba(0, 0, 0, 0.4) 50%,
+      rgba(0, 0, 0, 0.8)
+    );
+  }
 `;
 
 interface IBannerProps<T> {
@@ -67,29 +89,30 @@ function Banner<T extends IVideo>({
   return (
     <Wrapper>
       <Item>
-        <Desc>
-          <small>신작 소개</small>
-          <h3>{bannerLeftData?.title}</h3>
-          <p>{bannerLeftData?.tagline}</p>
-        </Desc>
+        <h3>이번 주 신작</h3>
         <Figure>
           <img
             src={makeImagePath(bannerLeftData?.backdrop_path || 'w500')}
             alt=""
           />
+          <Caption>
+            <h4>{bannerLeftData?.title}</h4>
+            <p>{bannerLeftData?.tagline}</p>
+          </Caption>
         </Figure>
       </Item>
       <Item>
-        <Desc>
-          <small>개봉 예정</small>
-          <h3>{bannerRightData?.title}</h3>
-          <p>{bannerRightData?.tagline}</p>
-        </Desc>
+        <h3>개봉 예정</h3>
+
         <Figure>
           <img
             src={makeImagePath(bannerRightData?.backdrop_path || 'w500')}
             alt=""
           />
+          <Caption>
+            <h4>{bannerRightData?.title}</h4>
+            <p>{bannerRightData?.tagline}</p>
+          </Caption>
         </Figure>
       </Item>
     </Wrapper>
