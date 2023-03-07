@@ -77,7 +77,7 @@ function Movie() {
     error: bannerRightError,
   } = useMovieDetailQuery(upcomingData?.results[0]);
 
-  const loadings =
+  const loading =
     latestLoading ||
     upcomingLoading ||
     trendingLoading ||
@@ -92,36 +92,30 @@ function Movie() {
     bannerLeftError ||
     bannerRightError;
 
-  if (loadings) return <p>Loading...</p>;
+  if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {(error as Error).message}</p>;
   return (
     <Wrapper>
-      {loadings ? (
-        <Loader>Loading...</Loader>
-      ) : (
-        <>
-          <Title>영화</Title>
-          <Banner<IVideo>
-            bannerLeftData={bannerLeftData}
-            bannerRightData={bannerRightData}
-          />
-          <Slider
-            data={latestData as IGetVideoResult}
-            rowIndex={1}
-            title="최신 개봉"
-          />
-          <Slider
-            data={trendingData as IGetVideoResult}
-            rowIndex={0}
-            title="요즘 인기"
-          />
-          <Slider
-            data={topRatedData as IGetVideoResult}
-            rowIndex={0}
-            title="Top 평점"
-          />
-        </>
-      )}
+      <Title>영화</Title>
+      <Banner<IVideo>
+        bannerLeftData={bannerLeftData}
+        bannerRightData={bannerRightData}
+      />
+      <Slider
+        data={latestData as IGetVideoResult}
+        rowIndex={1}
+        title="최신 개봉"
+      />
+      <Slider
+        data={trendingData as IGetVideoResult}
+        rowIndex={0}
+        title="요즘 인기"
+      />
+      <Slider
+        data={topRatedData as IGetVideoResult}
+        rowIndex={0}
+        title="Top 평점"
+      />
     </Wrapper>
   );
 }
