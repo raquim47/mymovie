@@ -1,11 +1,11 @@
-import { useQuery } from 'react-query';
 import styled from 'styled-components';
-import { getMovieDetail, IMovie } from '../api';
+import { IMovie } from '../api';
 import { makeImagePath } from '../utils';
 
 const Wrapper = styled.div`
   margin: 0 -8px;
 `;
+
 const Item = styled.div`
   display: inline-block;
   width: 50%;
@@ -15,18 +15,18 @@ const Item = styled.div`
 const Desc = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 3px;
   margin-bottom: 5px;
   color: ${(props) => props.theme.white.white};
 
   small {
     font-size: 12px;
-    font-weight: 500;
+    font-weight: 300;
   }
 
   h3 {
     font-size: 22px;
-    font-weight: 700;
+    font-weight: 500;
   }
 
   p {
@@ -73,7 +73,10 @@ function Banner<T extends IMovie>({
           <p>{bannerLeftData?.tagline}</p>
         </Desc>
         <Figure>
-          <img src={makeImagePath(bannerLeftData?.backdrop_path || 'w500')} alt="" />
+          <img
+            src={makeImagePath(bannerLeftData?.backdrop_path || 'w500')}
+            alt=""
+          />
         </Figure>
       </Item>
       <Item>
@@ -83,7 +86,10 @@ function Banner<T extends IMovie>({
           <p>{bannerRightData?.tagline}</p>
         </Desc>
         <Figure>
-          <img src={makeImagePath(bannerRightData?.backdrop_path || 'w500')} alt="" />
+          <img
+            src={makeImagePath(bannerRightData?.backdrop_path || 'w500')}
+            alt=""
+          />
         </Figure>
       </Item>
     </Wrapper>
