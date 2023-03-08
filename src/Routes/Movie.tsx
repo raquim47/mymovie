@@ -1,4 +1,6 @@
+import { AnimatePresence } from 'framer-motion';
 import { useQuery } from 'react-query';
+import { useMatch } from 'react-router-dom';
 import styled from 'styled-components';
 import {
   getMovieDetail,
@@ -10,6 +12,7 @@ import {
   IVideo,
 } from '../api';
 import Banner from '../Components/Banner';
+import MovieDetail from '../Components/Detail';
 import Slider from '../Components/Slider';
 
 const Wrapper = styled.main`
@@ -17,19 +20,6 @@ const Wrapper = styled.main`
   border: 1px solid red;
 `;
 
-const Title = styled.h2`
-  font-size: 30px;
-  font-weight: 600;
-  color: ${(props) => props.theme.white.white};
-  margin-bottom: 20px;
-`;
-
-const Loader = styled.div`
-  height: 20vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
 function useMovieDetailQuery(movie?: IVideo) {
   return useQuery<IVideo>(
     ['movieDetail', movie?.id],
@@ -40,6 +30,9 @@ function useMovieDetailQuery(movie?: IVideo) {
   );
 }
 function Movie() {
+  const videoIdMatch = useMatch('/movie/:videoId');
+  const videoId = videoIdMatch?.params.videoId;
+  console.log(videoIdMatch, videoId);
   // useQuery for Latest Movie
   const {
     data: latestData,
@@ -70,12 +63,21 @@ function Movie() {
     data: bannerLeftData,
     isLoading: bannerLeftLoading,
     error: bannerLeftError,
-  } = useMovieDetailQuery(latestData?.results[0]);
+  } = useQuery<IVideo>(
+    ['movieDetail', latestData?.results[0].id],
+    () => getMovieDetail(latestData?.results[0].id),
+    { enabled: !!latestData }
+  );
+
   const {
     data: bannerRightData,
     isLoading: bannerRightLoading,
     error: bannerRightError,
-  } = useMovieDetailQuery(upcomingData?.results[0]);
+  } = useQuery<IVideo>(
+    ['movieDetail', upcomingData?.results[0].id],
+    () => getMovieDetail(upcomingData?.results[0].id),
+    { enabled: !!upcomingData?.results[0].id }
+  );
 
   const loading =
     latestLoading ||
@@ -96,7 +98,6 @@ function Movie() {
   if (error) return <p>Error: {(error as Error).message}</p>;
   return (
     <Wrapper>
-      <Title>영화</Title>
       <Banner<IVideo>
         bannerLeftData={bannerLeftData}
         bannerRightData={bannerRightData}
@@ -116,6 +117,16 @@ function Movie() {
         rowIndex={0}
         title="Top 평점"
       />
+
+      <AnimatePresence>
+        {videoIdMatch ? (
+          <MovieDetail
+            movieId={Number(videoIdMatch?.params.videoId)}
+            from="home"
+            key={Number(videoIdMatch?.params.videoId)}
+          />
+        ) : null}
+      </AnimatePresence>
     </Wrapper>
   );
 }

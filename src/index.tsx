@@ -5,8 +5,8 @@ import { ThemeProvider } from 'styled-components';
 import { createGlobalStyle } from 'styled-components';
 import { theme } from './theme';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { RouterProvider } from 'react-router-dom';
-import router from './Router';
+import { BrowserRouter, RouterProvider } from 'react-router-dom';
+import App from './App';
 
 const GlobalStyle = createGlobalStyle`
 html, body, div, span, applet, object, iframe,
@@ -80,12 +80,14 @@ const client = new QueryClient();
 
 root.render(
   // <React.StrictMode>
-  
+
   <RecoilRoot>
     <QueryClientProvider client={client}>
       <ThemeProvider theme={theme}>
         <GlobalStyle />
-        <RouterProvider router={router} />
+        <BrowserRouter basename={process.env.PUBLIC_URL}>
+          <App />
+        </BrowserRouter>
       </ThemeProvider>
     </QueryClientProvider>
   </RecoilRoot>
