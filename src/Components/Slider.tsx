@@ -1,8 +1,11 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { IGetVideoResult } from '../api';
 import { makeImagePath } from '../utils';
+import { useDispatch, useSelector } from 'react-redux'
+
 interface IGenres {
   [key: string]: string;
 }
@@ -76,17 +79,17 @@ const Box = styled(motion.div)<{ $bgPhoto: string }>`
 `;
 
 const Info = styled(motion.div)`
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  position: absolute;
-  bottom: 0;
   width: 100%;
   height: 100%;
   padding: 10px;
   background-color: rgba(0, 0, 0, 0.4);
   opacity: 0;
   color: ${(props) => props.theme.white.white};
+
   h4 {
     font-size: 14px;
     font-weight: 500;
@@ -104,6 +107,18 @@ const Info = styled(motion.div)`
       font-size: 10px;
     }
   }
+`;
+
+const InitialDetailBox = styled(motion.div)`
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
 `;
 
 const NextBtn = styled(motion.button)`
@@ -140,7 +155,7 @@ const rowVariants = {
 };
 
 const boxVariants = {
-  normal: {
+  initial: {
     scale: 1,
   },
   hover: {
@@ -154,6 +169,7 @@ const boxVariants = {
 };
 
 const infoVariants = {
+  initial: { opacity: 0 },
   hover: {
     opacity: 1,
     transition: {
@@ -168,10 +184,15 @@ interface ISliderProps {
   data: IGetVideoResult;
   title: string;
   rowIndex: number;
+  slideName: string;
 }
 
-function Slider({ data, title, rowIndex }: ISliderProps) {
+function Slider({ data, title, rowIndex, slideName }: ISliderProps) {
+  
+
+
   const offset = 5;
+  const navigate = useNavigate();
   const [index, setIndex] = useState(0);
   const [leaving, setLeaving] = useState(false);
   const toggleLeaving = () => setLeaving(false);
@@ -190,6 +211,10 @@ function Slider({ data, title, rowIndex }: ISliderProps) {
     } else {
       setIndex((prev) => (prev === 0 ? maxIndex : prev - 1));
     }
+  };
+
+  const onBoxClicked = (movieId: number) => {
+    navigate(`/movie/${slideName}/${movieId}`);
   };
   return (
     <Wrapper>
@@ -214,11 +239,11 @@ function Slider({ data, title, rowIndex }: ISliderProps) {
               .slice(offset * index, offset * index + offset)
               .map((movie) => (
                 <Box
-                  layoutId={title + movie.id + ''}
-                  key={movie.id}
+                  onClick={() => onBoxClicked(movie.id)}
+                  key={slideName + movie.id}
                   variants={boxVariants}
                   whileHover="hover"
-                  initial="normal"
+                  initial="initial"
                   transition={{ type: 'tween' }}
                   $bgPhoto={
                     movie.backdrop_path
@@ -234,6 +259,7 @@ function Slider({ data, title, rowIndex }: ISliderProps) {
                         <span key={id}>{genres[String(id)]}</span>
                       ))}
                     </article>
+                    <InitialDetailBox layoutId={slideName + movie.id} />
                   </Info>
                 </Box>
               ))}

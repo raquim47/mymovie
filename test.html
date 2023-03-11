@@ -12,41 +12,27 @@
         box-sizing: border-box;
       }
 
-      .wrap {
-        /* position: relative; */
-        border: 5px solid blueviolet;
-        height: 100vh;
-      }
-
-      .row {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        position:absolute;
-        top: 200px;
-        width: 500px;
-        height: 100px;
-        border: 5px solid red;
-      }
-
-      .box {
-        /* position: relative; */
-        border: 5px solid teal;
-      }
-
-      .option {
+      .fixed {
         position: absolute;
-        width: 100%;
-        bottom: 0;
-        height: 20px;
-        border: 5px solid yellowgreen;
+        top: 50px;
+        left:100px;
+        width: 400px;
+        height: 400px;
+        background-color: red;
+      }
+      .inner {
+        position: sticky;
+        left: 10px;
+        top: 50px;
+        width: 100px;
+        height: 100px;
+        background-color: blue;
       }
     </style>
   </head>
   <body>
-    <div class="wrap">
-      <div class="row">
-        <div class="box"><div class="option"></div></div>
-      </div>
+    <div class="fixed">
+      <div class="inner"></div>
     </div>
   </body>
 </html>

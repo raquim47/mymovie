@@ -1,6 +1,7 @@
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
+import { useState } from 'react';
 import { useQuery } from 'react-query';
-import { useMatch } from 'react-router-dom';
+import { useMatch, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import {
   getMovieDetail,
@@ -12,27 +13,16 @@ import {
   IVideo,
 } from '../api';
 import Banner from '../Components/Banner';
-import MovieDetail from '../Components/Detail';
+import Detail from '../Components/Detail';
 import Slider from '../Components/Slider';
 
 const Wrapper = styled.main`
-  padding: 30px 30px 50px;
+  padding: 110px 30px 50px 270px;
   border: 1px solid red;
 `;
 
-function useMovieDetailQuery(movie?: IVideo) {
-  return useQuery<IVideo>(
-    ['movieDetail', movie?.id],
-    () => getMovieDetail(movie?.id!),
-    {
-      enabled: !!movie?.id,
-    }
-  );
-}
 function Movie() {
-  const videoIdMatch = useMatch('/movie/:videoId');
-  const videoId = videoIdMatch?.params.videoId;
-  console.log(videoIdMatch, videoId);
+  const detailMatch = useMatch(`/movie/:slideName/:videoId`);
   // useQuery for Latest Movie
   const {
     data: latestData,
@@ -64,9 +54,9 @@ function Movie() {
     isLoading: bannerLeftLoading,
     error: bannerLeftError,
   } = useQuery<IVideo>(
-    ['movieDetail', latestData?.results[0].id],
+    ['bannerLeftData', latestData?.results[0].id],
     () => getMovieDetail(latestData?.results[0].id),
-    { enabled: !!latestData }
+    { enabled: !!latestData?.results[0].id }
   );
 
   const {
@@ -74,7 +64,7 @@ function Movie() {
     isLoading: bannerRightLoading,
     error: bannerRightError,
   } = useQuery<IVideo>(
-    ['movieDetail', upcomingData?.results[0].id],
+    ['bannerRightData', upcomingData?.results[0].id],
     () => getMovieDetail(upcomingData?.results[0].id),
     { enabled: !!upcomingData?.results[0].id }
   );
@@ -96,6 +86,7 @@ function Movie() {
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {(error as Error).message}</p>;
+
   return (
     <Wrapper>
       <Banner<IVideo>
@@ -106,27 +97,21 @@ function Movie() {
         data={latestData as IGetVideoResult}
         rowIndex={1}
         title="최신 개봉"
+        slideName="latest"
       />
       <Slider
         data={trendingData as IGetVideoResult}
         rowIndex={0}
         title="요즘 인기"
+        slideName="trending"
       />
       <Slider
         data={topRatedData as IGetVideoResult}
         rowIndex={0}
         title="Top 평점"
+        slideName="topRated"
       />
-
-      <AnimatePresence>
-        {videoIdMatch ? (
-          <MovieDetail
-            movieId={Number(videoIdMatch?.params.videoId)}
-            from="home"
-            key={Number(videoIdMatch?.params.videoId)}
-          />
-        ) : null}
-      </AnimatePresence>
+      <AnimatePresence>{detailMatch ? <Detail /> : null}</AnimatePresence>
     </Wrapper>
   );
 }

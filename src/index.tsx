@@ -1,11 +1,11 @@
-import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { RecoilRoot } from 'recoil';
+import { Provider } from 'react-redux';
+import store from './store';
 import { ThemeProvider } from 'styled-components';
 import { createGlobalStyle } from 'styled-components';
 import { theme } from './theme';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { BrowserRouter, RouterProvider } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 
 const GlobalStyle = createGlobalStyle`
@@ -34,12 +34,26 @@ article, aside, details, figcaption, figure,
 footer, header, hgroup, main, menu, nav, section {
   display: block;
 }
+html::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+html::-webkit-scrollbar-thumb {
+  background-color: #4e4e4e;
+  border-radius: 100px;
+}
+html::-webkit-scrollbar-track {
+  background-color: #4e4e4e;
+  border-radius: 100px;
+  background-clip: padding-box;
+  border: 3px solid transparent;
+}
 /* HTML5 hidden-attribute fix for newer browsers */
 *[hidden] {
     display: none;
 }
 body {
-  overflow-x:hidden;
+  overflow-x: hidden;
   line-height: 1;
 }
 menu, ol, ul {
@@ -67,6 +81,11 @@ body {
   line-height: 1.2;
   background-color: black;
 }
+
+body.scrollHidden {
+  overflow-y: hidden;
+}
+
 a {
   text-decoration:none;
   color:inherit;
@@ -81,15 +100,15 @@ const client = new QueryClient();
 root.render(
   // <React.StrictMode>
 
-  <RecoilRoot>
-    <QueryClientProvider client={client}>
-      <ThemeProvider theme={theme}>
-        <GlobalStyle />
-        <BrowserRouter basename={process.env.PUBLIC_URL}>
-          <App />
-        </BrowserRouter>
-      </ThemeProvider>
-    </QueryClientProvider>
-  </RecoilRoot>
+  // <Provider store={store}>
+  <QueryClientProvider client={client}>
+    <ThemeProvider theme={theme}>
+      <GlobalStyle />
+      <BrowserRouter basename={process.env.PUBLIC_URL}>
+        <App />
+      </BrowserRouter>
+    </ThemeProvider>
+  </QueryClientProvider>
+  // </Provider>
   // </React.StrictMode>
 );
