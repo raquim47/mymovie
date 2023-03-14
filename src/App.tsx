@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Header from './Components/Header';
 import Nav from './Components/Nav';
 import Favorite from './Routes/Favorite';
-import Movie from './Routes/Movie';
+import Home from './Routes/Home';
 import NotFound from './Routes/NotFound';
 import Rate from './Routes/Rate';
 import Search from './Routes/Search';
@@ -14,8 +14,9 @@ function App() {
       <Nav />
       {/* <Header /> */}
       <Routes>
-        <Route path="/" element={<Movie />} />
-        <Route path="/:slideName/:movieId" element={<Movie />} />
+        <Route path="/" element={<Navigate to="/home"/>} />
+        <Route path="/home/:slideName/:movieId" element={<Home />} />
+        <Route path="/search" element={<Search />} />
         <Route path="/*" element={<NotFound />} />
       </Routes>
     </>

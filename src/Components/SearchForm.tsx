@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useNavigate } from 'react-router-dom';
 
 interface IForm {
   keyword: string;
@@ -45,10 +46,12 @@ const Button = styled(motion.button)`
 `;
 
 function SearchForm() {
+  const navigate = useNavigate();
   const { register, handleSubmit } = useForm<IForm>();
 
   const onValid = (data: IForm) => {
-    console.log(data.keyword);
+    console.log(data);
+    navigate(`/search?keyword=${data.keyword}`);
   };
 
   return (
