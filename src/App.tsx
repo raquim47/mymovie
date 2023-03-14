@@ -7,7 +7,6 @@ import Movie from './Routes/Movie';
 import NotFound from './Routes/NotFound';
 import Rate from './Routes/Rate';
 import Search from './Routes/Search';
-import Tv from './Routes/Tv';
 
 function App() {
   return (
@@ -15,11 +14,8 @@ function App() {
       <Nav />
       {/* <Header /> */}
       <Routes>
-        <Route path="/" element={<Navigate to="/movie" />} />
-        <Route path="/movie" element={<Movie />} />
-        <Route path="/movie/:slideName/:detailId" element={<Movie />} />
-        <Route path="/tv" element={<Tv />} />
-        <Route path="/tv/:videoId" element={<Tv />} />
+        <Route path="/" element={<Movie />} />
+        <Route path="/:slideName/:movieId" element={<Movie />} />
         <Route path="/*" element={<NotFound />} />
       </Routes>
     </>

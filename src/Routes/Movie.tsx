@@ -10,7 +10,7 @@ import {
   getMoviesTrending,
   getMoviesUpcoming,
   IGetVideoResult,
-  IVideo,
+  IMovie,
 } from '../api';
 import Banner from '../Components/Banner';
 import Detail from '../Components/Detail';
@@ -18,11 +18,10 @@ import Slider from '../Components/Slider';
 
 const Wrapper = styled.main`
   padding: 110px 30px 50px 270px;
-  border: 1px solid red;
 `;
 
 function Movie() {
-  const detailMatch = useMatch(`/movie/:slideName/:videoId`);
+  const detailMatch = useMatch(`/:slideName/:movieId`);
   // useQuery for Latest Movie
   const {
     data: latestData,
@@ -53,7 +52,7 @@ function Movie() {
     data: bannerLeftData,
     isLoading: bannerLeftLoading,
     error: bannerLeftError,
-  } = useQuery<IVideo>(
+  } = useQuery<IMovie>(
     ['bannerLeftData', latestData?.results[0].id],
     () => getMovieDetail(latestData?.results[0].id),
     { enabled: !!latestData?.results[0].id }
@@ -63,7 +62,7 @@ function Movie() {
     data: bannerRightData,
     isLoading: bannerRightLoading,
     error: bannerRightError,
-  } = useQuery<IVideo>(
+  } = useQuery<IMovie>(
     ['bannerRightData', upcomingData?.results[0].id],
     () => getMovieDetail(upcomingData?.results[0].id),
     { enabled: !!upcomingData?.results[0].id }
@@ -89,7 +88,7 @@ function Movie() {
 
   return (
     <Wrapper>
-      <Banner<IVideo>
+      <Banner<IMovie>
         bannerLeftData={bannerLeftData}
         bannerRightData={bannerRightData}
       />

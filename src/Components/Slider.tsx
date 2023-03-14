@@ -214,7 +214,7 @@ function Slider({ data, title, rowIndex, slideName }: ISliderProps) {
   };
 
   const onBoxClicked = (movieId: number) => {
-    navigate(`/movie/${slideName}/${movieId}`);
+    navigate(`/${slideName}/${movieId}`);
   };
   return (
     <Wrapper>

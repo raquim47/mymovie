@@ -6,7 +6,7 @@ export interface IGenre {
   name: string;
 }
 
-export interface IVideo {
+export interface IMovie {
   id: number;
   backdrop_path: string;
   poster_path: string;
@@ -22,8 +22,9 @@ export interface IVideo {
 }
 
 export interface IGetVideoResult {
-  results: IVideo[];
+  results: IMovie[];
 }
+// * 영화
 
 // 신작
 export function getMoviesLatest() {

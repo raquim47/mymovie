@@ -3,7 +3,6 @@ import Logo from './Logo';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faFilm,
-  faTv,
   faMagnifyingGlass,
 } from '@fortawesome/free-solid-svg-icons';
 import { faStar, faHeart } from '@fortawesome/free-regular-svg-icons';
@@ -63,8 +62,7 @@ const NavItemSearch = styled(NavItem)`
 
 function Nav() {
   const navDataArr = [
-    { name: '영화', url: 'movie', icon: faFilm },
-    { name: '드라마', url: 'drama', icon: faTv },
+    { name: '홈', url: '', icon: faFilm },
     { name: '평가한 영화', url: 'rate', icon: faStar },
     { name: '보고 싶은 영화', url: 'favorite', icon: faHeart },
     { name: '찾기', url: 'search', icon: faMagnifyingGlass },

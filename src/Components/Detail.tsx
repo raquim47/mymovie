@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { faHeart, faPenToSquare } from '@fortawesome/free-regular-svg-icons';
 import { useQuery } from 'react-query';
-import { getMovieDetail, IVideo } from '../api';
+import { getMovieDetail, IMovie } from '../api';
 import { makeImagePath } from '../utils';
 
 const GlobalStyle = createGlobalStyle`
@@ -347,17 +347,17 @@ function Detail() {
   const closeDetail = () => {
     navigate(-1);
   };
-  const detailMatch = useMatch(`/movie/:slideName/:videoId`);
-  const { data, isLoading, error } = useQuery<IVideo>(
-    ['movieDetail', detailMatch?.params.videoId],
-    () => getMovieDetail(Number(detailMatch?.params.videoId))
+  const detailMatch = useMatch(`/:slideName/:movieId`);
+  const { data, isLoading, error } = useQuery<IMovie>(
+    ['movieDetail', detailMatch?.params.movieId],
+    () => getMovieDetail(Number(detailMatch?.params.movieId))
   );
   return (
     <>
       <GlobalStyle />
       <Overlay onClick={closeDetail} animate={{ opacity: 1 }} />
       <Wrapper
-        layoutId={`${detailMatch?.params.slideName}${detailMatch?.params.videoId}`}
+        layoutId={`${detailMatch?.params.slideName}${detailMatch?.params.movieId}`}
         transition={{ type: 'tween', duration: 0.2 }}
       >
         <Content>
@@ -413,6 +413,7 @@ function Detail() {
               <Option>
                 <li className="myStar">
                   <ReactStars
+                    onChange={(rate) => console.log(rate)}
                     count={5}
                     color1="#E6E6E6"
                     color2="#FFCC33"
