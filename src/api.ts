@@ -14,7 +14,7 @@ export interface IVideo {
   overview: string;
   genres:IGenre[];
   genre_ids : number[];
-  tagline: string;
+  tagline?: string;
   vote_average : number;
   original_title:string;
   release_date:string;

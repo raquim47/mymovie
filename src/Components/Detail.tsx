@@ -12,11 +12,22 @@ import { makeImagePath } from '../utils';
 const GlobalStyle = createGlobalStyle`
   body { overflow: hidden; }
 `;
+
+const Overlay = styled(motion.div)`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6);
+  opacity: 0;
+  z-index: 100;
+`;
+
 const Wrapper = styled(motion.div)`
   position: fixed;
-  min-width: 768px;
-  width: 50vw;
-  max-width: 1280px;
+  width: 70vw;
+  max-width: 900px;
   height: 75vh;
   top: 0;
   bottom: 0;
@@ -24,6 +35,11 @@ const Wrapper = styled(motion.div)`
   right: 0;
   margin: auto;
   z-index: 100;
+
+  @media only screen and (max-width: 768px) {
+    width: 100%;
+    height: 100%;
+  }
 
   .closeBtn {
     position: absolute;
@@ -40,23 +56,17 @@ const Wrapper = styled(motion.div)`
   }
 `;
 
-const Overlay = styled(motion.div)`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.6);
-  opacity: 0;
-  z-index: 100;
-`;
-
-const Box = styled(motion.div)`
+const Content = styled(motion.div)`
+  position: relative;
   border-radius: 25px;
   height: 100%;
   overflow: auto;
   background-color: ${(props) => props.theme.black.lighter};
   color: ${(props) => props.theme.white.white};
+
+  @media only screen and (max-width: 768px) {
+    border-radius: 0;
+  }
 
   ::-webkit-scrollbar {
     width: 6px;
@@ -73,39 +83,56 @@ const Box = styled(motion.div)`
     border: 3px solid transparent;
   }
 `;
-
-const BoxBg = styled.div<{ $bgPhoto: string }>`
+// ContentTop
+const ContentTop = styled.section`
   position: relative;
+  height: 380px;
+
+  @media only screen and (max-width: 768px) {
+    height: auto;
+    margin-bottom: 10px;
+  }
+`;
+
+const ContentTopBg = styled.div<{ $bgPhoto: string }>`
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  height: 350px;
+  height: 100%;
   background-image: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent),
     url(${(props) => props.$bgPhoto});
   background-size: cover;
   background-position: center center;
+
+  @media only screen and (max-width: 768px) {
+    position: relative;
+    height: 350px;
+  }
 `;
 
-const Content = styled.div`
-  padding: 0 30px 30px;
+const ContentTopInner = styled.div`
+  position: absolute;
+  bottom: -85px;
+  width: 100%;
+  padding-left: calc(30% + 40px);
+  padding-right: 30px;
 
-  article.contentHead {
-    display: flex;
-    align-items: flex-end;
-    position: relative;
-    margin-top: -102px;
-    margin-bottom: 10px;
-    padding-left: 30%;
+  @media only screen and (max-width: 960px) {
+    padding-left: 30px;
   }
 
-  article.contentMiddle {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+  @media only screen and (max-width: 768px) {
+    position: relative;
+    bottom: 0;
+    padding: 10px 20px 0;
   }
 `;
 
 const Poster = styled.div`
   position: absolute;
-  left: 0;
+  left: 30px;
+  bottom: 0;
   width: 30%;
   border-radius: 4px;
   overflow: hidden;
@@ -113,35 +140,38 @@ const Poster = styled.div`
     display: block;
     width: 100%;
   }
-  @media only screen and (max-width: 700px) {
-    margin: 0;
-    width: 100%;
-    text-align: center;
-    img {
-      width: 50%;
-      min-width: 200px;
-      margin: 0 auto;
-    }
+
+  @media only screen and (max-width: 960px) {
+    left: auto;
+    right: 30px;
+    bottom: 95px;
+    width: 20%;
+  }
+
+  @media only screen and (max-width: 768px) {
+    right: 50%;
+    transform: translateX(50%);
+    min-width: 120px;
+    bottom: calc(100% + 30px);
   }
 `;
 
-const ContentTop = styled.div`
-  flex: 1;
-  margin-left: 10px;
-`;
-
-const ContentItem = styled.div`
-  padding: 16px;
-  background-color: ${(props) => props.theme.black.middle};
-  border-radius: 4px;
-`;
-
-const ContentItemHead = styled.div`
-  height: 102px;
+const Head = styled.div`
   margin-bottom: 10px;
   padding-left: 16px;
   padding-bottom: 10px;
-  background-color: transparent;
+
+  @media only screen and (max-width: 960px) {
+    width: 75%;
+  }
+
+  @media only screen and (max-width: 768px) {
+    width: 100%;
+    margin-top: 10px;
+    background-color: ${(props) => props.theme.black.middle};
+    border-radius: 4px;
+    padding: 16px;
+  }
 `;
 
 const Title = styled.div`
@@ -192,25 +222,24 @@ const Info = styled.ul`
 
 const Option = styled.ul`
   display: flex;
-  font-size: 12px;
-
-  .detailOptionIcon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 40px;
-    cursor: pointer;
-  }
+  justify-content: space-between;
+  background-color: ${(props) => props.theme.black.middle};
+  border-radius: 4px;
+  padding: 10px 0;
+  height: 75px;
 
   li {
+    flex: 1;
+    /* border: 1px solid white; */
     display: flex;
     flex-direction: column;
     text-align: center;
+    font-size: 12px;
+    padding: 0 4%;
   }
+
   li ~ li {
     position: relative;
-    padding-left: 20px;
-    margin-left: 20px;
 
     ::before {
       position: absolute;
@@ -224,8 +253,27 @@ const Option = styled.ul`
     }
   }
 
-  svg {
+  .detailOptionIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    cursor: pointer;
     font-size: 24px;
+  }
+`;
+// ContentMiddle
+const ContentMiddle = styled.section`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: relative;
+  margin-top: 95px;
+  padding: 0 30px 20px;
+
+  @media only screen and (max-width: 768px) {
+    margin-top: 0;
+    padding: 0 20px 20px;
   }
 `;
 
@@ -233,6 +281,8 @@ const Commented = styled.div`
   display: flex;
   align-items: center;
   border-radius: 4px;
+  padding: 16px;
+  background-color: ${(props) => props.theme.black.middle};
 
   .profile {
     width: 40px;
@@ -247,6 +297,7 @@ const Commented = styled.div`
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+    font-size: 14px;
   }
 
   .edit {
@@ -257,7 +308,12 @@ const Commented = styled.div`
     font-size: 12px;
   }
 `;
+
 const OverView = styled.div`
+  border-radius: 4px;
+  padding: 16px;
+  background-color: ${(props) => props.theme.black.middle};
+
   h5 {
     position: relative;
     margin-bottom: 16px;
@@ -304,16 +360,16 @@ function Detail() {
         layoutId={`${detailMatch?.params.slideName}${detailMatch?.params.videoId}`}
         transition={{ type: 'tween', duration: 0.2 }}
       >
-        <Box>
-          <BoxBg
-            $bgPhoto={
-              data?.backdrop_path
-                ? makeImagePath(data.backdrop_path, 'w1280')
-                : ''
-            }
-          />
-          <Content>
-            <article className="contentHead">
+        <Content>
+          <ContentTop>
+            <ContentTopBg
+              $bgPhoto={
+                data?.backdrop_path
+                  ? makeImagePath(data.backdrop_path, 'w1280')
+                  : ''
+              }
+            ></ContentTopBg>
+            <ContentTopInner>
               <Poster>
                 <img
                   src={makeImagePath(
@@ -323,91 +379,85 @@ function Detail() {
                   alt={data?.title}
                 />
               </Poster>
-              <ContentTop>
-                <ContentItemHead>
-                  <Title>
-                    <h2>{data?.title}</h2>
-                    <h3>{data?.original_title}</h3>
-                  </Title>
-                  <Info>
-                    <li>{getYear(data?.release_date)}</li>
-                    <li>{data?.runtime}분</li>
-                    <li>
-                      {data?.genres.map((genre, i) => {
-                        if (i === data?.genres.length - 1) {
-                          return <span key={genre.name}>{genre.name}</span>;
-                        } else {
-                          return <span key={genre.name}>{genre.name}, </span>;
-                        }
-                      })}
-                    </li>
-                    <li className="averageStar">
-                      평균
-                      <ReactStars
-                        count={1}
-                        color1="#FFCC33"
-                        size={14}
-                        edit={false}
-                      />
-                      <span className="ratingValue">
-                        {data?.vote_average.toFixed(1)}
-                      </span>
-                    </li>
-                  </Info>
-                </ContentItemHead>
-                <ContentItem>
-                  <Option>
-                    <li className="myStar">
-                      <ReactStars
-                        count={5}
-                        color1="#E6E6E6"
-                        color2="#FFCC33"
-                        half
-                        size={30}
-                        edit={true}
-                        className="detailOptionIcon"
-                      />
-                      <em>평가하기</em>
-                    </li>
-                    <li>
-                      <div className="detailOptionIcon">
-                        <FontAwesomeIcon icon={faHeart} />
-                      </div>
-                      <em>보고싶어요</em>
-                    </li>
-                    <li>
-                      <div className="detailOptionIcon">
-                        <FontAwesomeIcon icon={faPenToSquare} />
-                      </div>
-                      <em>코멘트 남기기</em>
-                    </li>
-                  </Option>
-                </ContentItem>
-              </ContentTop>
-            </article>
-            <article className="contentMiddle">
-              <ContentItem>
-                <Commented>
-                  <div className="profile"></div>
-                  <p>
-                    코멘트 남기는 곳 코멘트 남기는 곳코멘트 남기는 곳 코멘트
-                    남기는 곳코멘트 남기는 곳 코멘트 남기는 곳
-                  </p>
-                  <div className="edit">
-                    <span>수정</span>
-                    <span>삭제</span>
+              <Head>
+                <Title>
+                  <h2>{data?.title}</h2>
+                  <h3>{data?.original_title}</h3>
+                </Title>
+                <Info>
+                  <li>{getYear(data?.release_date)}</li>
+                  <li>{data?.runtime}분</li>
+                  <li>
+                    {data?.genres.map((genre, i) => {
+                      if (i === data?.genres.length - 1) {
+                        return <span key={genre.name}>{genre.name}</span>;
+                      } else {
+                        return <span key={genre.name}>{genre.name}, </span>;
+                      }
+                    })}
+                  </li>
+                  <li className="averageStar">
+                    평균
+                    <ReactStars
+                      count={1}
+                      color1="#FFCC33"
+                      size={14}
+                      edit={false}
+                    />
+                    <span className="ratingValue">
+                      {data?.vote_average.toFixed(1)}
+                    </span>
+                  </li>
+                </Info>
+              </Head>
+              <Option>
+                <li className="myStar">
+                  <ReactStars
+                    count={5}
+                    color1="#E6E6E6"
+                    color2="#FFCC33"
+                    half
+                    size={30}
+                    edit={true}
+                    className="detailOptionIcon"
+                  />
+                  <em>평가하기</em>
+                </li>
+                <li>
+                  <div className="detailOptionIcon">
+                    <FontAwesomeIcon icon={faHeart} />
                   </div>
-                </Commented>
-              </ContentItem>
-              <ContentItem>
-                <OverView>
-                  {data?.tagline ? <h5>{data.tagline}</h5> : null}
-                  <p>{data?.overview}</p>
-                </OverView>
-              </ContentItem>
-            </article>
-          </Content>
-        </Box>
+                  <em>보고싶어요</em>
+                </li>
+                <li>
+                  <div className="detailOptionIcon">
+                    <FontAwesomeIcon icon={faPenToSquare} />
+                  </div>
+                  <em>코멘트 남기기</em>
+                </li>
+              </Option>
+            </ContentTopInner>
+          </ContentTop>
+          <ContentMiddle>
+            <Commented>
+              <div className="profile"></div>
+              <p>
+                코멘트 남기는 곳 코멘트 남기는 곳코멘트 남기는 곳 코멘트 남기는
+                곳코멘트 남기는 곳 코멘트 남기는 곳
+              </p>
+              <div className="edit">
+                <span>수정</span>
+                <span>삭제</span>
+              </div>
+            </Commented>
+            {data?.overview ? (
+              <OverView>
+                {data?.tagline ? <h5>{data.tagline}</h5> : null}
+                <p>{data?.overview}</p>
+              </OverView>
+            ) : null}
+          </ContentMiddle>
+        </Content>
         <FontAwesomeIcon
           onClick={closeDetail}
           icon={faXmark}
