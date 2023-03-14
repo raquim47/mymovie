@@ -8,7 +8,13 @@ import { useNavigate } from 'react-router-dom';
 interface IForm {
   keyword: string;
 }
-
+const Wrapper = styled.div`
+  width: 100%;
+  max-width: 250px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background-color: ${(props) => props.theme.gray};
+`;
 const Form = styled.form`
   display: flex;
   align-items: center;
@@ -47,23 +53,26 @@ const Button = styled(motion.button)`
 
 function SearchForm() {
   const navigate = useNavigate();
-  const { register, handleSubmit } = useForm<IForm>();
+  const { register, handleSubmit, setValue } = useForm<IForm>();
 
   const onValid = (data: IForm) => {
     console.log(data);
     navigate(`/search?keyword=${data.keyword}`);
+    setValue('keyword', '');
   };
 
   return (
-    <Form onSubmit={handleSubmit(onValid)}>
-      <Input
-        {...register('keyword', { required: true, minLength: 2 })}
-        placeholder="작품명을 입력해주세요..."
-      />
-      <Button>
-        <FontAwesomeIcon icon={faMagnifyingGlass} />
-      </Button>
-    </Form>
+    <Wrapper>
+      <Form onSubmit={handleSubmit(onValid)}>
+        <Input
+          {...register('keyword', { required: true, minLength: 2 })}
+          placeholder="작품명을 입력해주세요..."
+        />
+        <Button>
+          <FontAwesomeIcon icon={faMagnifyingGlass} />
+        </Button>
+      </Form>
+    </Wrapper>
   );
 }
 export default SearchForm;

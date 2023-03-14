@@ -1,7 +1,6 @@
-import { AnimatePresence, motion } from 'framer-motion';
-import { useState } from 'react';
+import { AnimatePresence } from 'framer-motion';
 import { useQuery } from 'react-query';
-import { useMatch, useNavigate } from 'react-router-dom';
+import { useMatch } from 'react-router-dom';
 import styled from 'styled-components';
 import {
   getMovieDetail,
@@ -20,7 +19,7 @@ const Wrapper = styled.main`
   padding: 110px 30px 50px 270px;
 `;
 
-function Movie() {
+function Home() {
   const detailMatch = useMatch(`/:slideName/:movieId`);
   // useQuery for Latest Movie
   const {
@@ -114,4 +113,4 @@ function Movie() {
     </Wrapper>
   );
 }
-export default Movie;
+export default Home;
