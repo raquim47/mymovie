@@ -26,19 +26,23 @@ const Overlay = styled(motion.div)`
 
 const Wrapper = styled(motion.div)`
   position: fixed;
-  width: 70vw;
-  max-width: 900px;
-  height: 75vh;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
+  width: 70vw;
+  max-width: 900px;
+  height: 75vh;
   margin: auto;
+  padding-bottom: 30px;
+  border-radius: 25px;
+  background-color: ${(props) => props.theme.black.lighter};
   z-index: 100;
 
   @media only screen and (max-width: 768px) {
     width: 100%;
     height: 100%;
+    border-radius: 0;
   }
 
   .closeBtn {
@@ -58,15 +62,9 @@ const Wrapper = styled(motion.div)`
 
 const Content = styled(motion.div)`
   position: relative;
-  border-radius: 25px;
   height: 100%;
-  overflow: auto;
-  background-color: ${(props) => props.theme.black.lighter};
   color: ${(props) => props.theme.white.white};
-
-  @media only screen and (max-width: 768px) {
-    border-radius: 0;
-  }
+  overflow: auto;
 
   ::-webkit-scrollbar {
     width: 6px;
