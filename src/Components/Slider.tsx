@@ -1,8 +1,8 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { IGetVideoResult } from '../api';
+import { IGetMovieResult } from '../api';
 import { makeImagePath } from '../utils';
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -57,14 +57,15 @@ const Title = styled.h3`
 const Row = styled(motion.div)`
   display: grid;
   grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(1fr);
   gap: 8px;
   position: absolute;
   bottom: 1.5vw;
   width: 100%;
+  height: 8vw;
 `;
 
 const Box = styled(motion.div)<{ $bgPhoto: string }>`
-  height: 8vw;
   border-radius: 4px;
   background-image: url(${(props) => props.$bgPhoto});
   background-size: cover;
@@ -181,15 +182,18 @@ const infoVariants = {
 };
 
 interface ISliderProps {
-  data: IGetVideoResult;
-  title: string;
-  rowIndex: number;
+  data: IGetMovieResult;
+  title?: string;
+  startIndex?: number;
   slideName: string;
 }
 
-function Slider({ data, title, rowIndex, slideName }: ISliderProps) {
-  
-
+function Slider({ data, title, startIndex = 0, slideName }: ISliderProps) {
+  const getOffset = () => {
+    const width = window.innerHeight;
+    console.log(width)
+  }
+  getOffset();
 
   const offset = 5;
   const navigate = useNavigate();
@@ -214,8 +218,22 @@ function Slider({ data, title, rowIndex, slideName }: ISliderProps) {
   };
 
   const onBoxClicked = (movieId: number) => {
-    navigate(`/${slideName}/${movieId}`);
+    navigate(`/home/${slideName}/${movieId}`);
   };
+
+  const [width, setWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+  console.log(width)
   return (
     <Wrapper>
       <Content>
@@ -235,7 +253,7 @@ function Slider({ data, title, rowIndex, slideName }: ISliderProps) {
             custom={{ isNext }}
           >
             {data?.results
-              .slice(rowIndex)
+              .slice(startIndex)
               .slice(offset * index, offset * index + offset)
               .map((movie) => (
                 <Box

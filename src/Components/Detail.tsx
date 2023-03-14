@@ -345,7 +345,7 @@ function Detail() {
   const closeDetail = () => {
     navigate(-1);
   };
-  const detailMatch = useMatch(`/:slideName/:movieId`);
+  const detailMatch = useMatch(`/home/:slideName/:movieId`);
   const { data, isLoading, error } = useQuery<IMovie>(
     ['movieDetail', detailMatch?.params.movieId],
     () => getMovieDetail(Number(detailMatch?.params.movieId))

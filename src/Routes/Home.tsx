@@ -8,7 +8,7 @@ import {
   getMoviesTopRated,
   getMoviesTrending,
   getMoviesUpcoming,
-  IGetVideoResult,
+  IGetMovieResult,
   IMovie,
 } from '../api';
 import Banner from '../Components/Banner';
@@ -19,32 +19,36 @@ const Wrapper = styled.main`
   padding: 110px 30px 50px 270px;
 `;
 
+const SliderGrid = styled.section`
+  display: grid;
+`
+
 function Home() {
-  const detailMatch = useMatch(`/:slideName/:movieId`);
+  const detailMatch = useMatch(`/home/:slideName/:movieId`);
   // useQuery for Latest Movie
   const {
     data: latestData,
     isLoading: latestLoading,
     error: latestError,
-  } = useQuery<IGetVideoResult>(['movies', 'latest'], getMoviesLatest);
+  } = useQuery<IGetMovieResult>(['movies', 'latest'], getMoviesLatest);
   // useQuery for Upcoming Movie
   const {
     data: upcomingData,
     isLoading: upcomingLoading,
     error: upcomingError,
-  } = useQuery<IGetVideoResult>(['movies', 'upcoming'], getMoviesUpcoming);
+  } = useQuery<IGetMovieResult>(['movies', 'upcoming'], getMoviesUpcoming);
   // useQuery for Trending Movie
   const {
     data: trendingData,
     isLoading: trendingLoading,
     error: trendingError,
-  } = useQuery<IGetVideoResult>(['movies', 'trending'], getMoviesTrending);
+  } = useQuery<IGetMovieResult>(['movies', 'trending'], getMoviesTrending);
   // useQuery for TopRated
   const {
     data: topRatedData,
     isLoading: topRatedLoading,
     error: topRatedError,
-  } = useQuery<IGetVideoResult>(['movies', 'topRated'], getMoviesTopRated);
+  } = useQuery<IGetMovieResult>(['movies', 'topRated'], getMoviesTopRated);
 
   // useQuery for Banner
   const {
@@ -91,24 +95,24 @@ function Home() {
         bannerLeftData={bannerLeftData}
         bannerRightData={bannerRightData}
       />
-      <Slider
-        data={latestData as IGetVideoResult}
-        rowIndex={1}
-        title="최신 개봉"
-        slideName="latest"
-      />
-      <Slider
-        data={trendingData as IGetVideoResult}
-        rowIndex={0}
-        title="요즘 인기"
-        slideName="trending"
-      />
-      <Slider
-        data={topRatedData as IGetVideoResult}
-        rowIndex={0}
-        title="Top 평점"
-        slideName="topRated"
-      />
+      <SliderGrid>
+        <Slider
+          data={latestData as IGetMovieResult}
+          startIndex={1}
+          title="최신 개봉"
+          slideName="latest"
+        />
+        <Slider
+          data={trendingData as IGetMovieResult}
+          title="요즘 인기"
+          slideName="trending"
+        />
+        <Slider
+          data={topRatedData as IGetMovieResult}
+          title="Top 평점"
+          slideName="topRated"
+        />
+      </SliderGrid>
       <AnimatePresence>{detailMatch ? <Detail /> : null}</AnimatePresence>
     </Wrapper>
   );
