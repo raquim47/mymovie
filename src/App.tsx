@@ -6,7 +6,7 @@ import Favorite from './Routes/Favorite';
 import Home from './Routes/Home';
 import NotFound from './Routes/NotFound';
 import Rate from './Routes/Rate';
-import Search from './Routes/Search';
+import Search from './Routes/SearchCopy';
 
 function App() {
   return (

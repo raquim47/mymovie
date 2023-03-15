@@ -1,10 +1,9 @@
 import { motion } from 'framer-motion';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useQuery } from 'react-query';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { GetSearched, IGetMovieResult } from '../api';
-import SearchForm from '../Components/SearchForm';
-import Slider from '../Components/Slider';
 import { makeImagePath } from '../utils';
 
 interface IGenres {
@@ -40,43 +39,57 @@ const Wrapper = styled.div`
     font-size: 30px;
     margin-bottom: 30px;
   }
+
+  strong {
+    font-weight: 600;
+    padding-right: 10px;
+  }
 `;
 
 const Row = styled.ul<{ offset: number }>`
   display: grid;
   grid-template-columns: repeat(${(props) => props.offset}, 1fr);
-  grid-auto-rows: 300px;
-  grid-gap: 40px 20px;
+  grid-gap: 30px 20px;
 `;
 
-const Box = styled(motion.li)<{ $bgPhoto: string, offset: number }>`
+const Box = styled(motion.li)<{ offset: number }>`
+  position: relative;
   border-radius: 4px;
-  background-image: url(${(props) => props.$bgPhoto});
-  background-size: cover;
-  background-position: center center;
+  overflow: hidden;
+  padding-bottom: 150%;
   cursor: pointer;
-  &:nth-child(${props => props.offset}n + 1) {
+  &:nth-child(${(props) => props.offset}n + 1) {
     transform-origin: center left;
   }
-  &:nth-child(${props => props.offset}n) {
+  &:nth-child(${(props) => props.offset}n) {
     transform-origin: center right;
+  }
+
+  img {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 `;
 
 const Info = styled(motion.div)`
-  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
+  position: absolute;
   width: 100%;
   height: 100%;
   padding: 10px;
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: rgba(0, 0, 0, 0.5);
   opacity: 0;
   color: ${(props) => props.theme.white.white};
 
   h4 {
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 500;
     margin-bottom: 4px;
   }
@@ -112,7 +125,7 @@ const boxVariants = {
     scale: 1,
   },
   hover: {
-    scale: 1.1,
+    scale: 1.05,
     transition: {
       type: 'tween',
       duration: 0.2,
@@ -132,7 +145,6 @@ const infoVariants = {
     },
   },
 };
-
 function Search() {
   const offset = 5;
   const location = useLocation();
@@ -143,41 +155,62 @@ function Search() {
     () => GetSearched(keyword || '')
   );
 
-  if(isLoading) return <p>로딩중</p>
-  if(isError) return <p>에러</p>
+  const [loadedImagesCount, setLoadedImagesCount] = useState(0);
+
+  useEffect(() => {
+    if (data) {
+      setLoadedImagesCount(0);
+      const images = data.results.map((movie) => {
+        const img = new Image();
+        img.src = movie.poster_path
+          ? makeImagePath(movie.poster_path, 'w300')
+          : require('../assets/no-image-icon-6.png');
+        img.onload = () => {
+          setLoadedImagesCount((prevCount) => prevCount + 1);
+        };
+        return img;
+      });
+
+      return () => {
+        images.forEach((img) => img.onload = null);
+      };
+    }
+  }, [data]);
+
+  const isAllImagesLoaded = loadedImagesCount === data?.results.length;
   
+  console.log(isAllImagesLoaded);
   return (
     <Wrapper>
-      <h2>{keyword}로 검색한 결과입니다</h2>
-      <Row offset={offset}>
-        {data?.results.map((movie) => (
-          <Box
-            offset={offset}
-            key={movie.id}
-            variants={boxVariants}
-            initial="normal"
-            whileHover="hover"
-            $bgPhoto={
-              movie.poster_path
-                ? makeImagePath(movie.poster_path, 'w500')
-                : require('../assets/no-image-icon-6.png')
-            }
-            transition={{ type: 'tween' }}
-          >
-            <Info variants={infoVariants}>
-              <h4>{movie.title}</h4>
-              <small>평점 : {movie.vote_average?.toFixed(1)}</small>
-              <article>
-                {movie.genre_ids?.map((id) => (
-                  <span key={id}>{genres[String(id)]}</span>
-                ))}
-              </article>
-              <InitialDetailBox layoutId={'search' + movie.id} />
-            </Info>
-          </Box>
-        ))}
-      </Row>
+      {(isLoading || !isAllImagesLoaded) && <p>Loading...</p>}
+      {isAllImagesLoaded && (
+        <Row offset={offset}>
+          {data?.results.map((movie) => (
+            <Box
+              offset={offset}
+              key={movie.id}
+              variants={boxVariants}
+              initial="normal"
+              whileHover="hover"
+              transition={{ type: 'tween' }}
+            >
+              <img
+                src={
+                  movie.poster_path
+                    ? makeImagePath(movie.poster_path, 'w300')
+                    : require('../assets/no-image-icon-6.png')
+                }
+                alt={movie.title}
+              />
+              
+            </Box>
+          ))}
+        </Row>
+      )}
     </Wrapper>
   );
 }
+
+
+
 export default Search;

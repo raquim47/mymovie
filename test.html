@@ -5,38 +5,50 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+
+    <script src="./main.js"></script>
+    <link rel="stylesheet" href="css/main.css" />
     <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
+      .wrapper {
+        display: flex;
+        margin: 24px;
+        justify-content: center;
+        align-items: center;
+      }
+      .item-list {
+        display: flex;
+        flex-direction: row;
+        gap: 12px;
+        list-style: none;
+      }
+      .item {
+        overflow: hidden;
+        width: 250px;
+        height: 350px;
+        background-color: black;
+        border-radius: 5px;
+      }
+      .item.loading {
+        animation: infinite 1s loading alternate;
       }
 
-      .grid {
-        position: absolute;
-        top: 50px;
-        left: 100px;
-        width: 400px;
-        height: 400px;
-        background-color: red;
-        display: grid;
-        /* grid-template-rows: repeat(1, 100px); */
-        grid-template-columns: repeat(2, 1fr);
-      }
-      .box {
-        border: 1px solid black;
-      }
-      .box:nth-child(1) {
-        border: 1px solid white;
+      .item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
       }
     </style>
   </head>
+
   <body>
-    <div class="grid">
-      <div class="box">r</div>
-      <div class="box">r</div>
-      <div class="box">r</div>
-      <div class="box">r</div>
+    <div class="wrapper">
+      <ul class="item-list">
+        <li class="item loading"></li>
+        <li class="item loading"></li>
+        <li class="item loading"></li>
+        <li class="item loading"></li>
+        <li class="item loading"></li>
+      </ul>
     </div>
   </body>
 </html>
