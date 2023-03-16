@@ -1,4 +1,4 @@
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useCycle, useAnimation } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { useMatch, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -6,31 +6,12 @@ import { IGetMovieResult } from '../api';
 import { makeImagePath } from '../utils';
 import { useDispatch, useSelector } from 'react-redux';
 import Detail from './Detail';
+import ListItem from './ListItem';
 
 interface IGenres {
   [key: string]: string;
 }
-const genres: IGenres = {
-  28: '액션',
-  12: '모험',
-  16: '애니메이션',
-  35: '코미디',
-  80: '범죄',
-  99: '다큐',
-  18: '드라마',
-  10751: '가족',
-  14: '판타지',
-  36: '역사',
-  27: '공포',
-  10402: '음악',
-  9648: '미스터리',
-  10749: '로맨스',
-  878: 'SF',
-  10770: 'TV',
-  53: '스릴러',
-  10752: '전쟁',
-  37: '서부',
-};
+
 
 const Wrapper = styled.div`
   position: relative;
@@ -66,19 +47,19 @@ const Row = styled(motion.div)`
   height: 8vw;
 `;
 
-const Box = styled(motion.div)<{ $bgPhoto: string }>`
-  border-radius: 4px;
-  background-image: url(${(props) => props.$bgPhoto});
-  background-size: cover;
-  background-position: center center;
-  cursor: pointer;
-  &:first-of-type {
-    transform-origin: center left;
-  }
-  &:last-of-type {
-    transform-origin: center right;
-  }
-`;
+// const ListItem = styled(motion.div)<{ $bgPhoto: string }>`
+//   border-radius: 4px;
+//   background-image: url(${(props) => props.$bgPhoto});
+//   background-size: cover;
+//   background-position: center center;
+//   cursor: pointer;
+//   &:first-of-type {
+//     transform-origin: center left;
+//   }
+//   &:last-of-type {
+//     transform-origin: center right;
+//   }
+// `;
 
 const Info = styled(motion.div)`
   position: relative;
@@ -187,11 +168,11 @@ interface ISliderProps {
   data: IGetMovieResult;
   title?: string;
   startIndex?: number;
-  slideName: string;
+  listType: string;
 }
 
-function Slider({ from, data, title, startIndex = 0, slideName }: ISliderProps) {
-  const detailMatch = useMatch(`/${from}/${slideName}/:movieId`);
+function Slider({ from, data, title, startIndex = 0, listType }: ISliderProps) {
+  const detailMatch = useMatch(`/${from}/${listType}/:movieId`);
   const getOffset = () => {
     const width = window.innerHeight;
   };
@@ -220,7 +201,7 @@ function Slider({ from, data, title, startIndex = 0, slideName }: ISliderProps) 
   };
 
   const onBoxClicked = (movieId: number) => {
-    navigate(`/home/${slideName}/${movieId}`);
+    navigate(`/home/${listType}/${movieId}`);
   };
 
   const [width, setWidth] = useState(window.innerWidth);
@@ -257,31 +238,37 @@ function Slider({ from, data, title, startIndex = 0, slideName }: ISliderProps) 
               {data?.results
                 .slice(startIndex)
                 .slice(offset * index, offset * index + offset)
-                .map((movie) => (
-                  <Box
-                    onClick={() => onBoxClicked(movie.id)}
-                    key={slideName + movie.id}
-                    variants={boxVariants}
-                    whileHover="hover"
-                    initial="initial"
-                    transition={{ type: 'tween' }}
-                    $bgPhoto={
-                      movie.backdrop_path
-                        ? makeImagePath(movie.backdrop_path, 'w500')
-                        : require('../assets/no-image-icon-6.png')
-                    }
-                  >
-                    <Info variants={infoVariants}>
-                      <h4>{movie.title}</h4>
-                      <small>평점 : {movie.vote_average?.toFixed(1)}</small>
-                      <article>
-                        {movie.genre_ids?.map((id) => (
-                          <span key={id}>{genres[String(id)]}</span>
-                        ))}
-                      </article>
-                      <InitialDetailBox layoutId={slideName + movie.id} />
-                    </Info>
-                  </Box>
+                .map((movieData) => (
+                  <ListItem
+                    key={listType + movieData.id}
+                    movieData={movieData}
+                    listType={listType}
+                    hoverAnimation={true}
+                  />
+                  // <ListItem
+                  //   onClick={() => onBoxClicked(movie.id)}
+                  //   key={listType + movie.id}
+                  //   variants={boxVariants}
+                    // whileHover="hover"
+                    // initial="initial"
+                    // transition={{ type: 'tween' }}
+                  //   $bgPhoto={
+                  //     movie.backdrop_path
+                  //       ? makeImagePath(movie.backdrop_path, 'w500')
+                  //       : require('../assets/no-image-icon-6.png')
+                  //   }
+                  // >
+                    // <Info variants={infoVariants}>
+                    //   <h4>{movie.title}</h4>
+                    //   <small>평점 : {movie.vote_average?.toFixed(1)}</small>
+                    //   <article>
+                    //     {movie.genre_ids?.map((id) => (
+                    //       <span key={id}>{genres[String(id)]}</span>
+                    //     ))}
+                    //   </article>
+                    //   <InitialDetailBox layoutId={listType + movie.id} />
+                    // </Info>
+                  // </ListItem>
                 ))}
             </Row>
           </AnimatePresence>
@@ -324,7 +311,7 @@ function Slider({ from, data, title, startIndex = 0, slideName }: ISliderProps) 
             <Detail
               movieId={Number(detailMatch.params.movieId)}
               from={from}
-              slideName={slideName}
+              listType={listType}
             />
           ) : null}
         </AnimatePresence>

@@ -343,19 +343,22 @@ const getYear = (date?: string) => {
 interface IDetail {
   movieId: number;
   from: string;
-  slideName: string;
+  listType: string;
 }
-function Detail({ movieId, from, slideName }: IDetail) {
+function Detail({ movieId, from, listType }: IDetail) {
   const navigate = useNavigate();
   const closeDetail = () => {
-    navigate('/home');
+    navigate(`/${from}`);
   };
-  const detailMatch = useMatch(`/home/:slideName/:movieId`);
+  // const detailMatch = useMatch(
+  //   `/${from}${listType ? '/' + listType : ''}/:movieId`
+  // );
 
   const { data, isLoading, isError } = useQuery<IMovie>(
     ['movieDetail', movieId],
     () => getMovieDetail(movieId)
   );
+  
   return (
     <>
       <GlobalStyle />
@@ -365,108 +368,112 @@ function Detail({ movieId, from, slideName }: IDetail) {
         exit={{ opacity: 0 }}
       />
       <Wrapper
-        layoutId={slideName + movieId}
+        layoutId={(listType ? listType : '') + movieId}
         transition={{ type: 'tween', duration: 0.2 }}
       >
-        <Content>
-          <ContentTop>
-            <ContentTopBg
-              $bgPhoto={
-                data?.backdrop_path
-                  ? makeImagePath(data.backdrop_path, 'w1280')
-                  : ''
-              }
-            ></ContentTopBg>
-            <ContentTopInner>
-              <Poster>
-                <img
-                  src={makeImagePath(
-                    data?.poster_path || '../assets/no-image-icon-6.png',
-                    'w500'
-                  )}
-                  alt={data?.title}
-                />
-              </Poster>
-              <Head>
-                <Title>
-                  <h2>{data?.title}</h2>
-                  <h3>{data?.original_title}</h3>
-                </Title>
-                <Info>
-                  <li>{getYear(data?.release_date)}</li>
-                  <li>{data?.runtime}분</li>
-                  <li>
-                    {data?.genres.map((genre, i) => {
-                      if (i === data?.genres.length - 1) {
-                        return <span key={genre.name}>{genre.name}</span>;
-                      } else {
-                        return <span key={genre.name}>{genre.name}, </span>;
-                      }
-                    })}
-                  </li>
-                  <li className="averageStar">
-                    평균
-                    <ReactStars
-                      count={1}
-                      color1="#FFCC33"
-                      size={14}
-                      edit={false}
-                    />
-                    <span className="ratingValue">
-                      {data?.vote_average.toFixed(1)}
-                    </span>
-                  </li>
-                </Info>
-              </Head>
-              <Option>
-                <li className="myStar">
-                  <ReactStars
-                    onChange={(rate) => console.log(rate)}
-                    count={5}
-                    color1="#E6E6E6"
-                    color2="#FFCC33"
-                    half
-                    size={30}
-                    edit={true}
-                    className="detailOptionIcon"
+        {isLoading ? (
+          <p>loading...</p>
+        ) : (
+          <Content>
+            <ContentTop>
+              <ContentTopBg
+                $bgPhoto={
+                  data?.backdrop_path
+                    ? makeImagePath(data.backdrop_path, 'w1280')
+                    : ''
+                }
+              ></ContentTopBg>
+              <ContentTopInner>
+                <Poster>
+                  <img
+                    src={makeImagePath(
+                      data?.poster_path || '../assets/no-image-icon-6.png',
+                      'w500'
+                    )}
+                    alt={data?.title}
                   />
-                  <em>평가하기</em>
-                </li>
-                <li>
-                  <div className="detailOptionIcon">
-                    <FontAwesomeIcon icon={faHeart} />
-                  </div>
-                  <em>보고싶어요</em>
-                </li>
-                <li>
-                  <div className="detailOptionIcon">
-                    <FontAwesomeIcon icon={faPenToSquare} />
-                  </div>
-                  <em>코멘트 남기기</em>
-                </li>
-              </Option>
-            </ContentTopInner>
-          </ContentTop>
-          <ContentMiddle>
-            <Commented>
-              <div className="profile"></div>
-              <p>
-                코멘트 남기는 곳 코멘트 남기는 곳코멘트 남기는 곳 코멘트 남기는
-                곳코멘트 남기는 곳 코멘트 남기는 곳
-              </p>
-              <div className="edit">
-                <span>수정</span>
-                <span>삭제</span>
-              </div>
-            </Commented>
-            {data?.overview ? (
-              <OverView>
-                {data?.tagline ? <h5>{data.tagline}</h5> : null}
-                <p>{data?.overview}</p>
-              </OverView>
-            ) : null}
-          </ContentMiddle>
-        </Content>
+                </Poster>
+                <Head>
+                  <Title>
+                    <h2>{data?.title}</h2>
+                    <h3>{data?.original_title}</h3>
+                  </Title>
+                  <Info>
+                    <li>{getYear(data?.release_date)}</li>
+                    <li>{data?.runtime}분</li>
+                    <li>
+                      {data?.genres.map((genre, i) => {
+                        if (i === data?.genres.length - 1) {
+                          return <span key={genre.name}>{genre.name}</span>;
+                        } else {
+                          return <span key={genre.name}>{genre.name}, </span>;
+                        }
+                      })}
+                    </li>
+                    <li className="averageStar">
+                      평균
+                      <ReactStars
+                        count={1}
+                        color1="#FFCC33"
+                        size={14}
+                        edit={false}
+                      />
+                      <span className="ratingValue">
+                        {data?.vote_average.toFixed(1)}
+                      </span>
+                    </li>
+                  </Info>
+                </Head>
+                <Option>
+                  <li className="myStar">
+                    <ReactStars
+                      onChange={(rate) => console.log(rate)}
+                      count={5}
+                      color1="#E6E6E6"
+                      color2="#FFCC33"
+                      half
+                      size={30}
+                      edit={true}
+                      className="detailOptionIcon"
+                    />
+                    <em>평가하기</em>
+                  </li>
+                  <li>
+                    <div className="detailOptionIcon">
+                      <FontAwesomeIcon icon={faHeart} />
+                    </div>
+                    <em>보고싶어요</em>
+                  </li>
+                  <li>
+                    <div className="detailOptionIcon">
+                      <FontAwesomeIcon icon={faPenToSquare} />
+                    </div>
+                    <em>코멘트 남기기</em>
+                  </li>
+                </Option>
+              </ContentTopInner>
+            </ContentTop>
+            <ContentMiddle>
+              <Commented>
+                <div className="profile"></div>
+                <p>
+                  코멘트 남기는 곳 코멘트 남기는 곳코멘트 남기는 곳 코멘트
+                  남기는 곳코멘트 남기는 곳 코멘트 남기는 곳
+                </p>
+                <div className="edit">
+                  <span>수정</span>
+                  <span>삭제</span>
+                </div>
+              </Commented>
+              {data?.overview ? (
+                <OverView>
+                  {data?.tagline ? <h5>{data.tagline}</h5> : null}
+                  <p>{data?.overview}</p>
+                </OverView>
+              ) : null}
+            </ContentMiddle>
+          </Content>
+        )}
         <FontAwesomeIcon
           onClick={closeDetail}
           icon={faXmark}

@@ -99,19 +99,19 @@ function Home() {
           data={latestData as IGetMovieResult}
           startIndex={1}
           title="최신 개봉"
-          slideName="latest"
+          listType="latest"
           from='home'
         />
         <Slider
           data={trendingData as IGetMovieResult}
           title="요즘 인기"
-          slideName="trending"
+          listType="trending"
           from='home'
         />
         <Slider
           data={topRatedData as IGetMovieResult}
           title="Top 평점"
-          slideName="topRated"
+          listType="topRated"
           from='home'
         />
       </SliderGrid>
