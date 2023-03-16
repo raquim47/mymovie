@@ -340,16 +340,27 @@ const getYear = (date?: string) => {
   return '';
 };
 
-function Detail() {
+interface IDetail {
+  movieId: number;
+}
+function Detail({ movieId }: IDetail) {
   const navigate = useNavigate();
   const closeDetail = () => {
-    navigate(-1);
+    navigate('/home');
   };
   const detailMatch = useMatch(`/home/:slideName/:movieId`);
-  const { data, isLoading, error } = useQuery<IMovie>(
-    ['movieDetail', detailMatch?.params.movieId],
-    () => getMovieDetail(Number(detailMatch?.params.movieId))
+
+  const { data, isLoading, isError } = useQuery<IMovie>(
+    ['movieDetail', movieId],
+    () => getMovieDetail(movieId)
   );
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
+  if (isError) {
+    return <p>Error</p>;
+  }
   return (
     <>
       <GlobalStyle />

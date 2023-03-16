@@ -172,13 +172,13 @@ function Search() {
       });
 
       return () => {
-        images.forEach((img) => img.onload = null);
+        images.forEach((img) => (img.onload = null));
       };
     }
   }, [data]);
 
   const isAllImagesLoaded = loadedImagesCount === data?.results.length;
-  
+
   console.log(isAllImagesLoaded);
   return (
     <Wrapper>
@@ -202,7 +202,16 @@ function Search() {
                 }
                 alt={movie.title}
               />
-              
+              <Info variants={infoVariants}>
+                <h4>{movie.title}</h4>
+                <small>평점 : {movie.vote_average?.toFixed(1)}</small>
+                <article>
+                  {movie.genre_ids?.map((id) => (
+                    <span key={id}>{genres[String(id)]}</span>
+                  ))}
+                </article>
+                {/* <InitialDetailBox layoutId={ movie.id} /> */}
+              </Info>
             </Box>
           ))}
         </Row>
@@ -210,7 +219,5 @@ function Search() {
     </Wrapper>
   );
 }
-
-
 
 export default Search;

@@ -21,7 +21,7 @@ const Wrapper = styled.main`
 
 const SliderGrid = styled.section`
   display: grid;
-`
+`;
 
 function Home() {
   const detailMatch = useMatch(`/home/:slideName/:movieId`);
@@ -113,7 +113,11 @@ function Home() {
           slideName="topRated"
         />
       </SliderGrid>
-      <AnimatePresence>{detailMatch ? <Detail /> : null}</AnimatePresence>
+      <AnimatePresence>
+        {detailMatch ? (
+          <Detail movieId={Number(detailMatch.params.movieId)} />
+        ) : null}
+      </AnimatePresence>
     </Wrapper>
   );
 }
