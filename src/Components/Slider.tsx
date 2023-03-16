@@ -1,10 +1,11 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useMatch, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { IGetMovieResult } from '../api';
 import { makeImagePath } from '../utils';
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux';
+import Detail from './Detail';
 
 interface IGenres {
   [key: string]: string;
@@ -182,17 +183,18 @@ const infoVariants = {
 };
 
 interface ISliderProps {
+  from: string;
   data: IGetMovieResult;
   title?: string;
   startIndex?: number;
   slideName: string;
 }
 
-function Slider({ data, title, startIndex = 0, slideName }: ISliderProps) {
+function Slider({ from, data, title, startIndex = 0, slideName }: ISliderProps) {
+  const detailMatch = useMatch(`/${from}/${slideName}/:movieId`);
   const getOffset = () => {
     const width = window.innerHeight;
-    console.log(width)
-  }
+  };
   getOffset();
 
   const offset = 5;
@@ -228,95 +230,106 @@ function Slider({ data, title, startIndex = 0, slideName }: ISliderProps) {
       setWidth(window.innerWidth);
     };
 
-    window.addEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
     return () => {
-      window.removeEventListener("resize", handleResize);
+      window.removeEventListener('resize', handleResize);
     };
   }, []);
-  console.log(width)
   return (
-    <Wrapper>
-      <Content>
-        <Title onClick={() => changeIndex()}>{title}</Title>
-        <AnimatePresence
-          initial={false}
-          onExitComplete={toggleLeaving}
-          custom={{ isNext }}
-        >
-          <Row
-            variants={rowVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            transition={{ type: 'tween', duration: 1 }}
-            key={index}
+    <>
+      <Wrapper>
+        <Content>
+          <Title onClick={() => changeIndex()}>{title}</Title>
+          <AnimatePresence
+            initial={false}
+            onExitComplete={toggleLeaving}
             custom={{ isNext }}
           >
-            {data?.results
-              .slice(startIndex)
-              .slice(offset * index, offset * index + offset)
-              .map((movie) => (
-                <Box
-                  onClick={() => onBoxClicked(movie.id)}
-                  key={slideName + movie.id}
-                  variants={boxVariants}
-                  whileHover="hover"
-                  initial="initial"
-                  transition={{ type: 'tween' }}
-                  $bgPhoto={
-                    movie.backdrop_path
-                      ? makeImagePath(movie.backdrop_path, 'w500')
-                      : require('../assets/no-image-icon-6.png')
-                  }
-                >
-                  <Info variants={infoVariants}>
-                    <h4>{movie.title}</h4>
-                    <small>평점 : {movie.vote_average?.toFixed(1)}</small>
-                    <article>
-                      {movie.genre_ids?.map((id) => (
-                        <span key={id}>{genres[String(id)]}</span>
-                      ))}
-                    </article>
-                    <InitialDetailBox layoutId={slideName + movie.id} />
-                  </Info>
-                </Box>
-              ))}
-          </Row>
+            <Row
+              variants={rowVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              transition={{ type: 'tween', duration: 1 }}
+              key={index}
+              custom={{ isNext }}
+            >
+              {data?.results
+                .slice(startIndex)
+                .slice(offset * index, offset * index + offset)
+                .map((movie) => (
+                  <Box
+                    onClick={() => onBoxClicked(movie.id)}
+                    key={slideName + movie.id}
+                    variants={boxVariants}
+                    whileHover="hover"
+                    initial="initial"
+                    transition={{ type: 'tween' }}
+                    $bgPhoto={
+                      movie.backdrop_path
+                        ? makeImagePath(movie.backdrop_path, 'w500')
+                        : require('../assets/no-image-icon-6.png')
+                    }
+                  >
+                    <Info variants={infoVariants}>
+                      <h4>{movie.title}</h4>
+                      <small>평점 : {movie.vote_average?.toFixed(1)}</small>
+                      <article>
+                        {movie.genre_ids?.map((id) => (
+                          <span key={id}>{genres[String(id)]}</span>
+                        ))}
+                      </article>
+                      <InitialDetailBox layoutId={slideName + movie.id} />
+                    </Info>
+                  </Box>
+                ))}
+            </Row>
+          </AnimatePresence>
+        </Content>
+        <PrevBtn key="prev" onClick={() => changeIndex('prev')}>
+          <svg
+            width="8"
+            height="40"
+            viewBox="0 0 10 40"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <path
+              d="M9.476.09c.452.226.65.805.44 1.295L1.985 20l7.933 18.615c.208.49.011 1.07-.44 1.295-.452.226-.987.012-1.196-.477L0 20 8.281.567c.209-.49.744-.703 1.195-.477Z"
+              fill="currentColor"
+            ></path>
+          </svg>
+        </PrevBtn>
+        <NextBtn key="next" onClick={() => changeIndex()}>
+          <svg
+            width="8"
+            height="40"
+            viewBox="0 0 10 40"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <path
+              d="M.524.09c-.452.226-.65.805-.44 1.295L8.015 20 .083 38.615c-.208.49-.011 1.07.44 1.295.452.226.987.012 1.196-.477L10 20 1.719.567C1.51.077.975-.136.524.09Z"
+              fill="currentColor"
+            ></path>
+          </svg>
+        </NextBtn>
+
+        <AnimatePresence>
+          {detailMatch ? (
+            <Detail
+              movieId={Number(detailMatch.params.movieId)}
+              from={from}
+              slideName={slideName}
+            />
+          ) : null}
         </AnimatePresence>
-      </Content>
-      <PrevBtn key="prev" onClick={() => changeIndex('prev')}>
-        <svg
-          width="8"
-          height="40"
-          viewBox="0 0 10 40"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          aria-hidden="true"
-          focusable="false"
-        >
-          <path
-            d="M9.476.09c.452.226.65.805.44 1.295L1.985 20l7.933 18.615c.208.49.011 1.07-.44 1.295-.452.226-.987.012-1.196-.477L0 20 8.281.567c.209-.49.744-.703 1.195-.477Z"
-            fill="currentColor"
-          ></path>
-        </svg>
-      </PrevBtn>
-      <NextBtn key="next" onClick={() => changeIndex()}>
-        <svg
-          width="8"
-          height="40"
-          viewBox="0 0 10 40"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          aria-hidden="true"
-          focusable="false"
-        >
-          <path
-            d="M.524.09c-.452.226-.65.805-.44 1.295L8.015 20 .083 38.615c-.208.49-.011 1.07.44 1.295.452.226.987.012 1.196-.477L10 20 1.719.567C1.51.077.975-.136.524.09Z"
-            fill="currentColor"
-          ></path>
-        </svg>
-      </NextBtn>
-    </Wrapper>
+      </Wrapper>
+    </>
   );
 }
 

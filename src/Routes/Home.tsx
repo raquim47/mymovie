@@ -14,7 +14,6 @@ import {
 import Banner from '../Components/Banner';
 import Detail from '../Components/Detail';
 import Slider from '../Components/Slider';
-
 const Wrapper = styled.main`
   padding: 110px 30px 50px 270px;
 `;
@@ -24,7 +23,7 @@ const SliderGrid = styled.section`
 `;
 
 function Home() {
-  const detailMatch = useMatch(`/home/:slideName/:movieId`);
+  
   // useQuery for Latest Movie
   const {
     data: latestData,
@@ -101,23 +100,22 @@ function Home() {
           startIndex={1}
           title="최신 개봉"
           slideName="latest"
+          from='home'
         />
         <Slider
           data={trendingData as IGetMovieResult}
           title="요즘 인기"
           slideName="trending"
+          from='home'
         />
         <Slider
           data={topRatedData as IGetMovieResult}
           title="Top 평점"
           slideName="topRated"
+          from='home'
         />
       </SliderGrid>
-      <AnimatePresence>
-        {detailMatch ? (
-          <Detail movieId={Number(detailMatch.params.movieId)} />
-        ) : null}
-      </AnimatePresence>
+      
     </Wrapper>
   );
 }

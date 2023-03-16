@@ -342,8 +342,10 @@ const getYear = (date?: string) => {
 
 interface IDetail {
   movieId: number;
+  from: string;
+  slideName: string;
 }
-function Detail({ movieId }: IDetail) {
+function Detail({ movieId, from, slideName }: IDetail) {
   const navigate = useNavigate();
   const closeDetail = () => {
     navigate('/home');
@@ -354,19 +356,16 @@ function Detail({ movieId }: IDetail) {
     ['movieDetail', movieId],
     () => getMovieDetail(movieId)
   );
-  if (isLoading) {
-    return <p>Loading...</p>;
-  }
-
-  if (isError) {
-    return <p>Error</p>;
-  }
   return (
     <>
       <GlobalStyle />
-      <Overlay onClick={closeDetail} animate={{ opacity: 1 }} />
+      <Overlay
+        onClick={closeDetail}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+      />
       <Wrapper
-        layoutId={`${detailMatch?.params.slideName}${detailMatch?.params.movieId}`}
+        layoutId={slideName + movieId}
         transition={{ type: 'tween', duration: 0.2 }}
       >
         <Content>
