@@ -1,4 +1,4 @@
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useMatch, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { IMovie } from '../api';
@@ -80,6 +80,17 @@ const Figure = styled.figure`
   }
 `;
 
+const InitialDetailBox = styled(motion.div)`
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+`;
 
 interface IBannerProps<T> {
   bannerLeftData?: T;
@@ -109,6 +120,7 @@ function Banner<T extends IMovie>({
             <p>{bannerLeftData?.tagline}</p>
           </Caption>
         </Figure>
+        <InitialDetailBox layoutId={'banner' + bannerLeftData?.id} />
       </Item>
       <Item onClick={() => onClickBanner(bannerRightData?.id)}>
         <h3>개봉 예정</h3>
@@ -122,6 +134,7 @@ function Banner<T extends IMovie>({
             <p>{bannerRightData?.tagline}</p>
           </Caption>
         </Figure>
+        <InitialDetailBox layoutId={'banner' + bannerRightData?.id} />
       </Item>
 
       <AnimatePresence>
@@ -129,7 +142,6 @@ function Banner<T extends IMovie>({
           <Detail
             movieId={Number(detailMatch.params.movieId)}
             from="home"
-            listType="banner"
           />
         ) : null}
       </AnimatePresence>

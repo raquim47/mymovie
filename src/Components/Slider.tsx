@@ -82,15 +82,15 @@ interface ISliderProps {
   listType: string;
 }
 
-
 function Slider({ from, data, title, startIndex = 0, listType }: ISliderProps) {
-  const detailMatch = useMatch(`/${from}/${listType}/:movieId`);
   const offset = 5;
   const [index, setIndex] = useState(0);
   const [leaving, setLeaving] = useState(false);
   const toggleLeaving = () => setLeaving(false);
   const [isNext, setIsNext] = useState(true);
-
+  const [hoveredIndex, setHoveredIndex] = useState(-1);
+  
+  // 좌우 슬라이드 동작
   const changeIndex = (direction = 'next') => {
     if (!data) return;
     if (leaving) return;
@@ -106,7 +106,6 @@ function Slider({ from, data, title, startIndex = 0, listType }: ISliderProps) {
     }
   };
 
-  
   const getOffset = () => {
     const width = window.innerHeight;
   };
@@ -122,15 +121,11 @@ function Slider({ from, data, title, startIndex = 0, listType }: ISliderProps) {
       window.removeEventListener('resize', handleResize);
     };
   }, []);
-  
-  const [hoveredIndex, setHoveredIndex] = useState(-1);
 
-  const handleHoverChange = (isHovered: boolean, index: number) => {
-    if (isHovered) {
-      setHoveredIndex(index);
-    } else if (hoveredIndex === index) {
-      setHoveredIndex(-1);
-    }
+  
+
+  const handleHoverChange = (index: number) => {
+    setHoveredIndex(index)
   };
   return (
     <>
@@ -201,16 +196,6 @@ function Slider({ from, data, title, startIndex = 0, listType }: ISliderProps) {
             ></path>
           </svg>
         </NextBtn>
-
-        <AnimatePresence>
-          {detailMatch ? (
-            <Detail
-              movieId={Number(detailMatch.params.movieId)}
-              from={from}
-              listType={listType}
-            />
-          ) : null}
-        </AnimatePresence>
       </Wrapper>
     </>
   );

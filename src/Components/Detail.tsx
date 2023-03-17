@@ -343,22 +343,17 @@ const getYear = (date?: string) => {
 interface IDetail {
   movieId: number;
   from: string;
-  listType: string;
 }
-function Detail({ movieId, from, listType }: IDetail) {
+function Detail({ movieId, from }: IDetail) {
   const navigate = useNavigate();
   const closeDetail = () => {
     navigate(`/${from}`);
   };
-  // const detailMatch = useMatch(
-  //   `/${from}${listType ? '/' + listType : ''}/:movieId`
-  // );
-
   const { data, isLoading, isError } = useQuery<IMovie>(
     ['movieDetail', movieId],
     () => getMovieDetail(movieId)
   );
-  
+  const detailMatch = useMatch(`/${from}/:listType/:movieId`);
   return (
     <>
       <GlobalStyle />
@@ -368,8 +363,8 @@ function Detail({ movieId, from, listType }: IDetail) {
         exit={{ opacity: 0 }}
       />
       <Wrapper
-        layoutId={(listType ? listType : '') + movieId}
-        transition={{ type: 'easeInOut', duration: 0.3 }}
+        layoutId={`${detailMatch?.params.listType}${movieId}`}
+        transition={{ type: 'easeInOut', duration: 0.35 }}
       >
         {isLoading ? (
           <p>loading...</p>

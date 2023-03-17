@@ -16,7 +16,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Navigate to="/home"/>} />
         <Route path="/home" element={<Home />} />
-        <Route path="/home/:slideName/:movieId" element={<Home />} />
+        <Route path="/home/:listType/:movieId" element={<Home />} />
         <Route path="/search" element={<Search />} />
         <Route path="/*" element={<NotFound />} />
       </Routes>

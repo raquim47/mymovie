@@ -1,9 +1,10 @@
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useMatch, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { IMovie } from '../api';
 import { makeImagePath } from '../utils';
+import Detail from './Detail';
 
 interface IGenres {
   [key: string]: string;
@@ -31,18 +32,24 @@ const genres: IGenres = {
   37: '서부',
 };
 
-const Wrapper = styled(motion.div)<{ $bgPhoto: string }>`
+const Wrapper = styled(motion.div)`
   position: relative;
   border-radius: 4px;
-  background-image: url(${(props) => props.$bgPhoto});
-  background-size: cover;
-  background-position: center center;
+  overflow: hidden;
   cursor: pointer;
   &:first-of-type {
     transform-origin: center left;
   }
   &:last-of-type {
     transform-origin: center right;
+  }
+
+  img {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 `;
 
@@ -133,12 +140,13 @@ const WrapperVariants = {
 
 interface IListItem {
   movieData: IMovie;
-  from:string;
+  from: string;
+  listType: string;
   index: number;
-  onHoverChange: (isHovered: boolean, index: number) => void;
   hoveredIndex: number;
-  listType?: string;
+  onHoverChange: (index: number) => void;
   offset?: number;
+  forBanner?: boolean;
 }
 
 function ListItem({
@@ -147,55 +155,58 @@ function ListItem({
   listType,
   index,
   hoveredIndex,
-  offset,
   onHoverChange,
+  offset,
+  forBanner = false,
 }: IListItem) {
   const navigate = useNavigate();
   const onBoxClicked = () => {
     navigate(`/${from}/${listType}/${movieData.id}`);
   };
 
-  const handleMouseEnter = () => {
-    onHoverChange(true, index);
-  };
-
-  const handleMouseLeave = () => {
-    onHoverChange(false, index);
-  };
   const xDirection = hoveredIndex !== -1 ? (hoveredIndex < index ? 1 : -1) : 0;
   const isPushed = hoveredIndex !== -1 && hoveredIndex !== index;
   const isHovered = hoveredIndex === index;
+  const detailMatch = useMatch(`/${from}/${listType}/${movieData.id}`);
+
   return (
-    <Wrapper
-      variants={WrapperVariants}
-      initial="initial"
-      animate={isHovered ? 'hovered' : isPushed ? 'pushed' : 'initial'}
-      onClick={onBoxClicked}
-      $bgPhoto={
-        movieData.backdrop_path
-          ? makeImagePath(movieData.backdrop_path, 'w500')
-          : require('../assets/no-image-icon-6.png')
-      }
-      onHoverStart={handleMouseEnter}
-      onHoverEnd={handleMouseLeave}
-      custom={{ xDirection, hoveredIndex, offset }}
-    >
-      <ListInfo
-        variants={infoVariants}
-        whileHover='hover'
-      >
-        <h4>{movieData.title}</h4>
-        <small>평점 : {movieData.vote_average?.toFixed(1)}</small>
-        <article>
-          {movieData.genre_ids?.map((id) => (
-            <span key={id}>{genres[String(id)]}</span>
-          ))}
-        </article>
-        <InitialDetailBox
-          layoutId={(listType ? listType : '') + movieData.id}
-        />
-      </ListInfo>
-    </Wrapper>
+    <>
+      {forBanner ? (
+        <div></div>
+      ) : (
+        <Wrapper
+          variants={WrapperVariants}
+          initial="initial"
+          animate={isHovered ? 'hovered' : isPushed ? 'pushed' : 'initial'}
+          onClick={onBoxClicked}
+          onHoverStart={() => onHoverChange(index)}
+          onHoverEnd={() => onHoverChange(-1)}
+          custom={{ xDirection, hoveredIndex, offset }}
+        >
+          <img
+            src={
+              movieData.backdrop_path
+                ? makeImagePath(movieData.backdrop_path, 'w500')
+                : require('../assets/no-image-icon-6.png')
+            }
+          />
+          <ListInfo variants={infoVariants} whileHover="hover">
+            <h4>{movieData.title}</h4>
+            <small>평점 : {movieData.vote_average?.toFixed(1)}</small>
+            <article>
+              {movieData.genre_ids?.map((id) => (
+                <span key={id}>{genres[String(id)]}</span>
+              ))}
+            </article>
+          </ListInfo>
+          <InitialDetailBox layoutId={listType + movieData.id} />
+        </Wrapper>
+      )}
+
+      <AnimatePresence>
+        {detailMatch ? <Detail from={from} movieId={movieData.id} /> : null}
+      </AnimatePresence>
+    </>
   );
 }
 
