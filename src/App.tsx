@@ -1,8 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
-import styled from 'styled-components';
 import Header from './Components/Header';
 import Nav from './Components/Nav';
-import Favorite from './Routes/Favorite';
 import Home from './Routes/Home';
 import NotFound from './Routes/NotFound';
 import Rate from './Routes/Rate';

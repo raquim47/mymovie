@@ -1,10 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useEffect, useState } from 'react';
-import { useMatch, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { IGetMovieResult } from '../api';
-import { useDispatch, useSelector } from 'react-redux';
-import Detail from './Detail';
 import ListItem from './ListItem';
 
 const Wrapper = styled.div`
@@ -30,10 +27,9 @@ const Title = styled.h3`
   margin-bottom: 20px;
 `;
 
-const Row = styled(motion.div)`
+const Row = styled(motion.div)<{ row: number }>`
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  grid-template-rows: repeat(1fr);
+  grid-template-columns: ${(props) => `repeat(${props.row}, 1fr)`};
   gap: 8px;
   position: absolute;
   bottom: 1.5vw;
@@ -74,29 +70,36 @@ const rowVariants = {
   }),
 };
 
-interface ISliderProps {
-  from: string;
+interface IListProps {
   data: IGetMovieResult;
+  listType: string;
+  rowSize: number;
   title?: string;
   startIndex?: number;
-  listType: string;
+  isSlideEnabled?: boolean;
 }
 
-function Slider({ from, data, title, startIndex = 0, listType }: ISliderProps) {
-  const offset = 5;
+function List({
+  data,
+  listType,
+  rowSize,
+  title,
+  startIndex = 0,
+  isSlideEnabled = false,
+}: IListProps) {
   const [index, setIndex] = useState(0);
   const [leaving, setLeaving] = useState(false);
   const toggleLeaving = () => setLeaving(false);
   const [isNext, setIsNext] = useState(true);
   const [hoveredIndex, setHoveredIndex] = useState(-1);
-  
+
   // 좌우 슬라이드 동작
   const changeIndex = (direction = 'next') => {
     if (!data) return;
     if (leaving) return;
     setLeaving(true);
     const totalMovies = data.results.length - 1;
-    const maxIndex = Math.floor(totalMovies / offset) - 1;
+    const maxIndex = Math.floor(totalMovies / rowSize) - 1;
     direction === 'next' ? setIsNext(true) : setIsNext(false);
 
     if (isNext) {
@@ -122,10 +125,8 @@ function Slider({ from, data, title, startIndex = 0, listType }: ISliderProps) {
     };
   }, []);
 
-  
-
   const handleHoverChange = (index: number) => {
-    setHoveredIndex(index)
+    setHoveredIndex(index);
   };
   return (
     <>
@@ -145,60 +146,65 @@ function Slider({ from, data, title, startIndex = 0, listType }: ISliderProps) {
               transition={{ type: 'tween', duration: 1 }}
               key={index}
               custom={{ isNext }}
+              row={rowSize}
             >
               {data?.results
                 .slice(startIndex)
-                .slice(offset * index, offset * index + offset)
+                .slice(rowSize * index, rowSize * index + rowSize)
                 .map((movie, index) => (
                   <ListItem
                     key={movie.id}
-                    from={from}
                     movieData={movie}
                     listType={listType}
                     index={index}
                     onHoverChange={handleHoverChange}
                     hoveredIndex={hoveredIndex}
-                    offset={offset}
+                    rowSize={rowSize}
+                    displayMode="landscape"
                   />
                 ))}
             </Row>
           </AnimatePresence>
         </Content>
-        <PrevBtn key="prev" onClick={() => changeIndex('prev')}>
-          <svg
-            width="8"
-            height="40"
-            viewBox="0 0 10 40"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            aria-hidden="true"
-            focusable="false"
-          >
-            <path
-              d="M9.476.09c.452.226.65.805.44 1.295L1.985 20l7.933 18.615c.208.49.011 1.07-.44 1.295-.452.226-.987.012-1.196-.477L0 20 8.281.567c.209-.49.744-.703 1.195-.477Z"
-              fill="currentColor"
-            ></path>
-          </svg>
-        </PrevBtn>
-        <NextBtn key="next" onClick={() => changeIndex()}>
-          <svg
-            width="8"
-            height="40"
-            viewBox="0 0 10 40"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            aria-hidden="true"
-            focusable="false"
-          >
-            <path
-              d="M.524.09c-.452.226-.65.805-.44 1.295L8.015 20 .083 38.615c-.208.49-.011 1.07.44 1.295.452.226.987.012 1.196-.477L10 20 1.719.567C1.51.077.975-.136.524.09Z"
-              fill="currentColor"
-            ></path>
-          </svg>
-        </NextBtn>
+        {isSlideEnabled ? (
+          <>
+            <PrevBtn key="prev" onClick={() => changeIndex('prev')}>
+              <svg
+                width="8"
+                height="40"
+                viewBox="0 0 10 40"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <path
+                  d="M9.476.09c.452.226.65.805.44 1.295L1.985 20l7.933 18.615c.208.49.011 1.07-.44 1.295-.452.226-.987.012-1.196-.477L0 20 8.281.567c.209-.49.744-.703 1.195-.477Z"
+                  fill="currentColor"
+                ></path>
+              </svg>
+            </PrevBtn>
+            <NextBtn key="next" onClick={() => changeIndex()}>
+              <svg
+                width="8"
+                height="40"
+                viewBox="0 0 10 40"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <path
+                  d="M.524.09c-.452.226-.65.805-.44 1.295L8.015 20 .083 38.615c-.208.49-.011 1.07.44 1.295.452.226.987.012 1.196-.477L10 20 1.719.567C1.51.077.975-.136.524.09Z"
+                  fill="currentColor"
+                ></path>
+              </svg>
+            </NextBtn>
+          </>
+        ) : null}
       </Wrapper>
     </>
   );
 }
 
-export default Slider;
+export default List;

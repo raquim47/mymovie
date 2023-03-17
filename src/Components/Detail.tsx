@@ -1,4 +1,4 @@
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import ReactStars from 'react-stars';
 import { useMatch, useNavigate } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
@@ -342,18 +342,20 @@ const getYear = (date?: string) => {
 
 interface IDetail {
   movieId: number;
-  from: string;
 }
-function Detail({ movieId, from }: IDetail) {
+
+function Detail({ movieId }: IDetail) {
   const navigate = useNavigate();
+  const detailMatch = useMatch(`/:page/:listType/:movieId`);
+
   const closeDetail = () => {
-    navigate(`/${from}`);
+    navigate(`/${detailMatch?.params.page}`);
   };
   const { data, isLoading, isError } = useQuery<IMovie>(
     ['movieDetail', movieId],
     () => getMovieDetail(movieId)
   );
-  const detailMatch = useMatch(`/${from}/:listType/:movieId`);
+  
   return (
     <>
       <GlobalStyle />

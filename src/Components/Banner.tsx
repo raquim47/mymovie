@@ -141,7 +141,6 @@ function Banner<T extends IMovie>({
         {detailMatch ? (
           <Detail
             movieId={Number(detailMatch.params.movieId)}
-            from="home"
           />
         ) : null}
       </AnimatePresence>

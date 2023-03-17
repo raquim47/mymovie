@@ -1,6 +1,4 @@
-import { AnimatePresence } from 'framer-motion';
 import { useQuery } from 'react-query';
-import { useMatch } from 'react-router-dom';
 import styled from 'styled-components';
 import {
   getMovieDetail,
@@ -12,8 +10,8 @@ import {
   IMovie,
 } from '../api';
 import Banner from '../Components/Banner';
-import Detail from '../Components/Detail';
-import Slider from '../Components/Slider';
+import List from '../Components/List';
+
 const Wrapper = styled.main`
   padding: 110px 30px 50px 270px;
 `;
@@ -23,7 +21,6 @@ const SliderGrid = styled.section`
 `;
 
 function Home() {
-  
   // useQuery for Latest Movie
   const {
     data: latestData,
@@ -94,27 +91,29 @@ function Home() {
         bannerRightData={bannerRightData}
       />
       <SliderGrid>
-        <Slider
+        <List
           data={latestData as IGetMovieResult}
           startIndex={1}
+          rowSize={5}
           title="최신 개봉"
           listType="latest"
-          from='home'
+          isSlideEnabled={true}
         />
-        <Slider
+        <List
           data={trendingData as IGetMovieResult}
+          rowSize={5}
           title="요즘 인기"
           listType="trending"
-          from='home'
+          isSlideEnabled={true}
         />
-        <Slider
+        <List
           data={topRatedData as IGetMovieResult}
+          rowSize={5}
           title="Top 평점"
           listType="topRated"
-          from='home'
+          isSlideEnabled={true}
         />
       </SliderGrid>
-      
     </Wrapper>
   );
 }
