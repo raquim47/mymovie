@@ -1,4 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion';
+import React, { useEffect, useState } from 'react';
 import { useMatch, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { IMovie } from '../api';
@@ -104,8 +105,8 @@ const infoVariants = {
     opacity: 1,
     transition: {
       type: 'tween',
-      duration: 0.2,
-      delay: 0.2,
+      duration: 0.1,
+      delay: 0.3,
     },
   },
 };
@@ -130,7 +131,8 @@ const WrapperVariants = {
     [key: string]: number;
   }) => ({
     x: `${
-      xDirection * (hoveredIndex === 0 || hoveredIndex === rowSize - 1 ? 30 : 15)
+      xDirection *
+      (hoveredIndex === 0 || hoveredIndex === rowSize - 1 ? 30 : 15)
     }%`,
     transition: {
       type: 'tween',
@@ -150,20 +152,20 @@ interface IListItem {
   displayMode: 'portrait' | 'landscape';
 }
 
-function ListItem({
-  movieData,
-  listType,
-  index,
-  hoveredIndex,
-  onHoverChange,
-  rowSize,
-  displayMode,
-}: IListItem) {
+const ListItem = React.memo((props: IListItem) => {
+  const {
+    movieData,
+    listType,
+    index,
+    hoveredIndex,
+    onHoverChange,
+    rowSize,
+    displayMode,
+  } = props;
   const navigate = useNavigate();
   const onBoxClicked = () => {
     navigate(`${listType}/${movieData.id}`);
   };
-
   const xDirection = hoveredIndex !== -1 ? (hoveredIndex < index ? 1 : -1) : 0;
   const isPushed = hoveredIndex !== -1 && hoveredIndex !== index;
   const isHovered = hoveredIndex === index;
@@ -205,6 +207,6 @@ function ListItem({
       </AnimatePresence>
     </>
   );
-}
+});
 
 export default ListItem;

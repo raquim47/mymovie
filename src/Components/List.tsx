@@ -91,7 +91,7 @@ function List({
   const [leaving, setLeaving] = useState(false);
   const toggleLeaving = () => setLeaving(false);
   const [isNext, setIsNext] = useState(true);
-  const [hoveredIndex, setHoveredIndex] = useState(-1);
+  
 
   // 좌우 슬라이드 동작
   const changeIndex = (direction = 'next') => {
@@ -124,7 +124,7 @@ function List({
       window.removeEventListener('resize', handleResize);
     };
   }, []);
-
+  const [hoveredIndex, setHoveredIndex] = useState(-1);
   const handleHoverChange = (index: number) => {
     setHoveredIndex(index);
   };
