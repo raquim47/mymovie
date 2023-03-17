@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { IMovie } from '../api';
@@ -45,8 +46,6 @@ const Wrapper = styled(motion.div)<{ $bgPhoto: string }>`
   }
 `;
 
-const BannerInfo = styled.div``;
-
 const ListInfo = styled(motion.div)`
   position: relative;
   display: flex;
@@ -90,20 +89,6 @@ const InitialDetailBox = styled(motion.div)`
   z-index: -1;
 `;
 
-const WrapperVariants = {
-  initial: {
-    scale: 1,
-  },
-  hover: {
-    scale: 1.3,
-    transition: {
-      type: 'tween',
-      duration: 0.2,
-      delay: 0.3,
-    },
-  },
-};
-
 const infoVariants = {
   initial: { opacity: 0 },
   hover: {
@@ -116,56 +101,100 @@ const infoVariants = {
   },
 };
 
+const WrapperVariants = {
+  initial: {
+    scale: 1,
+  },
+  hovered: {
+    scale: 1.3,
+    transition: {
+      type: 'tween',
+      duration: 0.1,
+      delay: 0.33,
+    },
+  },
+  pushed: ({
+    xDirection,
+    hoveredIndex,
+    offset,
+  }: {
+    [key: string]: number;
+  }) => ({
+    x: `${
+      xDirection * (hoveredIndex === 0 || hoveredIndex === offset - 1 ? 30 : 15)
+    }%`,
+    transition: {
+      type: 'tween',
+      duration: 0.1,
+      delay: 0.3,
+    },
+  }),
+};
+
 interface IListItem {
   movieData: IMovie;
+  from:string;
+  index: number;
+  onHoverChange: (isHovered: boolean, index: number) => void;
+  hoveredIndex: number;
   listType?: string;
-  hoverAnimation?: boolean;
-  forBanner?: boolean;
+  offset?: number;
 }
 
 function ListItem({
   movieData,
+  from,
   listType,
-  hoverAnimation = false,
-  forBanner = false,
+  index,
+  hoveredIndex,
+  offset,
+  onHoverChange,
 }: IListItem) {
   const navigate = useNavigate();
   const onBoxClicked = () => {
-    navigate(`/home/${listType}/${movieData.id}`);
+    navigate(`/${from}/${listType}/${movieData.id}`);
   };
 
+  const handleMouseEnter = () => {
+    onHoverChange(true, index);
+  };
+
+  const handleMouseLeave = () => {
+    onHoverChange(false, index);
+  };
+  const xDirection = hoveredIndex !== -1 ? (hoveredIndex < index ? 1 : -1) : 0;
+  const isPushed = hoveredIndex !== -1 && hoveredIndex !== index;
+  const isHovered = hoveredIndex === index;
   return (
     <Wrapper
       variants={WrapperVariants}
-      whileHover={hoverAnimation ? 'hover' : ''}
       initial="initial"
-      transition={{ type: 'tween' }}
+      animate={isHovered ? 'hovered' : isPushed ? 'pushed' : 'initial'}
       onClick={onBoxClicked}
       $bgPhoto={
         movieData.backdrop_path
           ? makeImagePath(movieData.backdrop_path, 'w500')
           : require('../assets/no-image-icon-6.png')
       }
+      onHoverStart={handleMouseEnter}
+      onHoverEnd={handleMouseLeave}
+      custom={{ xDirection, hoveredIndex, offset }}
     >
-      {forBanner ? (
-        <BannerInfo></BannerInfo>
-      ) : (
-        <ListInfo
-          variants={infoVariants}
-          whileHover={hoverAnimation ? 'hover' : ''}
-        >
-          <h4>{movieData.title}</h4>
-          <small>평점 : {movieData.vote_average?.toFixed(1)}</small>
-          <article>
-            {movieData.genre_ids?.map((id) => (
-              <span key={id}>{genres[String(id)]}</span>
-            ))}
-          </article>
-          <InitialDetailBox
-            layoutId={(listType ? listType : '') + movieData.id}
-          />
-        </ListInfo>
-      )}
+      <ListInfo
+        variants={infoVariants}
+        whileHover='hover'
+      >
+        <h4>{movieData.title}</h4>
+        <small>평점 : {movieData.vote_average?.toFixed(1)}</small>
+        <article>
+          {movieData.genre_ids?.map((id) => (
+            <span key={id}>{genres[String(id)]}</span>
+          ))}
+        </article>
+        <InitialDetailBox
+          layoutId={(listType ? listType : '') + movieData.id}
+        />
+      </ListInfo>
     </Wrapper>
   );
 }

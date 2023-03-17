@@ -369,7 +369,7 @@ function Detail({ movieId, from, listType }: IDetail) {
       />
       <Wrapper
         layoutId={(listType ? listType : '') + movieId}
-        transition={{ type: 'tween', duration: 0.2 }}
+        transition={{ type: 'easeInOut', duration: 0.3 }}
       >
         {isLoading ? (
           <p>loading...</p>

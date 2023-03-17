@@ -1,17 +1,11 @@
-import { motion, AnimatePresence, useCycle, useAnimation } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { useMatch, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { IGetMovieResult } from '../api';
-import { makeImagePath } from '../utils';
 import { useDispatch, useSelector } from 'react-redux';
 import Detail from './Detail';
 import ListItem from './ListItem';
-
-interface IGenres {
-  [key: string]: string;
-}
-
 
 const Wrapper = styled.div`
   position: relative;
@@ -47,63 +41,6 @@ const Row = styled(motion.div)`
   height: 8vw;
 `;
 
-// const ListItem = styled(motion.div)<{ $bgPhoto: string }>`
-//   border-radius: 4px;
-//   background-image: url(${(props) => props.$bgPhoto});
-//   background-size: cover;
-//   background-position: center center;
-//   cursor: pointer;
-//   &:first-of-type {
-//     transform-origin: center left;
-//   }
-//   &:last-of-type {
-//     transform-origin: center right;
-//   }
-// `;
-
-const Info = styled(motion.div)`
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  width: 100%;
-  height: 100%;
-  padding: 10px;
-  background-color: rgba(0, 0, 0, 0.4);
-  opacity: 0;
-  color: ${(props) => props.theme.white.white};
-
-  h4 {
-    font-size: 14px;
-    font-weight: 500;
-    margin-bottom: 4px;
-  }
-  small {
-    font-size: 10px;
-    font-weight: 400;
-  }
-  article {
-    display: flex;
-    gap: 5px;
-    span {
-      margin-top: 2px;
-      font-size: 10px;
-    }
-  }
-`;
-
-const InitialDetailBox = styled(motion.div)`
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  margin: auto;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-`;
-
 const NextBtn = styled(motion.button)`
   position: absolute;
   left: calc(100% + 4px);
@@ -137,32 +74,6 @@ const rowVariants = {
   }),
 };
 
-const boxVariants = {
-  initial: {
-    scale: 1,
-  },
-  hover: {
-    scale: 1.3,
-    transition: {
-      type: 'tween',
-      duration: 0.2,
-      delay: 0.3,
-    },
-  },
-};
-
-const infoVariants = {
-  initial: { opacity: 0 },
-  hover: {
-    opacity: 1,
-    transition: {
-      type: 'tween',
-      duration: 0.2,
-      delay: 0.2,
-    },
-  },
-};
-
 interface ISliderProps {
   from: string;
   data: IGetMovieResult;
@@ -171,15 +82,10 @@ interface ISliderProps {
   listType: string;
 }
 
+
 function Slider({ from, data, title, startIndex = 0, listType }: ISliderProps) {
   const detailMatch = useMatch(`/${from}/${listType}/:movieId`);
-  const getOffset = () => {
-    const width = window.innerHeight;
-  };
-  getOffset();
-
   const offset = 5;
-  const navigate = useNavigate();
   const [index, setIndex] = useState(0);
   const [leaving, setLeaving] = useState(false);
   const toggleLeaving = () => setLeaving(false);
@@ -200,12 +106,12 @@ function Slider({ from, data, title, startIndex = 0, listType }: ISliderProps) {
     }
   };
 
-  const onBoxClicked = (movieId: number) => {
-    navigate(`/home/${listType}/${movieId}`);
+  
+  const getOffset = () => {
+    const width = window.innerHeight;
   };
-
+  getOffset();
   const [width, setWidth] = useState(window.innerWidth);
-
   useEffect(() => {
     const handleResize = () => {
       setWidth(window.innerWidth);
@@ -216,6 +122,16 @@ function Slider({ from, data, title, startIndex = 0, listType }: ISliderProps) {
       window.removeEventListener('resize', handleResize);
     };
   }, []);
+  
+  const [hoveredIndex, setHoveredIndex] = useState(-1);
+
+  const handleHoverChange = (isHovered: boolean, index: number) => {
+    if (isHovered) {
+      setHoveredIndex(index);
+    } else if (hoveredIndex === index) {
+      setHoveredIndex(-1);
+    }
+  };
   return (
     <>
       <Wrapper>
@@ -238,37 +154,17 @@ function Slider({ from, data, title, startIndex = 0, listType }: ISliderProps) {
               {data?.results
                 .slice(startIndex)
                 .slice(offset * index, offset * index + offset)
-                .map((movieData) => (
+                .map((movie, index) => (
                   <ListItem
-                    key={listType + movieData.id}
-                    movieData={movieData}
+                    key={movie.id}
+                    from={from}
+                    movieData={movie}
                     listType={listType}
-                    hoverAnimation={true}
+                    index={index}
+                    onHoverChange={handleHoverChange}
+                    hoveredIndex={hoveredIndex}
+                    offset={offset}
                   />
-                  // <ListItem
-                  //   onClick={() => onBoxClicked(movie.id)}
-                  //   key={listType + movie.id}
-                  //   variants={boxVariants}
-                    // whileHover="hover"
-                    // initial="initial"
-                    // transition={{ type: 'tween' }}
-                  //   $bgPhoto={
-                  //     movie.backdrop_path
-                  //       ? makeImagePath(movie.backdrop_path, 'w500')
-                  //       : require('../assets/no-image-icon-6.png')
-                  //   }
-                  // >
-                    // <Info variants={infoVariants}>
-                    //   <h4>{movie.title}</h4>
-                    //   <small>평점 : {movie.vote_average?.toFixed(1)}</small>
-                    //   <article>
-                    //     {movie.genre_ids?.map((id) => (
-                    //       <span key={id}>{genres[String(id)]}</span>
-                    //     ))}
-                    //   </article>
-                    //   <InitialDetailBox layoutId={listType + movie.id} />
-                    // </Info>
-                  // </ListItem>
                 ))}
             </Row>
           </AnimatePresence>

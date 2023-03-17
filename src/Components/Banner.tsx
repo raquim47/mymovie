@@ -1,6 +1,9 @@
+import { AnimatePresence } from 'framer-motion';
+import { useMatch, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { IMovie } from '../api';
 import { makeImagePath } from '../utils';
+import Detail from './Detail';
 
 const Wrapper = styled.div`
   margin: 0 -8px;
@@ -77,6 +80,7 @@ const Figure = styled.figure`
   }
 `;
 
+
 interface IBannerProps<T> {
   bannerLeftData?: T;
   bannerRightData?: T;
@@ -86,9 +90,14 @@ function Banner<T extends IMovie>({
   bannerLeftData,
   bannerRightData,
 }: IBannerProps<T>) {
+  const detailMatch = useMatch(`/home/banner/:movieId`);
+  const navigate = useNavigate();
+  const onClickBanner = (id?: number) => {
+    navigate(`/home/banner/${id}`);
+  };
   return (
     <Wrapper>
-      <Item>
+      <Item onClick={() => onClickBanner(bannerLeftData?.id)}>
         <h3>이번 주 신작</h3>
         <Figure>
           <img
@@ -101,9 +110,8 @@ function Banner<T extends IMovie>({
           </Caption>
         </Figure>
       </Item>
-      <Item>
+      <Item onClick={() => onClickBanner(bannerRightData?.id)}>
         <h3>개봉 예정</h3>
-
         <Figure>
           <img
             src={makeImagePath(bannerRightData?.backdrop_path || 'w500')}
@@ -115,6 +123,16 @@ function Banner<T extends IMovie>({
           </Caption>
         </Figure>
       </Item>
+
+      <AnimatePresence>
+        {detailMatch ? (
+          <Detail
+            movieId={Number(detailMatch.params.movieId)}
+            from="home"
+            listType="banner"
+          />
+        ) : null}
+      </AnimatePresence>
     </Wrapper>
   );
 }
