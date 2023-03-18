@@ -1,12 +1,11 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { IGetMovieResult } from '../api';
 import ListItem from './ListItem';
 
 const Wrapper = styled.div`
   position: relative;
-  padding-top: 20px;
   :hover {
     button {
       opacity: 1;
@@ -14,37 +13,36 @@ const Wrapper = styled.div`
   }
 `;
 
-const Content = styled.div`
-  position: relative;
-  padding-bottom: 9vw;
+const Content = styled.div<{ height: number }>`
+  padding-top: ${(props) =>
+    ((props.height * 120) / 100 - props.height) / 2 + 'px'};
+  padding-bottom: ${(props) =>
+    ((props.height * 120) / 100 - props.height) / 2 + 'px'};
   overflow: hidden;
 `;
 
-const Title = styled.h3`
-  font-size: 22px;
-  font-weight: 600;
-  color: ${(props) => props.theme.white.darker};
-  margin-bottom: 20px;
+const ContentInner = styled.div<{ height: number }>`
+  position: relative;
+  height: ${(props) => props.height + 'px'};
 `;
 
 const Row = styled(motion.div)<{ row: number }>`
   display: grid;
   grid-template-columns: ${(props) => `repeat(${props.row}, 1fr)`};
-  gap: 8px;
+  gap: 1%;
   position: absolute;
-  bottom: 1.5vw;
+  top: 0;
   width: 100%;
-  height: 8vw;
 `;
 
 const NextBtn = styled(motion.button)`
   position: absolute;
   left: calc(100% + 4px);
+  top: 50%;
+  transform: translateY(-50%);
   background-color: rgba(0, 0, 0, 0);
   color: white;
   right: auto;
-  bottom: 1.5vw;
-  height: 8vw;
   border: none;
   opacity: 0;
   cursor: pointer;
@@ -61,12 +59,15 @@ const PrevBtn = styled(NextBtn)`
 const rowVariants = {
   hidden: ({ isNext }: { isNext: boolean }) => ({
     x: isNext ? 'calc(100% + 10px)' : 'calc(-100% - 10px)',
+    height: 0, // 추가된 코드
   }),
   visible: {
     x: 0,
+    height: 'auto', // 추가된 코드
   },
   exit: ({ isNext }: { isNext: boolean }) => ({
     x: isNext ? 'calc(-100% - 10px)' : 'calc(100% + 10px)',
+    height: 0, // 추가된 코드
   }),
 };
 
@@ -74,24 +75,26 @@ interface IListProps {
   data: IGetMovieResult;
   listType: string;
   rowSize: number;
-  title?: string;
   startIndex?: number;
   isSlideEnabled?: boolean;
+  displayMode?: 'portrait' | 'landscape';
 }
 
 function List({
   data,
   listType,
   rowSize,
-  title,
   startIndex = 0,
   isSlideEnabled = false,
+  displayMode = 'landscape',
 }: IListProps) {
   const [index, setIndex] = useState(0);
   const [leaving, setLeaving] = useState(false);
   const toggleLeaving = () => setLeaving(false);
   const [isNext, setIsNext] = useState(true);
-  
+  const [hoveredIndex, setHoveredIndex] = useState(-1);
+  const [itemHight, setItemHight] = useState(0);
+  const contentRef = useRef<HTMLDivElement>(null);
 
   // 좌우 슬라이드 동작
   const changeIndex = (direction = 'next') => {
@@ -108,63 +111,66 @@ function List({
       setIndex((prev) => (prev === 0 ? maxIndex : prev - 1));
     }
   };
-
-  const getOffset = () => {
-    const width = window.innerHeight;
+  // 아이템 밀리는 애니메이션(hover한 아이템 체크)
+  const handleHoverChange = (index: number) => {
+    setHoveredIndex(index);
   };
-  getOffset();
-  const [width, setWidth] = useState(window.innerWidth);
+  // 슬라이드 높이 설정
   useEffect(() => {
     const handleResize = () => {
-      setWidth(window.innerWidth);
+      const wrapperWidth = contentRef.current?.offsetWidth || 0;
+      const ratio = displayMode === 'landscape' ? 0.5 : 1.4;
+      const height = Math.ceil(
+        ((wrapperWidth * (101 - rowSize)) / 100 / rowSize) * ratio
+      );
+      console.log(height);
+      setItemHight(height);
     };
-
+    handleResize(); // 최초 렌더링 시 실행
     window.addEventListener('resize', handleResize);
     return () => {
       window.removeEventListener('resize', handleResize);
     };
-  }, []);
-  const [hoveredIndex, setHoveredIndex] = useState(-1);
-  const handleHoverChange = (index: number) => {
-    setHoveredIndex(index);
-  };
+  }, [contentRef, displayMode, rowSize]);
+
   return (
     <>
-      <Wrapper>
-        <Content>
-          <Title onClick={() => changeIndex()}>{title}</Title>
-          <AnimatePresence
-            initial={false}
-            onExitComplete={toggleLeaving}
-            custom={{ isNext }}
-          >
-            <Row
-              variants={rowVariants}
-              initial="hidden"
-              animate="visible"
-              exit="exit"
-              transition={{ type: 'tween', duration: 1 }}
-              key={index}
+      <Wrapper ref={contentRef}>
+        <Content height={itemHight}>
+          <ContentInner height={itemHight}>
+            <AnimatePresence
+              initial={false}
+              onExitComplete={toggleLeaving}
               custom={{ isNext }}
-              row={rowSize}
             >
-              {data?.results
-                .slice(startIndex)
-                .slice(rowSize * index, rowSize * index + rowSize)
-                .map((movie, index) => (
-                  <ListItem
-                    key={movie.id}
-                    movieData={movie}
-                    listType={listType}
-                    index={index}
-                    onHoverChange={handleHoverChange}
-                    hoveredIndex={hoveredIndex}
-                    rowSize={rowSize}
-                    displayMode="landscape"
-                  />
-                ))}
-            </Row>
-          </AnimatePresence>
+              <Row
+                variants={rowVariants}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                transition={{ type: 'tween', duration: 1 }}
+                key={index}
+                custom={{ isNext }}
+                row={rowSize}
+              >
+                {data?.results
+                  .slice(startIndex)
+                  .slice(rowSize * index, rowSize * index + rowSize)
+                  .map((movie, index) => (
+                    <ListItem
+                      key={movie.id}
+                      movieData={movie}
+                      listType={listType}
+                      index={index}
+                      onHoverChange={handleHoverChange}
+                      hoveredIndex={hoveredIndex}
+                      rowSize={rowSize}
+                      displayMode={displayMode}
+                    />
+                  ))}
+              </Row>
+            </AnimatePresence>
+          </ContentInner>
         </Content>
         {isSlideEnabled ? (
           <>
@@ -208,3 +214,19 @@ function List({
 }
 
 export default List;
+
+// const getOffset = () => {
+//   const width = window.innerHeight;
+// };
+// getOffset();
+// const [width, setWidth] = useState(window.innerWidth);
+// useEffect(() => {
+//   const handleResize = () => {
+//     setWidth(window.innerWidth);
+//   };
+
+//   window.addEventListener('resize', handleResize);
+//   return () => {
+//     window.removeEventListener('resize', handleResize);
+//   };
+// }, []);

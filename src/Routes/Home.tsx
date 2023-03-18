@@ -20,6 +20,16 @@ const SliderGrid = styled.section`
   display: grid;
 `;
 
+const SliderItem = styled.div`
+  margin-top: 1vw;
+  h3 {
+    margin-bottom: 0.4vw;
+    font-size: 1.5vw;
+    font-weight: 600;
+    color: ${(props) => props.theme.white.darker};
+  }
+`;
+
 function Home() {
   // useQuery for Latest Movie
   const {
@@ -91,28 +101,35 @@ function Home() {
         bannerRightData={bannerRightData}
       />
       <SliderGrid>
-        <List
-          data={latestData as IGetMovieResult}
-          startIndex={1}
-          rowSize={5}
-          title="최신 개봉"
-          listType="latest"
-          isSlideEnabled={true}
-        />
-        <List
-          data={trendingData as IGetMovieResult}
-          rowSize={5}
-          title="요즘 인기"
-          listType="trending"
-          isSlideEnabled={true}
-        />
-        <List
-          data={topRatedData as IGetMovieResult}
-          rowSize={5}
-          title="Top 평점"
-          listType="topRated"
-          isSlideEnabled={true}
-        />
+        <SliderItem>
+          <h3>최신 개봉</h3>
+          <List
+            data={latestData as IGetMovieResult}
+            startIndex={1}
+            rowSize={5}
+            listType="latest"
+            isSlideEnabled={true}
+            // displayMode="portrait"
+          />
+        </SliderItem>
+        <SliderItem>
+          <h3>요즘 인기</h3>
+          <List
+            data={trendingData as IGetMovieResult}
+            rowSize={5}
+            listType="trending"
+            isSlideEnabled={true}
+          />
+        </SliderItem>
+        <SliderItem>
+          <h3>Top 평점</h3>
+          <List
+            data={topRatedData as IGetMovieResult}
+            rowSize={5}
+            listType="topRated"
+            isSlideEnabled={true}
+          />
+        </SliderItem>
       </SliderGrid>
     </Wrapper>
   );

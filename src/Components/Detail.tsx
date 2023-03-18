@@ -34,6 +34,7 @@ const Wrapper = styled(motion.div)`
   max-width: 900px;
   height: 75vh;
   margin: auto;
+  overflow: hidden;
   padding-bottom: 30px;
   border-radius: 25px;
   background-color: ${(props) => props.theme.black.lighter};

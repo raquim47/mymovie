@@ -35,7 +35,7 @@ const genres: IGenres = {
 const Wrapper = styled(motion.div)<{ display: string }>`
   position: relative;
   padding-bottom: ${(props) =>
-    props.display === 'landscape' ? '50%' : '150%'};
+    props.display === 'landscape' ? '50%' : '140%'};
   border-radius: 4px;
   overflow: hidden;
   cursor: pointer;
@@ -69,20 +69,20 @@ const ListInfo = styled(motion.div)`
   color: ${(props) => props.theme.white.white};
 
   h4 {
-    font-size: 14px;
+    font-size: 1.4vw;
     font-weight: 500;
-    margin-bottom: 4px;
+    margin-bottom: 0.4vw;
   }
   small {
-    font-size: 10px;
+    font-size: 0.7vw;
     font-weight: 400;
   }
   article {
     display: flex;
     gap: 5px;
     span {
-      margin-top: 2px;
-      font-size: 10px;
+      margin-top: 0.2vw;
+      font-size: 0.7vw;
     }
   }
 `;
@@ -116,7 +116,7 @@ const WrapperVariants = {
     scale: 1,
   },
   hovered: {
-    scale: 1.3,
+    scale: 1.2,
     transition: {
       type: 'tween',
       duration: 0.1,
@@ -132,7 +132,7 @@ const WrapperVariants = {
   }) => ({
     x: `${
       xDirection *
-      (hoveredIndex === 0 || hoveredIndex === rowSize - 1 ? 30 : 15)
+      (hoveredIndex === 0 || hoveredIndex === rowSize - 1 ? 20 : 10)
     }%`,
     transition: {
       type: 'tween',
@@ -170,7 +170,10 @@ const ListItem = React.memo((props: IListItem) => {
   const isPushed = hoveredIndex !== -1 && hoveredIndex !== index;
   const isHovered = hoveredIndex === index;
   const detailMatch = useMatch(`/:page/${listType}/${movieData.id}`);
-
+  const displayImg =
+    displayMode === 'landscape'
+      ? movieData.backdrop_path
+      : movieData.poster_path;
   return (
     <>
       <Wrapper
@@ -185,8 +188,8 @@ const ListItem = React.memo((props: IListItem) => {
       >
         <img
           src={
-            movieData.backdrop_path
-              ? makeImagePath(movieData.backdrop_path, 'w500')
+            displayImg
+              ? makeImagePath(displayImg, 'w500')
               : require('../assets/no-image-icon-6.png')
           }
         />
