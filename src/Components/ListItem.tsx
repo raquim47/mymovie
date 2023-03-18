@@ -69,7 +69,7 @@ const ListInfo = styled(motion.div)`
   color: ${(props) => props.theme.white.white};
 
   h4 {
-    font-size: 1.4vw;
+    font-size: 1.2vw;
     font-weight: 500;
     margin-bottom: 0.4vw;
   }
