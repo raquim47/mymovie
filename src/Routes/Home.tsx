@@ -119,6 +119,7 @@ function Home() {
             rowSize={5}
             listType="trending"
             isSlideEnabled={true}
+            // displayMode="portrait"
           />
         </SliderItem>
         <SliderItem>
