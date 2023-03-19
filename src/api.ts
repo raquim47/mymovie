@@ -29,6 +29,8 @@ export interface IMovie {
 
 export interface IGetMovieResult {
   results: IMovie[];
+  page:number;
+  total_pages:number;
 }
 // * 영화
 
@@ -67,9 +69,18 @@ export function getMovieDetail(id?: number) {
 }
 
 // 검색
-
-export function GetSearched(keyword: string) {
-  return fetch(`${BASE_PATH}/search/movie?${TAIL_PATH}&query=${keyword}&page=1`)
+export function GetSearched(keyword: string, pageParam: number) {
+  return fetch(`${BASE_PATH}/search/movie?${TAIL_PATH}&query=${keyword}&page=${pageParam}`)
     .then((response) => response.json())
     .catch((err) => err);
 }
+// export function GetSearched(keyword: string, page: number) {
+//   return fetch(`${BASE_PATH}/search/movie?${TAIL_PATH}&query=${keyword}&page=${page}`)
+//     .then((response) => response.json())
+//     .catch((err) => err);
+// }
+// export function GetSearched(keyword: string) {
+//   return fetch(`${BASE_PATH}/search/movie?${TAIL_PATH}&query=${keyword}&page=1`)
+//     .then((response) => response.json())
+//     .catch((err) => err);
+// }

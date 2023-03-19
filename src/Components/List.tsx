@@ -97,6 +97,7 @@ function List({
   const [hoveredIndex, setHoveredIndex] = useState(-1);
   const [itemHight, setItemHight] = useState(0);
   const contentRef = useRef<HTMLDivElement>(null);
+  
   // 좌우 슬라이드 동작
   const changeIndex = (direction = 'next') => {
     if (!data) return;

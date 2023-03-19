@@ -1,38 +1,17 @@
 import { motion } from 'framer-motion';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useQuery } from 'react-query';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useMatch } from 'react-router-dom';
 import styled from 'styled-components';
-import { GetSearched, IGetMovieResult } from '../api';
+import { GetSearched, IGetMovieResult, IMovie } from '../api';
 import List from '../Components/List';
 import { makeImagePath } from '../utils';
 
-interface IGenres {
-  [key: string]: string;
-}
-
-const genres: IGenres = {
-  28: '액션',
-  12: '모험',
-  16: '애니메이션',
-  35: '코미디',
-  80: '범죄',
-  99: '다큐',
-  18: '드라마',
-  10751: '가족',
-  14: '판타지',
-  36: '역사',
-  27: '공포',
-  10402: '음악',
-  9648: '미스터리',
-  10749: '로맨스',
-  878: 'SF',
-  10770: 'TV',
-  53: '스릴러',
-  10752: '전쟁',
-  37: '서부',
-};
-
+const Loader = styled.div`
+  border: 1px solid red;
+  height: 10px;
+  width: 10px;
+`
 const Wrapper = styled.div`
   padding: 110px 30px 50px 270px;
 
@@ -47,117 +26,19 @@ const Wrapper = styled.div`
   }
 `;
 
-const Row = styled.ul<{ offset: number }>`
-  display: grid;
-  grid-template-columns: repeat(${(props) => props.offset}, 1fr);
-  grid-gap: 30px 20px;
-`;
-
-const Box = styled(motion.li)<{ offset: number }>`
-  position: relative;
-  border-radius: 4px;
-  overflow: hidden;
-  padding-bottom: 150%;
-  cursor: pointer;
-  &:nth-child(${(props) => props.offset}n + 1) {
-    transform-origin: center left;
-  }
-  &:nth-child(${(props) => props.offset}n) {
-    transform-origin: center right;
-  }
-
-  img {
-    display: block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-`;
-
-const Info = styled(motion.div)`
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  padding: 10px;
-  background-color: rgba(0, 0, 0, 0.5);
-  opacity: 0;
-  color: ${(props) => props.theme.white.white};
-
-  h4 {
-    font-size: 20px;
-    font-weight: 500;
-    margin-bottom: 4px;
-  }
-  small {
-    font-size: 14px;
-    font-weight: 400;
-  }
-  article {
-    display: flex;
-    gap: 5px;
-    span {
-      margin-top: 2px;
-      font-size: 12px;
-      font-weight: 400;
-    }
-  }
-`;
-
-const InitialDetailBox = styled(motion.div)`
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  margin: auto;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-`;
-
-const boxVariants = {
-  initial: {
-    scale: 1,
-  },
-  hover: {
-    scale: 1.05,
-    transition: {
-      type: 'tween',
-      duration: 0.2,
-      delay: 0.3,
-    },
-  },
-};
-
-const infoVariants = {
-  initial: { opacity: 0 },
-  hover: {
-    opacity: 1,
-    transition: {
-      type: 'tween',
-      duration: 0.2,
-      delay: 0.2,
-    },
-  },
-};
 function Search() {
-  const offset = 5;
   const location = useLocation();
   const keyword = new URLSearchParams(location.search).get('keyword');
+  const [page, setPage] = useState(1);
 
+  // Query
   const { data, isLoading, isError } = useQuery<IGetMovieResult>(
     ['search', keyword],
-    () => GetSearched(keyword || '')
+    () => GetSearched(keyword || '', page)
   );
 
   const [loadedImagesCount, setLoadedImagesCount] = useState(0);
-
+  const isAllImagesLoaded = loadedImagesCount === data?.results.length;
   // 이미지가 전부 로드 됐을 때 렌더링
   useEffect(() => {
     if (data) {
@@ -178,47 +59,28 @@ function Search() {
       };
     }
   }, [data]);
-
-  const isAllImagesLoaded = loadedImagesCount === data?.results.length;
-  console.log(data);
+  console.log(data)
+  const rowSize = 6;
+  const resultLength = data?.results.length || 0;
+  const rowList = [];
+  for (let i = 0; i < resultLength; i += rowSize) {
+    const row = data?.results.slice(i, i + rowSize);
+    rowList.push(row);
+  }
   return (
     <Wrapper>
       {(isLoading || !isAllImagesLoaded) && <p>Loading...</p>}
       {isAllImagesLoaded && (
-        <div></div>
-        // <List data={data as IGetMovieResult} listType="searched" rowSize={5} displayMode='portrait' />
-        // <Row offset={offset}>
-        //   {data?.results.map((movie) => (
-        //     <Box
-        //       offset={offset}
-        //       key={movie.id}
-        //       variants={boxVariants}
-        //       initial="normal"
-        //       whileHover="hover"
-        //       transition={{ type: 'tween' }}
-        //     >
-        //       <img
-        //         src={
-        //           movie.poster_path
-        //             ? makeImagePath(movie.poster_path, 'w300')
-        //             : require('../assets/no-image-icon-6.png')
-        //         }
-        //         alt={movie.title}
-        //       />
-        //       <Info variants={infoVariants}>
-        //         <h4>{movie.title}</h4>
-        //         <small>평점 : {movie.vote_average?.toFixed(1)}</small>
-        //         <article>
-        //           {movie.genre_ids?.map((id) => (
-        //             <span key={id}>{genres[String(id)]}</span>
-        //           ))}
-        //         </article>
-        //         {/* <InitialDetailBox layoutId={ movie.id} /> */}
-        //       </Info>
-        //     </Box>
-        //   ))}
-        // </Row>
+        rowList.map((rowData, i) => <List
+          key={i}
+          data={rowData as IMovie[]}
+          listType="searched"
+          rowSize={rowSize}
+          displayMode="portrait"
+          keyword={keyword || ''}
+        />)
       )}
+      <Loader/>
     </Wrapper>
   );
 }
