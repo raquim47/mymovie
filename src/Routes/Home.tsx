@@ -104,28 +104,26 @@ function Home() {
         <SliderItem>
           <h3>최신 개봉</h3>
           <List
-            data={latestData as IGetMovieResult}
+            data={latestData?.results as IMovie[]}
             startIndex={1}
             rowSize={5}
             listType="latest"
             isSlideEnabled={true}
-            // displayMode="portrait"
           />
         </SliderItem>
         <SliderItem>
           <h3>요즘 인기</h3>
           <List
-            data={trendingData as IGetMovieResult}
+            data={trendingData?.results as IMovie[]}
             rowSize={5}
             listType="trending"
             isSlideEnabled={true}
-            // displayMode="portrait"
           />
         </SliderItem>
         <SliderItem>
           <h3>Top 평점</h3>
           <List
-            data={topRatedData as IGetMovieResult}
+            data={topRatedData?.results as IMovie[]}
             rowSize={5}
             listType="topRated"
             isSlideEnabled={true}

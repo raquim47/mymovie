@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import React, { useEffect, useState } from 'react';
-import { useMatch, useNavigate } from 'react-router-dom';
+import React from 'react';
+import { useLocation, useMatch, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { IMovie } from '../api';
 import { makeImagePath } from '../utils';
@@ -35,15 +35,16 @@ const genres: IGenres = {
 const Wrapper = styled(motion.div)<{ display: string }>`
   position: relative;
   padding-bottom: ${(props) =>
-    props.display === 'landscape' ? '50%' : '140%'};
+    props.display === 'landscape' ? '50%' : '150%'};
   border-radius: 4px;
   overflow: hidden;
   cursor: pointer;
-  &:first-of-type {
-    transform-origin: center left;
-  }
+  
   &:last-of-type {
     transform-origin: center right;
+  }
+  &:first-of-type {
+    transform-origin: center left;
   }
 
   img {
@@ -150,6 +151,7 @@ interface IListItem {
   onHoverChange: (index: number) => void;
   rowSize?: number;
   displayMode: 'portrait' | 'landscape';
+  keyword?:string;
 }
 
 const ListItem = React.memo((props: IListItem) => {
@@ -161,11 +163,20 @@ const ListItem = React.memo((props: IListItem) => {
     onHoverChange,
     rowSize,
     displayMode,
+    keyword
   } = props;
+
   const navigate = useNavigate();
+
   const onBoxClicked = () => {
-    navigate(`${listType}/${movieData.id}`);
+    if (keyword) {
+      console.log('hi');
+      navigate(`${listType}/${movieData.id}?keyword=${keyword}`);
+    } else {
+      navigate(`${listType}/${movieData.id}`);
+    }
   };
+
   const xDirection = hoveredIndex !== -1 ? (hoveredIndex < index ? 1 : -1) : 0;
   const isPushed = hoveredIndex !== -1 && hoveredIndex !== index;
   const isHovered = hoveredIndex === index;
@@ -206,7 +217,7 @@ const ListItem = React.memo((props: IListItem) => {
       </Wrapper>
 
       <AnimatePresence>
-        {detailMatch ? <Detail movieId={movieData.id} /> : null}
+        {detailMatch ? <Detail movieId={movieData.id} keyword={keyword}/> : null}
       </AnimatePresence>
     </>
   );

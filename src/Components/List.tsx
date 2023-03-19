@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { IGetMovieResult } from '../api';
+import { IMovie } from '../api';
 import ListItem from './ListItem';
 
 const Wrapper = styled.div`
@@ -72,12 +72,13 @@ const rowVariants = {
 };
 
 interface IListProps {
-  data: IGetMovieResult;
+  data: IMovie[];
   listType: string;
   rowSize: number;
   startIndex?: number;
   isSlideEnabled?: boolean;
   displayMode?: 'portrait' | 'landscape';
+  keyword?: string;
 }
 
 function List({
@@ -87,6 +88,7 @@ function List({
   startIndex = 0,
   isSlideEnabled = false,
   displayMode = 'landscape',
+  keyword,
 }: IListProps) {
   const [index, setIndex] = useState(0);
   const [leaving, setLeaving] = useState(false);
@@ -95,13 +97,12 @@ function List({
   const [hoveredIndex, setHoveredIndex] = useState(-1);
   const [itemHight, setItemHight] = useState(0);
   const contentRef = useRef<HTMLDivElement>(null);
-
   // 좌우 슬라이드 동작
   const changeIndex = (direction = 'next') => {
     if (!data) return;
     if (leaving) return;
     setLeaving(true);
-    const totalMovies = data.results.length - 1;
+    const totalMovies = data.length - 1;
     const maxIndex = Math.floor(totalMovies / rowSize) - 1;
     direction === 'next' ? setIsNext(true) : setIsNext(false);
 
@@ -119,11 +120,10 @@ function List({
   useEffect(() => {
     const handleResize = () => {
       const wrapperWidth = contentRef.current?.offsetWidth || 0;
-      const ratio = displayMode === 'landscape' ? 0.5 : 1.4;
+      const ratio = displayMode === 'landscape' ? 0.5 : 1.5;
       const height = Math.ceil(
         ((wrapperWidth * (101 - rowSize)) / 100 / rowSize) * ratio
       );
-      console.log(height);
       setItemHight(height);
     };
     handleResize(); // 최초 렌더링 시 실행
@@ -153,8 +153,8 @@ function List({
                 custom={{ isNext }}
                 row={rowSize}
               >
-                {data?.results
-                  .slice(startIndex)
+                {data
+                  ?.slice(startIndex)
                   .slice(rowSize * index, rowSize * index + rowSize)
                   .map((movie, index) => (
                     <ListItem
@@ -166,6 +166,7 @@ function List({
                       hoveredIndex={hoveredIndex}
                       rowSize={rowSize}
                       displayMode={displayMode}
+                      keyword={keyword}
                     />
                   ))}
               </Row>
