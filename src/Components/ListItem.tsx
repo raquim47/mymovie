@@ -2,8 +2,8 @@ import { AnimatePresence, motion } from 'framer-motion';
 import React from 'react';
 import { useLocation, useMatch, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { IMovie } from '../api';
-import { makeImagePath } from '../utils';
+import { IMovie } from '../services/api';
+import { makeImagePath } from '../utils/utils';
 import Detail from './Detail';
 
 interface IGenres {

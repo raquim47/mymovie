@@ -1,8 +1,8 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { useMatch, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { IMovie } from '../api';
-import { makeImagePath } from '../utils';
+import { IMovie } from '../services/api';
+import { makeImagePath } from '../utils/utils';
 import Detail from './Detail';
 
 const Wrapper = styled.div`

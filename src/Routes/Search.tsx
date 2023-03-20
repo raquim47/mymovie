@@ -2,22 +2,19 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useInfiniteQuery, useQueryClient } from 'react-query';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-import { GetSearched, IGetMovieResult, IMovie } from '../api';
-import List from '../Components/List';
+import { GetSearched, IGetMovieResult, IMovie } from '../services/api';
+import List from '../components/List';
 
-const Wrapper = styled.div`
-  padding: 110px 30px 0px 270px;
-
-  h2 {
+const SearchedKeyword = styled.h2`
     font-size: 30px;
     margin-bottom: 30px;
-  }
 
   strong {
     font-weight: 600;
     padding-right: 10px;
   }
 `;
+
 function Search() {
   const location = useLocation();
   const keyword = new URLSearchParams(location.search).get('keyword');
@@ -100,10 +97,11 @@ function Search() {
   }, [keyword, queryClient]);
 
   return (
-    <Wrapper>
-      <h2>
+    <div>
+      <SearchedKeyword>
         <strong>' {keyword} '</strong>로 검색한 결과입니다.
-      </h2>
+      </SearchedKeyword>
+      
       {isLoading && <p>Loading...</p>}
       {rowList.map((rowData, i) => (
         <List
@@ -119,7 +117,7 @@ function Search() {
         ref={loaderRef}
         style={{ border: '10px solid blue', marginTop: '60px' }}
       ></div>
-    </Wrapper>
+    </div>
   );
 }
 

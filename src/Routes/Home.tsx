@@ -8,13 +8,9 @@ import {
   getMoviesUpcoming,
   IGetMovieResult,
   IMovie,
-} from '../api';
-import Banner from '../Components/Banner';
-import List from '../Components/List';
-
-const Wrapper = styled.main`
-  padding: 110px 30px 50px 270px;
-`;
+} from '../services/api';
+import Banner from '../components/Banner';
+import List from '../components/List';
 
 const SliderGrid = styled.section`
   display: grid;
@@ -95,7 +91,7 @@ function Home() {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {(error as Error).message}</p>;
   return (
-    <Wrapper>
+    <div>
       <Banner<IMovie>
         bannerLeftData={bannerLeftData}
         bannerRightData={bannerRightData}
@@ -130,7 +126,7 @@ function Home() {
           />
         </SliderItem>
       </SliderGrid>
-    </Wrapper>
+    </div>
   );
 }
 export default Home;

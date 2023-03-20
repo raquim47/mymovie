@@ -1,11 +1,16 @@
 import styled from 'styled-components';
 import Logo from './Logo';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFilm, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import {
+  faFilm,
+  faRightToBracket,
+  faRightFromBracket,
+} from '@fortawesome/free-solid-svg-icons';
 import { faStar, faHeart } from '@fortawesome/free-regular-svg-icons';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import SearchForm from './SearchForm';
+import { authService } from '../services/fbase';
 
 const Wrapper = styled.nav`
   display: flex;
@@ -24,6 +29,9 @@ const Wrapper = styled.nav`
   a:first-child {
     margin-left: 12px;
   }
+`;
+const NavList = styled.ul`
+  margin-top: 10px;
 `;
 
 const NavItem = styled.li<{ isClicked?: boolean | null }>`
@@ -58,7 +66,11 @@ const NavItemSearch = styled(NavItem)`
   padding: 0;
 `;
 
-function Nav() {
+interface INav {
+  isLoggedIn: boolean;
+}
+
+function Nav({ isLoggedIn }: INav) {
   const navDataArr = [
     { name: '홈', url: 'home', icon: faFilm },
     { name: '평가한 영화', url: 'rate', icon: faStar },
@@ -68,12 +80,19 @@ function Nav() {
   const location = useLocation();
   const navigate = useNavigate();
   const onClickNavItem = (url: string) => () => navigate(`/${url}`);
+  const onLogOutClick = () => {
+    const confirmLogout = window.confirm('로그아웃 하시겠습니까?');
+    if (confirmLogout) {
+      authService.signOut();
+      navigate('/home');
+    }
+  };
   return (
     <Wrapper>
       <Link to="/home">
         <Logo />
       </Link>
-      <ul>
+      <NavList>
         {navDataArr.map((item) => (
           <NavItem
             key={item.url}
@@ -84,10 +103,29 @@ function Nav() {
             <span>{item.name}</span>
           </NavItem>
         ))}
+        {!isLoggedIn ? (
+          <NavItem
+            isClicked={location.pathname === `/login`}
+            onClick={onClickNavItem('login')}
+          >
+            <FontAwesomeIcon icon={faRightToBracket} />
+            <span>로그인</span>
+          </NavItem>
+        ) : (
+          <div>
+            <NavItem
+              isClicked={location.pathname === `/login`}
+              onClick={onLogOutClick}
+            >
+              <FontAwesomeIcon icon={faRightFromBracket} />
+              <span>로그아웃</span>
+            </NavItem>
+          </div>
+        )}
         <NavItemSearch>
           <SearchForm />
         </NavItemSearch>
-      </ul>
+      </NavList>
     </Wrapper>
   );
 }
