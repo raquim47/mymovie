@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import Header from './components/Header';
 import Nav from './components/Nav';
 import Home from './routes/Home';
-import Login from './routes/Login';
+import Auth from './routes/Auth';
 import NotFound from './routes/NotFound';
 import Rate from './routes/Rate';
 import Search from './routes/Search';
@@ -40,7 +40,7 @@ function App() {
             <Route path="/search" element={<Search />} />
             <Route path="/search/:listType/:movieId" element={<Search />} />
             <Route path="/rate" element={<Rate isLoggedIn={isLoggedIn} />} />
-            <Route path="/login" element={<Login isLoggedIn={isLoggedIn} />} />
+            <Route path="/login" element={<Auth isLoggedIn={isLoggedIn} />} />
             <Route path="/*" element={<NotFound />} />
           </Routes>
         </Wrapper>
