@@ -12,6 +12,8 @@ import { Link } from 'react-router-dom';
 import SearchForm from './SearchForm';
 import { authService } from '../../services/fbase';
 import User from './User';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store';
 
 const Wrapper = styled.nav`
   display: flex;
@@ -31,6 +33,7 @@ const Wrapper = styled.nav`
     margin-left: 12px;
   }
 `;
+
 const NavList = styled.ul`
   margin-top: 10px;
 `;
@@ -67,11 +70,8 @@ const NavItemSearch = styled(NavItem)`
   padding: 0;
 `;
 
-interface INav {
-  isLoggedIn: boolean;
-}
-
-function Nav({ isLoggedIn }: INav) {
+function Nav() {
+  const isLoggedIn = useSelector((state:RootState) => state.user.isLoggedIn);
   const navDataArr = [
     { name: '홈', url: 'home', icon: faFilm },
     { name: '평가한 영화', url: 'rate', icon: faStar },
@@ -106,8 +106,8 @@ function Nav({ isLoggedIn }: INav) {
         ))}
         {!isLoggedIn ? (
           <NavItem
-            isClicked={location.pathname === `/login`}
-            onClick={onClickNavItem('login')}
+            isClicked={location.pathname === `/auth`}
+            onClick={onClickNavItem('auth')}
           >
             <FontAwesomeIcon icon={faRightToBracket} />
             <span>로그인</span>
@@ -115,7 +115,7 @@ function Nav({ isLoggedIn }: INav) {
         ) : (
           <div>
             <NavItem
-              isClicked={location.pathname === `/login`}
+              isClicked={location.pathname === `/auth`}
               onClick={onLogOutClick}
             >
               <FontAwesomeIcon icon={faRightFromBracket} />

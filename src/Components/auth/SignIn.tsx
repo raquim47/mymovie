@@ -108,9 +108,13 @@ const SignIn = ({ toggleAccount }: ISignIn) => {
     }
   };
 
+  const handleError = () => {
+    alert('입력사항을 확인해주세요');
+  };
+  
   return (
     <div>
-      <form onSubmit={handleSubmit(handleValid)}>
+      <form onSubmit={handleSubmit(handleValid, handleError)}>
         <AuthInput
           label="이메일"
           name="email"

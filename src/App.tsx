@@ -9,6 +9,9 @@ import NotFound from './routes/NotFound';
 import Rate from './routes/Rate';
 import Search from './routes/Search';
 import { authService } from './services/fbase';
+import { doc, getDoc, getFirestore } from 'firebase/firestore';
+import { clearUser, IUser, setUser } from './store';
+import { useDispatch } from 'react-redux';
 
 const Wrapper = styled.div`
   padding: 100px 0px 0px 240px;
@@ -16,21 +19,27 @@ const Wrapper = styled.div`
 
 function App() {
   const [init, setInit] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(!!authService.currentUser);
+  const db = getFirestore();
+  const dispatch = useDispatch();
+
   useEffect(() => {
-    authService.onAuthStateChanged((user) => {
+    authService.onAuthStateChanged(async (user) => {
       if (user) {
-        setIsLoggedIn(true);
+        const userRef = doc(db, 'users', user.uid);
+        const userDoc = await getDoc(userRef);
+        const userData = userDoc.data() as IUser;
+        dispatch(setUser(userData));
       } else {
-        setIsLoggedIn(false);
+        dispatch(clearUser());
       }
       setInit(true);
     });
-  }, []);
+  }, [authService, db, dispatch]);
+
   return (
     <>
       {/* <Header /> */}
-      <Nav isLoggedIn={isLoggedIn}/>
+      <Nav />
       {init ? (
         <Wrapper>
           <Routes>
@@ -39,8 +48,8 @@ function App() {
             <Route path="/home/:listType/:movieId" element={<Home />} />
             <Route path="/search" element={<Search />} />
             <Route path="/search/:listType/:movieId" element={<Search />} />
-            <Route path="/rate" element={<Rate isLoggedIn={isLoggedIn} />} />
-            <Route path="/auth" element={<Auth isLoggedIn={isLoggedIn} />} />
+            <Route path="/rate" element={<Rate />} />
+            <Route path="/auth" element={<Auth />} />
             <Route path="/*" element={<NotFound />} />
           </Routes>
         </Wrapper>

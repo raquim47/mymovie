@@ -55,7 +55,6 @@ function NewAccount({ toggleAccount }: INewAccount) {
     formState: { errors },
   } = useForm<IForm>({ mode: 'onBlur' });
 
-  const navigate = useNavigate();
   const auth = getAuth();
   const db = getFirestore();
 

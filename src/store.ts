@@ -1,20 +1,34 @@
-import { configureStore, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { configureStore, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-// detail
-const isDetailOpen = createSlice({
-  name: "isDetailOpen",
-  initialState: false,
+export interface IUser {
+  nickName: string;
+}
+
+const userSlice = createSlice({
+  name: 'user',
+  initialState: {
+    isLoggedIn: false,
+    userData: { nickName: '' }
+  },
   reducers: {
-    setisDetailOpen(state, action:PayloadAction<boolean>) {
-      state = !state;
+    setUser: (state, action:PayloadAction<IUser>) => {
+      state.isLoggedIn = true;
+      state.userData = action.payload;
+    },
+    clearUser: (state) => {
+      state.isLoggedIn = false;
+      state.userData = { nickName: '' };
     },
   },
 });
-export const { setisDetailOpen } = isDetailOpen.actions;
 
+export const { setUser, clearUser } = userSlice.actions;
+export const userReducer = userSlice.reducer;
 
-export default configureStore({
+export const store = configureStore({
   reducer: {
-    isDetailOpen: isDetailOpen.reducer,
+    user: userReducer,
   },
 });
+
+export type RootState = ReturnType<typeof store.getState>;
