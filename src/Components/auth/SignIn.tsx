@@ -12,11 +12,9 @@ import {
 } from 'firebase/auth';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle, faGithub } from '@fortawesome/free-brands-svg-icons';
-import { useNavigate } from 'react-router-dom';
 import {
   collection,
   doc,
-  getDoc,
   getDocs,
   getFirestore,
   query,
@@ -53,7 +51,6 @@ interface ILoginForm {
 }
 
 const SignIn = ({ toggleAccount }: ISignIn) => {
-  const navigate = useNavigate();
   const db = getFirestore();
   const {
     register,
@@ -107,7 +104,6 @@ const SignIn = ({ toggleAccount }: ISignIn) => {
       await signInWithEmailAndPassword(authService, email, password);
       alert('로그인 성공');
     } catch (error) {
-      alert('이메일 또는 비밀번호가 올바르지 않습니다.');
       console.error(error);
     }
   };
@@ -158,34 +154,3 @@ const SignIn = ({ toggleAccount }: ISignIn) => {
 };
 
 export default SignIn;
-// const onSocialClick = async (event: React.MouseEvent<HTMLButtonElement>) => {
-//   const {
-//     currentTarget: { name },
-//   } = event;
-//   let provider: AuthProvider | undefined;
-//   if (name === 'google') {
-//     provider = new GoogleAuthProvider();
-//   } else if (name === 'github') {
-//     provider = new GithubAuthProvider();
-//   }
-
-//   if (provider) {
-//     try {
-//       const data = await signInWithPopup(authService, provider);
-//       const user = data.user;
-//       const userRef = doc(db, 'users', user.uid);
-//       const userSnap = await getDoc(userRef);
-
-//       if (!userSnap.exists()) {
-//         // 사용자의 닉네임이 없는 경우
-//         alert('계정의 닉네임을 입력해주세요');
-//       } else {
-//         alert('로그인 성공');
-//         navigate('/home');
-//       }
-//     } catch (error) {
-//       alert('로그인 실패');
-//       console.error(error);
-//     }
-//   }
-// };

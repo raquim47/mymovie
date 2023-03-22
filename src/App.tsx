@@ -40,7 +40,7 @@ function App() {
             <Route path="/search" element={<Search />} />
             <Route path="/search/:listType/:movieId" element={<Search />} />
             <Route path="/rate" element={<Rate isLoggedIn={isLoggedIn} />} />
-            <Route path="/login" element={<Auth isLoggedIn={isLoggedIn} />} />
+            <Route path="/auth" element={<Auth isLoggedIn={isLoggedIn} />} />
             <Route path="/*" element={<NotFound />} />
           </Routes>
         </Wrapper>
