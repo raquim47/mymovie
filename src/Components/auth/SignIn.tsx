@@ -2,7 +2,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import AuthInput from './AuthInput';
-import { authService } from '../services/fbase';
+import { authService } from '../../services/fbase';
 import styled from 'styled-components';
 import {
   GoogleAuthProvider,
@@ -12,6 +12,17 @@ import {
 } from 'firebase/auth';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle, faGithub } from '@fortawesome/free-brands-svg-icons';
+import { useNavigate } from 'react-router-dom';
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  getFirestore,
+  query,
+  setDoc,
+  where,
+} from 'firebase/firestore';
 
 const Btn = styled.button`
   margin-top: 12px;
@@ -41,13 +52,30 @@ interface ILoginForm {
   password: string;
 }
 
-export const SignIn = ({ toggleAccount }: ISignIn) => {
+const SignIn = ({ toggleAccount }: ISignIn) => {
+  const navigate = useNavigate();
+  const db = getFirestore();
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<ILoginForm>();
-
+  } = useForm<ILoginForm>({ mode: 'onBlur' });
+  // 닉네임 중복체크
+  const checkNickNameExists = async (nickName: string) => {
+    const querySnapshot = await getDocs(
+      query(collection(db, 'users'), where('nickName', '==', nickName))
+    );
+    return querySnapshot.empty ? false : true;
+  };
+  // 랜덤 닉네임 만들기(중복되지 않은)
+  const generateRandomNickName = async () => {
+    let randomNickName: string;
+    do {
+      randomNickName = Math.random().toString(36).slice(2, 10);
+    } while (await checkNickNameExists(randomNickName));
+    return randomNickName;
+  };
+  // 소셜 로그인(랜덤 닉네임 생성)
   const onSocialClick = async (event: React.MouseEvent<HTMLButtonElement>) => {
     const {
       currentTarget: { name },
@@ -60,7 +88,17 @@ export const SignIn = ({ toggleAccount }: ISignIn) => {
     }
 
     if (provider) {
-      const data = await signInWithPopup(authService, provider);
+      try {
+        const data = await signInWithPopup(authService, provider);
+        const user = data.user;
+        if (user) {
+          const userRef = doc(db, 'users', user.uid);
+          const nickName = await generateRandomNickName();
+          await setDoc(userRef, { nickName });
+        }
+      } catch (error) {
+        console.error(error);
+      }
     }
   };
 
@@ -120,3 +158,34 @@ export const SignIn = ({ toggleAccount }: ISignIn) => {
 };
 
 export default SignIn;
+// const onSocialClick = async (event: React.MouseEvent<HTMLButtonElement>) => {
+//   const {
+//     currentTarget: { name },
+//   } = event;
+//   let provider: AuthProvider | undefined;
+//   if (name === 'google') {
+//     provider = new GoogleAuthProvider();
+//   } else if (name === 'github') {
+//     provider = new GithubAuthProvider();
+//   }
+
+//   if (provider) {
+//     try {
+//       const data = await signInWithPopup(authService, provider);
+//       const user = data.user;
+//       const userRef = doc(db, 'users', user.uid);
+//       const userSnap = await getDoc(userRef);
+
+//       if (!userSnap.exists()) {
+//         // 사용자의 닉네임이 없는 경우
+//         alert('계정의 닉네임을 입력해주세요');
+//       } else {
+//         alert('로그인 성공');
+//         navigate('/home');
+//       }
+//     } catch (error) {
+//       alert('로그인 실패');
+//       console.error(error);
+//     }
+//   }
+// };

@@ -28,12 +28,14 @@ const InputField = styled.div`
     margin: 4px 0 0 2px;
   }
 `;
+
 const ErrorMassage = styled.p`
   margin-top: 4px;
   color: ${(props) => props.theme.purple};
   font-size: 12px;
   font-weight: 700;
 `;
+
 interface IAuthInput {
   label: string;
   name: string;
@@ -41,8 +43,6 @@ interface IAuthInput {
   placeholder?: string;
   type?: string;
   errors: any;
-  trigger?: (name: string) => Promise<boolean>;
-  onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
 }
 
 const AuthInput = ({
@@ -52,8 +52,6 @@ const AuthInput = ({
   placeholder = '',
   type = 'text',
   errors,
-  trigger,
-  onBlur,
 }: IAuthInput) => {
   return (
     <InputField>
@@ -66,9 +64,9 @@ const AuthInput = ({
         name={name}
         placeholder={placeholder}
         type={type}
-        onBlur={onBlur}
+        onBlur={registerOptions.onBlur}
       />
-      <ErrorMassage>{errors && errors[name]?.message}</ErrorMassage>
+      {errors[name] && <ErrorMassage>{errors[name].message}</ErrorMassage>}
     </InputField>
   );
 };

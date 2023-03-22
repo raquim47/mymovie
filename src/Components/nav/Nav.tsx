@@ -10,7 +10,8 @@ import { faStar, faHeart } from '@fortawesome/free-regular-svg-icons';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import SearchForm from './SearchForm';
-import { authService } from '../services/fbase';
+import { authService } from '../../services/fbase';
+import User from './User';
 
 const Wrapper = styled.nav`
   display: flex;
@@ -126,6 +127,7 @@ function Nav({ isLoggedIn }: INav) {
           <SearchForm />
         </NavItemSearch>
       </NavList>
+      <User/>
     </Wrapper>
   );
 }

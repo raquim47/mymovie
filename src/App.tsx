@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import styled from 'styled-components';
 import Header from './components/Header';
-import Nav from './components/Nav';
+import Nav from './components/nav/Nav';
 import Home from './routes/Home';
 import Auth from './routes/Auth';
 import NotFound from './routes/NotFound';
@@ -11,7 +11,7 @@ import Search from './routes/Search';
 import { authService } from './services/fbase';
 
 const Wrapper = styled.div`
-  padding: 110px 30px 50px 270px;
+  padding: 100px 0px 0px 240px;
 `
 
 function App() {

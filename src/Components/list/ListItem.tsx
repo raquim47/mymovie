@@ -1,10 +1,10 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import React from 'react';
-import { useLocation, useMatch, useNavigate } from 'react-router-dom';
+import { useMatch, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { IMovie } from '../services/api';
-import { makeImagePath } from '../utils/utils';
-import Detail from './Detail';
+import { IMovie } from '../../services/api';
+import { makeImagePath } from '../../utils/utils';
+import Detail from '../Detail';
 
 interface IGenres {
   [key: string]: string;
@@ -201,7 +201,7 @@ const ListItem = React.memo((props: IListItem) => {
           src={
             displayImg
               ? makeImagePath(displayImg, 'w500')
-              : require('../assets/no-image-icon-6.png')
+              : require('../../assets/no-image-icon-6.png')
           }
         />
         <ListInfo variants={infoVariants} whileHover="hover">

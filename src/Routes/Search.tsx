@@ -3,7 +3,11 @@ import { useInfiniteQuery, useQueryClient } from 'react-query';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { GetSearched, IGetMovieResult, IMovie } from '../services/api';
-import List from '../components/List';
+import List from '../components/list/List';
+
+const Wrapper = styled.div`
+  padding: 0 30px;
+`
 
 const SearchedKeyword = styled.h2`
     font-size: 30px;
@@ -97,7 +101,7 @@ function Search() {
   }, [keyword, queryClient]);
 
   return (
-    <div>
+    <Wrapper>
       <SearchedKeyword>
         <strong>' {keyword} '</strong>로 검색한 결과입니다.
       </SearchedKeyword>
@@ -117,7 +121,7 @@ function Search() {
         ref={loaderRef}
         style={{ border: '10px solid blue', marginTop: '60px' }}
       ></div>
-    </div>
+    </Wrapper>
   );
 }
 

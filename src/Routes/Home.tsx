@@ -10,7 +10,11 @@ import {
   IMovie,
 } from '../services/api';
 import Banner from '../components/Banner';
-import List from '../components/List';
+import List from '../components/list/List';
+
+const Wrapper = styled.div`
+  padding: 0 30px;
+`
 
 const SliderGrid = styled.section`
   display: grid;
@@ -91,7 +95,7 @@ function Home() {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {(error as Error).message}</p>;
   return (
-    <div>
+    <Wrapper>
       <Banner<IMovie>
         bannerLeftData={bannerLeftData}
         bannerRightData={bannerRightData}
@@ -126,7 +130,7 @@ function Home() {
           />
         </SliderItem>
       </SliderGrid>
-    </div>
+    </Wrapper>
   );
 }
 export default Home;

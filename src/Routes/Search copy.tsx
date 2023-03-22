@@ -4,7 +4,7 @@ import { useQuery } from 'react-query';
 import { useLocation, useMatch } from 'react-router-dom';
 import styled from 'styled-components';
 import { GetSearched, IGetMovieResult, IMovie } from '../services/api';
-import List from '../components/List';
+import List from '../components/list/List';
 import { makeImagePath } from '../utils/utils';
 
 const Loader = styled.div`

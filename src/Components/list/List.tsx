@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { IMovie } from '../services/api';
+import { IMovie } from '../../services/api';
 import ListItem from './ListItem';
 
 const Wrapper = styled.div`
@@ -10,7 +10,7 @@ const Wrapper = styled.div`
     button {
       opacity: 1;
     }
-  }
+  } 
 `;
 
 const Content = styled.div<{ height: number }>`
