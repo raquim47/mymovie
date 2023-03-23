@@ -1,17 +1,18 @@
 import styled from 'styled-components';
 
 const InputField = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
-  height: 60px;
+  padding-bottom: 22px;
   label {
     margin-bottom: 4px;
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 500;
     color: ${(props) => props.theme.white};
   }
   input {
-    height: 44px;
+    height: 38px;
     padding: 0 16px;
     border: 1px solid #a6adbd;
     border-radius: 4px;
@@ -23,14 +24,15 @@ const InputField = styled.div`
   }
   span {
     color: ${(props) => props.theme.purple};
-    font-size: 14px;
+    font-size: 12px;
     margin-top: 4px;
     margin: 4px 0 0 2px;
   }
 `;
 
 const ErrorMassage = styled.p`
-  margin-top: 4px;
+  position: absolute;
+  bottom: 4px;
   color: ${(props) => props.theme.purple};
   font-size: 12px;
   font-weight: 700;
@@ -44,6 +46,7 @@ interface IAuthInput {
   placeholder?: string;
   type?: string;
   errors: any;
+  defaultValue?:string;
 }
 
 const AuthInput = ({
@@ -53,6 +56,7 @@ const AuthInput = ({
   placeholder = '',
   type = 'text',
   errors,
+  defaultValue = ''
 }: IAuthInput) => {
   return (
     <InputField>
@@ -65,7 +69,7 @@ const AuthInput = ({
         name={name}
         placeholder={placeholder}
         type={type}
-        onBlur={registerOptions.onBlur}
+        defaultValue={defaultValue}
       />
       {errors[name] && <ErrorMassage>{errors[name].message}</ErrorMassage>}
     </InputField>

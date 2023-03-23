@@ -70,7 +70,7 @@ export const checkNickNameExists = async (
   nickName: string,
   currentValue?: string
 ) => {
-  if (currentValue === nickName) return;
+  // if (currentValue === nickName) return;
 
   const db = getFirestore();
   const querySnapshot = await getDocs(

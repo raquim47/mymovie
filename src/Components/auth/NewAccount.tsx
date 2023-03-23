@@ -15,7 +15,6 @@ import {
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 import AuthInput from './AuthInput';
-import { useNavigate } from 'react-router-dom';
 
 interface IForm {
   email: string;
@@ -53,7 +52,7 @@ function NewAccount({ toggleAccount }: INewAccount) {
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<IForm>({ mode: 'onBlur' });
+  } = useForm<IForm>({ mode: 'onChange' });
 
   const auth = getAuth();
   const db = getFirestore();

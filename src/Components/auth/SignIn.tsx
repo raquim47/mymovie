@@ -12,7 +12,7 @@ import {
 } from 'firebase/auth';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle, faGithub } from '@fortawesome/free-brands-svg-icons';
-import { doc, getFirestore, setDoc } from 'firebase/firestore';
+import { doc, getDoc, getFirestore, setDoc } from 'firebase/firestore';
 import { checkNickNameExists } from '../../utils/utils';
 
 const Btn = styled.button`
@@ -49,7 +49,7 @@ const SignIn = ({ toggleAccount }: ISignIn) => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<ILoginForm>({ mode: 'onBlur' });
+  } = useForm<ILoginForm>({ mode: 'onChange' });
 
   // 랜덤 닉네임 만들기(중복되지 않은)
   const generateRandomNickName = async () => {
@@ -77,6 +77,11 @@ const SignIn = ({ toggleAccount }: ISignIn) => {
         const user = data.user;
         if (user) {
           const userRef = doc(db, 'users', user.uid);
+          const userSnapshot = await getDoc(userRef);
+        if (userSnapshot.exists()) {
+          // 이미 등록된 계정일 경우
+          return;
+        }
           const nickName = await generateRandomNickName();
           await setDoc(userRef, { nickName, email: user.email, userPhoto: '' });
         }

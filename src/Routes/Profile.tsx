@@ -120,9 +120,6 @@ function Profile() {
       console.error(error);
     }
   };
-  const before = (data: INickName) => {
-    console.log(data);
-  };
   return (
     <Wrapper>
       <ProfileInfo>
@@ -158,6 +155,7 @@ function Profile() {
                     await checkNickNameExists(value, userData?.nickName),
                 })}
                 placeholder="닉네임"
+                defaultValue={userData?.nickName}
                 errors={errors}
               />
               <ColoredBtn type="submit">저장</ColoredBtn>
