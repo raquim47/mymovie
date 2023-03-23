@@ -1,37 +1,45 @@
 import { configureStore, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-export interface IUser {
+export interface IUserData {
+  email: string;
   nickName: string;
+  userPhoto: string;
 }
 
-const userSlice = createSlice({
-  name: 'user',
+const initSlice = createSlice({
+  name: 'init',
   initialState: {
-    init:false,
+    initFirebase: false,
     isLoggedIn: false,
-    userData: { nickName: '' }
   },
   reducers: {
-    setUser: (state, action:PayloadAction<IUser>) => {
-      state.isLoggedIn = true;
-      state.userData = action.payload;
+    setIsLoggedIn: (state, action: PayloadAction<boolean>) => {
+      state.isLoggedIn = action.payload;
     },
-    clearUser: (state) => {
-      state.isLoggedIn = false;
-      state.userData = { nickName: '' };
-    },
-    setInit: (state) => {
-      state.init = true;
+    setInitFirebase: (state) => {
+      state.initFirebase = true;
     },
   },
 });
 
-export const { setUser, clearUser, setInit } = userSlice.actions;
-export const userReducer = userSlice.reducer;
+const userDataSlice = createSlice({
+  name: 'userData',
+  initialState: null as IUserData | null,
+  reducers: {
+    setUserData: (state, action: PayloadAction<IUserData>) => action.payload,
+    clearUserData: (state) => null,
+  },
+});
+
+export const { setUserData, clearUserData } = userDataSlice.actions;
+export const { setInitFirebase, setIsLoggedIn } = initSlice.actions;
+export const userDataReducer = userDataSlice.reducer;
+export const initReducer = initSlice.reducer;
 
 export const store = configureStore({
   reducer: {
-    user: userReducer,
+    init: initReducer,
+    userData: userDataReducer,
   },
 });
 

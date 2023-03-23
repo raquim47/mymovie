@@ -8,8 +8,9 @@ import Auth from './routes/Auth';
 import NotFound from './routes/NotFound';
 import Rate from './routes/Rate';
 import Search from './routes/Search';
-import { RootState } from './store';
-import { useAuthState } from './utils/utils';
+import { RootState, } from './store';
+import { useInitialize } from './utils/utils';
+import Profile from './routes/Profile';
 
 
 const Wrapper = styled.div`
@@ -17,14 +18,14 @@ const Wrapper = styled.div`
 `
 
 function App() {
-  const init = useSelector((state:RootState) => state.user.init);
-  useAuthState();
+  useInitialize();
+  const {initFirebase} = useSelector((state:RootState) => state.init);
   
   return (
     <>
       {/* <Header /> */}
       <Nav />
-      {init ? (
+      {initFirebase ? (
         <Wrapper>
           <Routes>
             <Route path="/" element={<Navigate to="/home" />} />
@@ -34,11 +35,12 @@ function App() {
             <Route path="/search/:listType/:movieId" element={<Search />} />
             <Route path="/rate" element={<Rate />} />
             <Route path="/auth" element={<Auth />} />
+            <Route path="/profile" element={<Profile />} />
             <Route path="/*" element={<NotFound />} />
           </Routes>
         </Wrapper>
       ) : (
-        <p>loading...oading...oading...oading...oading...oading...oading...oading...oading...oading...oading...oading...oading...oading...oading...oading...oading...oading...oading...oading...</p>
+        <p>loading...</p>
       )}
     </>
   );

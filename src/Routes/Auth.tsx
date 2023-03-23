@@ -22,20 +22,18 @@ function Auth() {
   const navigate = useNavigate();
   const [newAccount, setNewAccount] = useState(false);
   const toggleAccount = () => setNewAccount((prev) => !prev);
-  const isLoggedIn = useSelector((state:RootState) => state.user.isLoggedIn);
+  const { isLoggedIn } = useSelector((state: RootState) => state.init);
   useEffect(() => {
     if (isLoggedIn) {
       navigate('/home');
     }
   }, [isLoggedIn]);
-  
+
   return (
     <Wrapper>
       <h2>{!newAccount ? '로그인' : '회원가입'}</h2>
       {!newAccount ? (
-        <SignIn
-          toggleAccount={toggleAccount}
-        />
+        <SignIn toggleAccount={toggleAccount} />
       ) : (
         <NewAccount toggleAccount={toggleAccount} />
       )}

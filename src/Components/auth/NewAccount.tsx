@@ -84,7 +84,7 @@ function NewAccount({ toggleAccount }: INewAccount) {
 
       if (user) {
         const userRef = doc(db, 'users', user.uid);
-        await setDoc(userRef, { nickName });
+        await setDoc(userRef, { nickName, email, userPhoto: '' });
       }
       alert('가입 완료');
     } catch (error) {

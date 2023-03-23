@@ -70,7 +70,7 @@ const NavItemSearch = styled(NavItem)`
 `;
 
 function Nav() {
-  const isLoggedIn = useSelector((state:RootState) => state.user.isLoggedIn);
+  const {isLoggedIn} = useSelector((state:RootState) => state.init);
   const navDataArr = [
     { name: '홈', url: 'home', icon: faFilm },
     { name: '평가한 영화', url: 'rate', icon: faStar },
@@ -92,7 +92,7 @@ function Nav() {
       <Link to="/home">
         <Logo />
       </Link>
-      <User/>
+      {isLoggedIn ? <User/> : null}
       <NavList>
         {navDataArr.map((item) => (
           <NavItem

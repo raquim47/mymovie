@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { RootState } from '../../store';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGear } from '@fortawesome/free-solid-svg-icons';
+import { useNavigate } from 'react-router-dom';
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
@@ -58,19 +59,18 @@ const UserEdit = styled.div`
 `;
 
 function User() {
-  const nickName = useSelector(
-    (state: RootState) => state.user.userData.nickName
-  );
+  const navigate = useNavigate();
+  const userData = useSelector((state: RootState) => state.userData);
   return (
     <Wrapper>
-      <UserEdit>
+      <UserEdit onClick={() => navigate('/profile')}>
         <FontAwesomeIcon icon={faGear} />
       </UserEdit>
       <UserImg>
         <img src={require('../../assets/profile.png')} alt="유저 이미지" />
       </UserImg>
       <UserInfo>
-        <h4>{nickName}</h4>
+        <h4>{userData?.nickName}</h4>
         <UserMovie>
           <span>
             평가<small>0</small>

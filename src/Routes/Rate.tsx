@@ -5,7 +5,7 @@ import { RootState } from '../store';
 
 function Rate() {
   const navigate = useNavigate();
-  const isLoggedIn = useSelector((state:RootState) => state.user.isLoggedIn);
+  const { isLoggedIn } = useSelector((state: RootState) => state.init);
   useEffect(() => {
     if (!isLoggedIn) {
       alert('로그인이 필요합니다.');

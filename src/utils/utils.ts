@@ -1,34 +1,78 @@
 import { browserSessionPersistence, getAuth } from 'firebase/auth';
-import { doc, getDoc, getFirestore } from 'firebase/firestore';
+import { doc, getFirestore, onSnapshot } from 'firebase/firestore';
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { clearUser, IUser, setUser, setInit } from '../store';
+import { useDispatch, useSelector } from 'react-redux';
+import { clearUserData, IUserData, RootState, setInitFirebase, setIsLoggedIn, setUserData } from '../store';
 
-// firebase 초기화, 사용자 인증
-export const useAuthState = () => {
+// firebase 초기화, 사용자 인증, 
+export const useInitialize = () => {
+  const { isLoggedIn } = useSelector((state: RootState) => state.init);
   const dispatch = useDispatch();
+  const auth = getAuth();
   const db = getFirestore();
-  const authService = getAuth();
+  useEffect(() => {
+    auth
+      .setPersistence(browserSessionPersistence)
+      .then(() => {
+        auth.onAuthStateChanged(async (user) => {
+          if (user) {
+            dispatch(setIsLoggedIn(true));
+          } else {
+            dispatch(setIsLoggedIn(false));
+          }
+          dispatch(setInitFirebase());
+        });
+      })
+      .catch((error) => {
+        // 오류 처리
+      });
+  }, [auth, dispatch]);
 
   useEffect(() => {
-    authService.setPersistence(browserSessionPersistence)
-      .then(() => {
-    authService.onAuthStateChanged(async (user) => {
+    if (isLoggedIn) {
+      const user = auth.currentUser;
       if (user) {
         const userRef = doc(db, 'users', user.uid);
-        const userDoc = await getDoc(userRef);
-        const userData = userDoc.data() as IUser;
-        dispatch(setUser(userData));
-      } else {
-        dispatch(clearUser());
+        const unsubscribe = onSnapshot(userRef, (doc) => {
+          const userData = doc.data() as IUserData;
+          dispatch(setUserData(userData));
+        });
+
+        // Clean up subscription
+        return () => {
+          unsubscribe();
+        };
       }
-      console.log(user)
-      dispatch(setInit());
-    });
-  }).catch((error) => {
-    // 오류 처리
-  });
-  }, [authService, db, dispatch]);
+    } else {
+      dispatch(clearUserData());
+    }
+  }, [isLoggedIn, auth, db, dispatch]);
+};
+// 초기 userData 세팅
+export const useInitUserData = () => {
+  const { isLoggedIn } = useSelector((state: RootState) => state.init);
+  const dispatch = useDispatch();
+  const db = getFirestore();
+  const auth = getAuth();
+  useEffect(() => {
+    if (isLoggedIn) {
+      const user = auth.currentUser;
+      if (user) {
+        const userRef = doc(db, 'users', user.uid);
+        const unsubscribe = onSnapshot(userRef, (doc) => {
+          const userData = doc.data() as IUserData;
+          dispatch(setUserData(userData));
+        });
+
+        // Clean up subscription
+        return () => {
+          unsubscribe();
+        };
+      }
+    } else {
+      dispatch(clearUserData());
+    }
+  }, [isLoggedIn, auth, db, dispatch]);
 }
 
 // 이미지 가져오기

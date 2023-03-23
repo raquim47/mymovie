@@ -91,7 +91,7 @@ const SignIn = ({ toggleAccount }: ISignIn) => {
         if (user) {
           const userRef = doc(db, 'users', user.uid);
           const nickName = await generateRandomNickName();
-          await setDoc(userRef, { nickName });
+          await setDoc(userRef, { nickName, email: user.email, userPhoto: '' });
         }
       } catch (error) {
         console.error(error);
@@ -111,7 +111,7 @@ const SignIn = ({ toggleAccount }: ISignIn) => {
   const handleError = () => {
     alert('입력사항을 확인해주세요');
   };
-  
+
   return (
     <div>
       <form onSubmit={handleSubmit(handleValid, handleError)}>
