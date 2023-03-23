@@ -7,6 +7,7 @@ export interface IUser {
 const userSlice = createSlice({
   name: 'user',
   initialState: {
+    init:false,
     isLoggedIn: false,
     userData: { nickName: '' }
   },
@@ -19,10 +20,13 @@ const userSlice = createSlice({
       state.isLoggedIn = false;
       state.userData = { nickName: '' };
     },
+    setInit: (state) => {
+      state.init = true;
+    },
   },
 });
 
-export const { setUser, clearUser } = userSlice.actions;
+export const { setUser, clearUser, setInit } = userSlice.actions;
 export const userReducer = userSlice.reducer;
 
 export const store = configureStore({

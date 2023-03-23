@@ -18,7 +18,7 @@ import { RootState } from '../../store';
 const Wrapper = styled.nav`
   display: flex;
   flex-direction: column;
-  gap: 25px;
+  gap: 10px;
   position: fixed;
   width: 240px;
   height: 100%;
@@ -35,7 +35,6 @@ const Wrapper = styled.nav`
 `;
 
 const NavList = styled.ul`
-  margin-top: 10px;
 `;
 
 const NavItem = styled.li<{ isClicked?: boolean | null }>`
@@ -93,6 +92,7 @@ function Nav() {
       <Link to="/home">
         <Logo />
       </Link>
+      <User/>
       <NavList>
         {navDataArr.map((item) => (
           <NavItem
@@ -127,7 +127,7 @@ function Nav() {
           <SearchForm />
         </NavItemSearch>
       </NavList>
-      <User/>
+      
     </Wrapper>
   );
 }

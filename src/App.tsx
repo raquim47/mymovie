@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import Header from './components/Header';
 import Nav from './components/nav/Nav';
@@ -9,10 +8,8 @@ import Auth from './routes/Auth';
 import NotFound from './routes/NotFound';
 import Rate from './routes/Rate';
 import Search from './routes/Search';
-import { authService } from './services/fbase';
-import { doc, getDoc, getFirestore } from 'firebase/firestore';
-import { clearUser, IUser, setUser } from './store';
-import { browserSessionPersistence } from 'firebase/auth';
+import { RootState } from './store';
+import { useAuthState } from './utils/utils';
 
 
 const Wrapper = styled.div`
@@ -20,28 +17,9 @@ const Wrapper = styled.div`
 `
 
 function App() {
-  const [init, setInit] = useState(false);
-  const db = getFirestore();
-  const dispatch = useDispatch();
-  useEffect(() => {
-    authService.setPersistence(browserSessionPersistence)
-      .then(() => {
-    authService.onAuthStateChanged(async (user) => {
-      if (user) {
-        const userRef = doc(db, 'users', user.uid);
-        const userDoc = await getDoc(userRef);
-        const userData = userDoc.data() as IUser;
-        dispatch(setUser(userData));
-      } else {
-        dispatch(clearUser());
-      }
-      setInit(true);
-    });
-  }).catch((error) => {
-    // 오류 처리
-  });
-  }, [authService, db, dispatch]);
-
+  const init = useSelector((state:RootState) => state.user.init);
+  useAuthState();
+  
   return (
     <>
       {/* <Header /> */}

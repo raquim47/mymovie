@@ -5,6 +5,7 @@ const Wrapper = styled.div`
   align-items: flex-end;
   gap: 10px;
   width: 200px;
+  padding-bottom: 20px;
   cursor: pointer;
 `;
 
