@@ -12,15 +12,8 @@ import {
 } from 'firebase/auth';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle, faGithub } from '@fortawesome/free-brands-svg-icons';
-import {
-  collection,
-  doc,
-  getDocs,
-  getFirestore,
-  query,
-  setDoc,
-  where,
-} from 'firebase/firestore';
+import { doc, getFirestore, setDoc } from 'firebase/firestore';
+import { checkNickNameExists } from '../../utils/utils';
 
 const Btn = styled.button`
   margin-top: 12px;
@@ -57,13 +50,7 @@ const SignIn = ({ toggleAccount }: ISignIn) => {
     handleSubmit,
     formState: { errors },
   } = useForm<ILoginForm>({ mode: 'onBlur' });
-  // 닉네임 중복체크
-  const checkNickNameExists = async (nickName: string) => {
-    const querySnapshot = await getDocs(
-      query(collection(db, 'users'), where('nickName', '==', nickName))
-    );
-    return querySnapshot.empty ? false : true;
-  };
+
   // 랜덤 닉네임 만들기(중복되지 않은)
   const generateRandomNickName = async () => {
     let randomNickName: string;

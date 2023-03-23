@@ -3,7 +3,7 @@ import styled from 'styled-components';
 const InputField = styled.div`
   display: flex;
   flex-direction: column;
-  height: 90px;
+  height: 60px;
   label {
     margin-bottom: 4px;
     font-size: 14px;
@@ -23,7 +23,7 @@ const InputField = styled.div`
   }
   span {
     color: ${(props) => props.theme.purple};
-    font-size: 16px;
+    font-size: 14px;
     margin-top: 4px;
     margin: 4px 0 0 2px;
   }
@@ -34,10 +34,11 @@ const ErrorMassage = styled.p`
   color: ${(props) => props.theme.purple};
   font-size: 12px;
   font-weight: 700;
+  white-space: nowrap;
 `;
 
 interface IAuthInput {
-  label: string;
+  label?: string;
   name: string;
   registerOptions: any;
   placeholder?: string;
@@ -55,10 +56,10 @@ const AuthInput = ({
 }: IAuthInput) => {
   return (
     <InputField>
-      <label>
+      {label ? <label>
         {label}
         <span>✶</span>
-      </label>
+      </label> : null}
       <input
         {...registerOptions}
         name={name}
