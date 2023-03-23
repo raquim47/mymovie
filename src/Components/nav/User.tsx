@@ -9,14 +9,16 @@ const Wrapper = styled.div`
   align-items: center;
   gap: 18px;
   position: relative;
-  background-color: ${(props) => props.theme.gray};
+  /* background-color: ${(props) => props.theme.gray}; */
   padding: 12px;
-  border-radius: 8px;
+  /* border-radius: 8px; */
+  border-top: 1px solid ${props => props.theme.gray};
+  border-bottom: 1px solid ${props => props.theme.gray};
 `;
 
 const UserImg = styled.div`
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 60px;
   overflow: hidden;
   border-radius: 50%;
   img {
@@ -67,7 +69,14 @@ function User() {
         <FontAwesomeIcon icon={faGear} />
       </UserEdit>
       <UserImg>
-        <img src={require('../../assets/profile.png')} alt="유저 이미지" />
+        <img
+          src={
+            userData?.userPhoto
+              ? userData.userPhoto
+              : require('../../assets/profile.png')
+          }
+          alt="유저 이미지"
+        />
       </UserImg>
       <UserInfo>
         <h4>{userData?.nickName}</h4>

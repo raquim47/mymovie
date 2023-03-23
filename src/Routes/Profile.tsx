@@ -1,11 +1,14 @@
+import { uuidv4 } from '@firebase/util';
 import { getAuth } from 'firebase/auth';
 import { doc, getFirestore, updateDoc } from 'firebase/firestore';
-import { useEffect, useState } from 'react';
+import { getDownloadURL, ref, uploadString } from 'firebase/storage';
+import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import AuthInput from '../components/auth/AuthInput';
+import { storageService } from '../services/fbase';
 import { RootState } from '../store';
 import { checkNickNameExists } from '../utils/utils';
 
@@ -55,14 +58,17 @@ const NickName = styled.div`
 `;
 
 const Btn = styled.button`
-  margin-top: 12px;
+  display: block;
   width: 100%;
+  margin-top: 12px;
+  padding: 10px 0;
   border: none;
   background-color: ${(props) => props.theme.gray};
   color: ${(props) => props.theme.white.white};
-  font-size: 14px;
-  padding: 10px 0;
   border-radius: 4px;
+  font-size: 14px;
+  font-weight: 400;
+  text-align: center;
   cursor: pointer;
   :hover {
     background-color: ${(props) => props.theme.purpleDark};
@@ -84,6 +90,12 @@ const Email = styled.p`
   font-size: 14px;
 `;
 
+const AddPhoto = styled.div`
+  width: 100%;
+  input {
+    display: none;
+  }
+`;
 interface INickName {
   nickName: string;
 }
@@ -101,6 +113,8 @@ function Profile() {
   const navigate = useNavigate();
   const auth = getAuth();
   const db = getFirestore();
+  const fileInput = useRef<HTMLInputElement>(null);
+  const [attachment, setAttachment] = useState<string | null>('');
   const {
     register,
     handleSubmit,
@@ -120,6 +134,52 @@ function Profile() {
       console.error(error);
     }
   };
+
+  const onFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const fileList = event.target.files;
+    if (!fileList?.[0]) {
+      setAttachment(null);
+      return;
+    }
+    const file = fileList[0];
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const result = reader.result;
+      setAttachment(result as string);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  useEffect(() => {
+    if (!attachment) {
+      return;
+    }
+
+    const user = auth.currentUser;
+    if (user) {
+      const fileRef = ref(
+        storageService,
+        `user/userPhoto/${user.uid}/${uuidv4()}`
+      );
+      uploadString(fileRef, attachment, 'data_url')
+        .then(async (response) => {
+          const url = await getDownloadURL(response.ref);
+          const userRef = doc(db, 'users', user.uid);
+          await updateDoc(userRef, { userPhoto: url });
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  }, [attachment]);
+
+  const clearUserPhoto = async () => {
+    const user = auth.currentUser;
+    if (user) {
+      const userRef = doc(db, 'users', user.uid);
+      await updateDoc(userRef, { userPhoto: '' });
+    }
+  };
   return (
     <Wrapper>
       <ProfileInfo>
@@ -132,8 +192,21 @@ function Profile() {
             }
             alt="프로필 이미지"
           />
-          <Btn>이미지 업로드</Btn>
-          <Btn>이미지 삭제</Btn>
+          <AddPhoto>
+            <Btn as="label" htmlFor="attach-file">
+              이미지 업로드
+              {/* <Btn>이미지 업로드</Btn> */}
+            </Btn>
+            <input
+              id="attach-file"
+              type="file"
+              accept="image/*"
+              onChange={onFileChange}
+              ref={fileInput}
+            />
+          </AddPhoto>
+
+          <Btn onClick={clearUserPhoto}>이미지 삭제</Btn>
         </Photo>
         <Info>
           {!editNick ? (
