@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import Header from './components/Header';
 import Nav from './components/nav/Nav';
@@ -11,7 +12,8 @@ import Search from './routes/Search';
 import { authService } from './services/fbase';
 import { doc, getDoc, getFirestore } from 'firebase/firestore';
 import { clearUser, IUser, setUser } from './store';
-import { useDispatch } from 'react-redux';
+import { browserSessionPersistence } from 'firebase/auth';
+
 
 const Wrapper = styled.div`
   padding: 100px 0px 0px 240px;
@@ -21,8 +23,9 @@ function App() {
   const [init, setInit] = useState(false);
   const db = getFirestore();
   const dispatch = useDispatch();
-
   useEffect(() => {
+    authService.setPersistence(browserSessionPersistence)
+      .then(() => {
     authService.onAuthStateChanged(async (user) => {
       if (user) {
         const userRef = doc(db, 'users', user.uid);
@@ -34,6 +37,9 @@ function App() {
       }
       setInit(true);
     });
+  }).catch((error) => {
+    // 오류 처리
+  });
   }, [authService, db, dispatch]);
 
   return (
