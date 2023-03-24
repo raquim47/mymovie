@@ -19,7 +19,7 @@ root.render(
     <QueryClientProvider client={client}>
       <ThemeProvider theme={theme}>
         <GlobalStyle />
-        <BrowserRouter basename={process.env.PUBLIC_URL}>
+        <BrowserRouter basename=''>
           <App />
         </BrowserRouter>
       </ThemeProvider>
