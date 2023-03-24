@@ -1,7 +1,12 @@
 import { uuidv4 } from '@firebase/util';
 import { getAuth } from 'firebase/auth';
-import { doc, getFirestore, updateDoc } from 'firebase/firestore';
-import { getDownloadURL, ref, uploadString } from 'firebase/storage';
+import { doc, getDoc, getFirestore, updateDoc } from 'firebase/firestore';
+import {
+  deleteObject,
+  getDownloadURL,
+  ref,
+  uploadString,
+} from 'firebase/storage';
 import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
@@ -11,7 +16,7 @@ import AuthInput from '../components/auth/AuthInput';
 import { storageService } from '../services/fbase';
 import { RootState } from '../store';
 import { checkNickNameExists } from '../utils/utils';
-
+import { User } from 'firebase/auth';
 const Wrapper = styled.div`
   width: 480px;
   margin: 0 auto;
@@ -101,27 +106,19 @@ interface INickName {
 }
 
 function Profile() {
-  const { isLoggedIn } = useSelector((state: RootState) => state.init);
-  useEffect(() => {
-    if (!isLoggedIn) {
-      navigate('/home');
-    }
-  }, [isLoggedIn]);
-
   const userData = useSelector((state: RootState) => state.userData);
   const [editNick, setEditNick] = useState(false);
-  const navigate = useNavigate();
   const auth = getAuth();
   const db = getFirestore();
-  const fileInput = useRef<HTMLInputElement>(null);
-  const [attachment, setAttachment] = useState<string | null>('');
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [attachment, setAttachment] = useState<string>('');
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<INickName>({ mode: 'onChange' });
-
-  const handleValid = async (data: INickName) => {
+  // 새로운 닉네임 등록
+  const handleNickNameValid = async (data: INickName) => {
     const user = auth.currentUser;
     try {
       if (user) {
@@ -134,11 +131,21 @@ function Profile() {
       console.error(error);
     }
   };
+  // storage 이미지 삭제
+  const deleteStorageImage = async (user: User) => {
+    const userRef = doc(db, 'users', user.uid);
+    const userData = await getDoc(userRef);
 
+    if (userData.data()?.userPhoto) {
+      const photoRef = ref(storageService, userData.data()?.userPhoto);
+      await deleteObject(photoRef);
+    }
+  };
+  // input 파일 url, attachment에 저장
   const onFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const fileList = event.target.files;
     if (!fileList?.[0]) {
-      setAttachment(null);
+      setAttachment('');
       return;
     }
     const file = fileList[0];
@@ -148,8 +155,9 @@ function Profile() {
       setAttachment(result as string);
     };
     reader.readAsDataURL(file);
+    event.target.value = '';
   };
-
+  // firestore, storage에 이미지 등록
   useEffect(() => {
     if (!attachment) {
       return;
@@ -157,27 +165,33 @@ function Profile() {
 
     const user = auth.currentUser;
     if (user) {
-      const fileRef = ref(
-        storageService,
-        `user/userPhoto/${user.uid}/${uuidv4()}`
-      );
-      uploadString(fileRef, attachment, 'data_url')
-        .then(async (response) => {
-          const url = await getDownloadURL(response.ref);
-          const userRef = doc(db, 'users', user.uid);
-          await updateDoc(userRef, { userPhoto: url });
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+      deleteStorageImage(user).then(() => {
+        const fileRef = ref(
+          storageService,
+          `user/userPhoto/${user.uid}/${uuidv4()}`
+        );
+        uploadString(fileRef, attachment, 'data_url')
+          .then(async (response) => {
+            const url = await getDownloadURL(response.ref);
+            const userRef = doc(db, 'users', user.uid);
+            await updateDoc(userRef, { userPhoto: url });
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      });
     }
   }, [attachment]);
 
-  const clearUserPhoto = async () => {
+  const deleteUserPhoto = async () => {
     const user = auth.currentUser;
     if (user) {
+      // Storage 삭제
+      await deleteStorageImage(user);
+      // Firestore의 userPhoto url 삭제
       const userRef = doc(db, 'users', user.uid);
       await updateDoc(userRef, { userPhoto: '' });
+      setAttachment('');
     }
   };
   return (
@@ -202,11 +216,11 @@ function Profile() {
               type="file"
               accept="image/*"
               onChange={onFileChange}
-              ref={fileInput}
+              ref={fileInputRef}
             />
           </AddPhoto>
 
-          <Btn onClick={clearUserPhoto}>이미지 삭제</Btn>
+          <Btn onClick={deleteUserPhoto}>이미지 삭제</Btn>
         </Photo>
         <Info>
           {!editNick ? (
@@ -215,7 +229,7 @@ function Profile() {
               <span onClick={() => setEditNick(true)}>닉네임 수정</span>
             </NickName>
           ) : (
-            <EditNickForm onSubmit={handleSubmit(handleValid)}>
+            <EditNickForm onSubmit={handleSubmit(handleNickNameValid)}>
               <AuthInput
                 name="nickName"
                 registerOptions={register('nickName', {

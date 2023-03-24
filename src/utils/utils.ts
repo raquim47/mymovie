@@ -62,7 +62,7 @@ export const useInitialize = () => {
     } else {
       dispatch(clearUserData());
     }
-  }, [isLoggedIn, auth, db, dispatch]);
+  }, [isLoggedIn, auth, db, dispatch,]);
 };
 
 // 닉네임 중복 체크
