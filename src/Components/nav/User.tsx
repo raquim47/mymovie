@@ -1,9 +1,10 @@
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { RootState } from '../../store';
+import { RootState, setUserData } from '../../store';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGear } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
@@ -12,8 +13,8 @@ const Wrapper = styled.div`
   /* background-color: ${(props) => props.theme.gray}; */
   padding: 12px;
   /* border-radius: 8px; */
-  border-top: 1px solid ${props => props.theme.gray};
-  border-bottom: 1px solid ${props => props.theme.gray};
+  border-top: 1px solid ${(props) => props.theme.gray};
+  border-bottom: 1px solid ${(props) => props.theme.gray};
 `;
 
 const UserImg = styled.div`

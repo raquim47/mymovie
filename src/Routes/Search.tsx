@@ -4,25 +4,63 @@ import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { GetSearched, IGetMovieResult, IMovie } from '../services/api';
 import List from '../components/list/List';
+import {
+  collection,
+  getDocs,
+  getFirestore,
+  query,
+  where,
+} from 'firebase/firestore';
+import UserItem from '../components/UserItem';
+import { IUserData } from '../store';
 
 const Wrapper = styled.div`
   padding: 0 30px;
-`
+`;
 
 const SearchedKeyword = styled.h2`
-    font-size: 30px;
-    margin-bottom: 30px;
+  font-size: 30px;
+  margin-bottom: 30px;
 
   strong {
     font-weight: 600;
     padding-right: 10px;
   }
 `;
+const SearchedUser = styled.section`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+`;
+
+
 
 function Search() {
   const location = useLocation();
   const keyword = new URLSearchParams(location.search).get('keyword');
   const rowSize = 6;
+  const [searchedUser, setSearchedUser] = useState<IUserData[]>([]);
+
+  // 닉네임으로 유저 찾기
+  const searchNickName = async (keyword: string) => {
+    const db = getFirestore();
+    const querySnapShot = await getDocs(
+      query(
+        collection(db, 'users'),
+        where('nickName', '>=', keyword),
+        where('nickName', '<=', keyword + '\uf8ff')
+      )
+    );
+    return querySnapShot;
+  };
+
+  useEffect(() => {
+    searchNickName(keyword as string).then((querySnapshot) => {
+      const searchResult = querySnapshot.docs.map(
+        (doc) => doc.data() as IUserData
+      );
+      setSearchedUser(searchResult);
+    });
+  }, [keyword]);
 
   // Infinite Query
   const { data, isLoading, isError, fetchNextPage, hasNextPage } =
@@ -52,15 +90,13 @@ function Search() {
       }, []) || [],
     [data]
   );
-  // resultList를 rowSize에 맞춰 여러 행으로 나누기     
+  // resultList를 rowSize에 맞춰 여러 행으로 나누기
   const listLength = resultList?.length || 0;
   const rowList = [];
   for (let i = 0; i < listLength; i += rowSize) {
     const row = resultList?.slice(i, i + rowSize);
     rowList.push(row);
   }
-
-  const loaderRef = useRef<HTMLDivElement>(null);
 
   const handleIntersection = useCallback(
     (entries: IntersectionObserverEntry[]) => {
@@ -75,6 +111,7 @@ function Search() {
     [fetchNextPage, hasNextPage]
   );
 
+  const loaderRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const observer = new IntersectionObserver(handleIntersection, {
       root: null,
@@ -105,7 +142,11 @@ function Search() {
       <SearchedKeyword>
         <strong>' {keyword} '</strong>로 검색한 결과입니다.
       </SearchedKeyword>
-      
+      <SearchedUser>
+        {searchedUser.map((userData) => (
+          <UserItem key={userData.nickName} {...userData} />
+        ))}
+      </SearchedUser>
       {isLoading && <p>Loading...</p>}
       {rowList.map((rowData, i) => (
         <List
