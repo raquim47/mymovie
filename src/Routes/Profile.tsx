@@ -10,13 +10,13 @@ import {
 import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import AuthInput from '../components/auth/AuthInput';
 import { storageService } from '../services/fbase';
 import { RootState } from '../store';
 import { checkNickNameExists } from '../utils/utils';
 import { User } from 'firebase/auth';
+
 const Wrapper = styled.div`
   width: 480px;
   margin: 0 auto;
@@ -117,6 +117,7 @@ function Profile() {
     handleSubmit,
     formState: { errors },
   } = useForm<INickName>({ mode: 'onChange' });
+
   // 새로운 닉네임 등록
   const handleNickNameValid = async (data: INickName) => {
     const user = auth.currentUser;
@@ -157,7 +158,7 @@ function Profile() {
     reader.readAsDataURL(file);
     event.target.value = '';
   };
-  // firestore, storage에 이미지 등록
+  // 이미지 등록 (firestore, storage)
   useEffect(() => {
     if (!attachment) {
       return;
@@ -182,7 +183,7 @@ function Profile() {
       });
     }
   }, [attachment]);
-
+  // 이미지 삭제(Firestore의, Storage)
   const deleteUserPhoto = async () => {
     const user = auth.currentUser;
     if (user) {

@@ -1,10 +1,7 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import styled from 'styled-components';
 import SignIn from '../components/auth/SignIn';
 import NewAccount from '../components/auth/NewAccount';
-import { useSelector } from 'react-redux';
-import { RootState } from '../store';
 
 const Wrapper = styled.div`
   width: 480px;
@@ -19,15 +16,8 @@ const Wrapper = styled.div`
 `;
 
 function Auth() {
-  const navigate = useNavigate();
   const [newAccount, setNewAccount] = useState(false);
   const toggleAccount = () => setNewAccount((prev) => !prev);
-  const { isLoggedIn } = useSelector((state: RootState) => state.init);
-  useEffect(() => {
-    if (isLoggedIn) {
-      navigate('/home');
-    }
-  }, [isLoggedIn]);
 
   return (
     <Wrapper>

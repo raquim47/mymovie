@@ -11,6 +11,7 @@ import Search from './routes/Search';
 import { RootState, } from './store';
 import { useInitialize } from './utils/utils';
 import Profile from './routes/Profile';
+import PrivateRoute from './components/PrivateRoute';
 
 
 const Wrapper = styled.div`
@@ -33,9 +34,9 @@ function App() {
             <Route path="/home/:listType/:movieId" element={<Home />} />
             <Route path="/search" element={<Search />} />
             <Route path="/search/:listType/:movieId" element={<Search />} />
-            <Route path="/rate" element={<Rate />} />
-            <Route path="/auth" element={<Auth />} />
-            <Route path="/profile" element={<Profile />} />
+            <Route path="/rate" element={<PrivateRoute><Rate /></PrivateRoute>} />
+            <Route path="/auth" element={<PrivateRoute><Auth /></PrivateRoute>} />
+            <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
             <Route path="/*" element={<NotFound />} />
           </Routes>
         </Wrapper>
