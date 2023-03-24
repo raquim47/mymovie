@@ -20,7 +20,9 @@ const Wrapper = styled.div`
 
 const SearchedKeyword = styled.h2`
   font-size: 30px;
-  margin-bottom: 30px;
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+  border-bottom: 1px solid ${(props) => props.theme.gray};
 
   strong {
     font-weight: 600;
@@ -28,11 +30,10 @@ const SearchedKeyword = styled.h2`
   }
 `;
 const SearchedUser = styled.section`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+  border-bottom: 1px solid ${(props) => props.theme.gray};
 `;
-
-
 
 function Search() {
   const location = useLocation();
@@ -142,11 +143,13 @@ function Search() {
       <SearchedKeyword>
         <strong>' {keyword} '</strong>로 검색한 결과입니다.
       </SearchedKeyword>
-      <SearchedUser>
-        {searchedUser.map((userData) => (
-          <UserItem key={userData.nickName} {...userData} />
-        ))}
-      </SearchedUser>
+      {searchedUser.length > 0 && (
+        <SearchedUser>
+          {searchedUser.map((userData) => (
+            <UserItem key={userData.nickName} {...userData} />
+          ))}
+        </SearchedUser>
+      )}
       {isLoading && <p>Loading...</p>}
       {rowList.map((rowData, i) => (
         <List

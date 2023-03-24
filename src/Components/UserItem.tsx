@@ -8,11 +8,11 @@ const Wrapper = styled.div`
   gap: 18px;
   position: relative;
   padding: 12px;
-
   img {
     width: 60px;
     height: 60px;
     border-radius: 50%;
+    object-fit: cover;
   }
 
   h5 {
