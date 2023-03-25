@@ -1,7 +1,8 @@
 import { useSelector } from 'react-redux';
 import { useMatch, useNavigate } from 'react-router-dom';
-import { RootState } from '../store';
+import { RootState } from '../../store';
 import { ReactNode, useEffect } from 'react';
+
 function PrivateRoute({ children }: { children: ReactNode }) {
   const authMatch = useMatch('/auth');
   const { isLoggedIn } = useSelector((state: RootState) => state.init);

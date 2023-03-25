@@ -8,9 +8,8 @@ import {
   getMoviesUpcoming,
   IGetMovieResult,
   IMovie,
-} from '../services/api';
-import Banner from '../components/Banner';
-import List from '../components/list/List';
+} from '../services/movieApi';
+import {Banner, List} from '../components/components';
 
 const Wrapper = styled.div`
   padding: 0 30px;

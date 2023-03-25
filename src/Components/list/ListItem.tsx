@@ -2,9 +2,9 @@ import { AnimatePresence, motion } from 'framer-motion';
 import React from 'react';
 import { useMatch, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { IMovie } from '../../services/api';
+import { IMovie } from '../../services/movieApi';
 import { makeImagePath } from '../../utils/utils';
-import Detail from '../Detail';
+import { Detail } from '../components';
 
 interface IGenres {
   [key: string]: string;
@@ -39,7 +39,7 @@ const Wrapper = styled(motion.div)<{ display: string }>`
   border-radius: 4px;
   overflow: hidden;
   cursor: pointer;
-  
+
   &:last-of-type {
     transform-origin: center right;
   }
@@ -151,7 +151,7 @@ interface IListItem {
   onHoverChange: (index: number) => void;
   rowSize?: number;
   displayMode: 'portrait' | 'landscape';
-  keyword?:string;
+  keyword?: string;
 }
 
 const ListItem = React.memo((props: IListItem) => {
@@ -163,7 +163,7 @@ const ListItem = React.memo((props: IListItem) => {
     onHoverChange,
     rowSize,
     displayMode,
-    keyword
+    keyword,
   } = props;
 
   const navigate = useNavigate();
@@ -217,7 +217,9 @@ const ListItem = React.memo((props: IListItem) => {
       </Wrapper>
 
       <AnimatePresence>
-        {detailMatch ? <Detail movieId={movieData.id} keyword={keyword}/> : null}
+        {detailMatch ? (
+          <Detail movieId={movieData.id} keyword={keyword} />
+        ) : null}
       </AnimatePresence>
     </>
   );

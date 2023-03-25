@@ -3,7 +3,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useQuery } from 'react-query';
 import { useLocation, useMatch } from 'react-router-dom';
 import styled from 'styled-components';
-import { GetSearched, IGetMovieResult, IMovie } from '../services/api';
+import { GetSearched, IGetMovieResult, IMovie } from '../services/movieApi';
 import List from '../components/list/List';
 import { makeImagePath } from '../utils/utils';
 

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { IUserData } from '../store';
+import { IUserData } from './../../store';
 
 const Wrapper = styled.div`
   width: 250px;
@@ -26,11 +26,7 @@ function UserItem({ nickName, userPhoto }: IUserData) {
   return (
     <Wrapper>
       <img
-        src={
-          userPhoto
-            ? userPhoto
-            : require('../assets/profile.png')
-        }
+        src={userPhoto ? userPhoto : require('../../assets/profile.png')}
         alt="유저 이미지"
       />
       <h5>{nickName}</h5>

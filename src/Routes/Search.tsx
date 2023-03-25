@@ -2,17 +2,10 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useInfiniteQuery, useQueryClient } from 'react-query';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-import { GetSearched, IGetMovieResult, IMovie } from '../services/api';
-import List from '../components/list/List';
-import {
-  collection,
-  getDocs,
-  getFirestore,
-  query,
-  where,
-} from 'firebase/firestore';
-import UserItem from '../components/UserItem';
+import { GetSearched, IGetMovieResult, IMovie } from '../services/movieApi';
+import { List, UserItem } from '../components/components';
 import { IUserData } from '../store';
+import { searchNickName } from '../services/fbaseFunc';
 
 const Wrapper = styled.div`
   padding: 0 30px;
@@ -29,6 +22,7 @@ const SearchedKeyword = styled.h2`
     padding-right: 10px;
   }
 `;
+
 const SearchedUser = styled.section`
   padding-bottom: 10px;
   margin-bottom: 15px;
@@ -40,20 +34,7 @@ function Search() {
   const keyword = new URLSearchParams(location.search).get('keyword');
   const rowSize = 6;
   const [searchedUser, setSearchedUser] = useState<IUserData[]>([]);
-
-  // 닉네임으로 유저 찾기
-  const searchNickName = async (keyword: string) => {
-    const db = getFirestore();
-    const querySnapShot = await getDocs(
-      query(
-        collection(db, 'users'),
-        where('nickName', '>=', keyword),
-        where('nickName', '<=', keyword + '\uf8ff')
-      )
-    );
-    return querySnapShot;
-  };
-
+  // 검색한 유저 데이터 searchedUser에 저장
   useEffect(() => {
     searchNickName(keyword as string).then((querySnapshot) => {
       const searchResult = querySnapshot.docs.map(
@@ -62,7 +43,6 @@ function Search() {
       setSearchedUser(searchResult);
     });
   }, [keyword]);
-
   // Infinite Query
   const { data, isLoading, isError, fetchNextPage, hasNextPage } =
     useInfiniteQuery<IGetMovieResult, Error>(

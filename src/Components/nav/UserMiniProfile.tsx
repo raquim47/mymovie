@@ -1,18 +1,16 @@
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { RootState, setUserData } from '../../store';
+import { RootState } from '../../store';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGear } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 18px;
   position: relative;
-  /* background-color: ${(props) => props.theme.gray}; */
   padding: 12px;
-  /* border-radius: 8px; */
   border-top: 1px solid ${(props) => props.theme.gray};
   border-bottom: 1px solid ${(props) => props.theme.gray};
 `;
@@ -61,7 +59,7 @@ const UserEdit = styled.div`
   }
 `;
 
-function User() {
+function UserMiniProfile() {
   const navigate = useNavigate();
   const userData = useSelector((state: RootState) => state.userData);
   return (
@@ -93,4 +91,4 @@ function User() {
     </Wrapper>
   );
 }
-export default User;
+export default UserMiniProfile;

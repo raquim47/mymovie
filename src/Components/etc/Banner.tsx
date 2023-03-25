@@ -1,9 +1,9 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { useMatch, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { IMovie } from '../services/api';
-import { makeImagePath } from '../utils/utils';
-import Detail from './Detail';
+import { IMovie } from '../../services/movieApi';
+import { makeImagePath } from '../../utils/utils';
+import { Detail } from './../components';
 
 const Wrapper = styled.div`
   margin: 0 -8px;
@@ -32,7 +32,7 @@ const Caption = styled.figcaption`
   position: absolute;
   bottom: 8%;
   width: 100%;
-  padding-left: 4%;
+  padding: 0 6% 0 4%;
   z-index: 10;
 
   h4 {
@@ -139,9 +139,7 @@ function Banner<T extends IMovie>({
 
       <AnimatePresence>
         {detailMatch ? (
-          <Detail
-            movieId={Number(detailMatch.params.movieId)}
-          />
+          <Detail movieId={Number(detailMatch.params.movieId)} />
         ) : null}
       </AnimatePresence>
     </Wrapper>

@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import Logo from './Logo';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faFilm,
@@ -9,9 +8,8 @@ import {
 import { faStar, faHeart } from '@fortawesome/free-regular-svg-icons';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import SearchForm from './SearchForm';
-import { authService } from '../../services/fbase';
-import User from './User';
+import { auth } from '../../services/fbaseInit';
+import {UserMiniProfile, SearchForm, Logo} from '../components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 
@@ -34,8 +32,7 @@ const Wrapper = styled.nav`
   }
 `;
 
-const NavList = styled.ul`
-`;
+const NavList = styled.ul``;
 
 const NavItem = styled.li<{ isClicked?: boolean | null }>`
   display: flex;
@@ -70,7 +67,7 @@ const NavItemSearch = styled(NavItem)`
 `;
 
 function Nav() {
-  const {isLoggedIn} = useSelector((state:RootState) => state.init);
+  const { isLoggedIn } = useSelector((state: RootState) => state.init);
   const navDataArr = [
     { name: '홈', url: 'home', icon: faFilm },
     { name: '평가한 영화', url: 'rate', icon: faStar },
@@ -83,7 +80,7 @@ function Nav() {
   const onLogOutClick = () => {
     const confirmLogout = window.confirm('로그아웃 하시겠습니까?');
     if (confirmLogout) {
-      authService.signOut();
+      auth.signOut();
       navigate('/home');
     }
   };
@@ -92,7 +89,7 @@ function Nav() {
       <Link to="/home">
         <Logo />
       </Link>
-      {isLoggedIn ? <User/> : null}
+      {isLoggedIn ? <UserMiniProfile /> : null}
       <NavList>
         {navDataArr.map((item) => (
           <NavItem
@@ -127,7 +124,6 @@ function Nav() {
           <SearchForm />
         </NavItemSearch>
       </NavList>
-      
     </Wrapper>
   );
 }

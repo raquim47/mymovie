@@ -1,20 +1,12 @@
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  fetchSignInMethodsForEmail,
-} from 'firebase/auth';
-import {
-  getFirestore,
-  doc,
-  setDoc,
-  collection,
-  where,
-  getDocs,
-  query,
-} from 'firebase/firestore';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth, db, doc, setDoc } from '../../services/fbaseInit';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
-import AuthInput from './AuthInput';
+import { AuthInput } from './../components';
+import {
+  checkEmailExists,
+  checkNickNameExists,
+} from '../../services/fbaseFunc';
 
 interface IForm {
   email: string;
@@ -54,22 +46,6 @@ function NewAccount({ toggleAccount }: INewAccount) {
     formState: { errors },
   } = useForm<IForm>({ mode: 'onChange' });
 
-  const auth = getAuth();
-  const db = getFirestore();
-
-  // 이메일 중복 체크
-  const checkEmailExists = async (email: string) => {
-    const methods = await fetchSignInMethodsForEmail(auth, email);
-    return methods.length > 0 ? '이미 가입된 이메일입니다' : undefined;
-  };
-
-  // 닉네임 중복 체크
-  const checkNickNameExists = async (nickName: string) => {
-    const querySnapshot = await getDocs(
-      query(collection(db, 'users'), where('nickName', '==', nickName))
-    );
-    return querySnapshot.empty ? undefined : '이미 사용 중인 닉네임입니다';
-  };
   // 계정 등록
   const handleValid = async ({ email, password, nickName }: IForm) => {
     try {
@@ -119,8 +95,7 @@ function NewAccount({ toggleAccount }: INewAccount) {
             required: '닉네임을 입력해주세요',
             pattern: {
               value: /^[가-힣a-zA-Z0-9]{2,16}$/,
-              message:
-                '공백을 제외한 영어, 숫자, 한글 2자 ~ 12자',
+              message: '공백을 제외한 영어, 숫자, 한글 2자 ~ 12자',
             },
             validate: async (value) => await checkNickNameExists(value),
           })}

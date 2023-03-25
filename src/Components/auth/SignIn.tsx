@@ -1,8 +1,9 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import AuthInput from './AuthInput';
-import { authService } from '../../services/fbase';
+import { AuthInput } from './../components';
+import { auth, db, doc, getDoc, setDoc } from '../../services/fbaseInit';
+import { checkNickNameExists } from '../../services/fbaseFunc';
 import styled from 'styled-components';
 import {
   GoogleAuthProvider,
@@ -12,8 +13,6 @@ import {
 } from 'firebase/auth';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle, faGithub } from '@fortawesome/free-brands-svg-icons';
-import { doc, getDoc, getFirestore, setDoc } from 'firebase/firestore';
-import { checkNickNameExists } from '../../utils/utils';
 
 const Btn = styled.button`
   margin-top: 12px;
@@ -44,7 +43,6 @@ interface ILoginForm {
 }
 
 const SignIn = ({ toggleAccount }: ISignIn) => {
-  const db = getFirestore();
   const {
     register,
     handleSubmit,
@@ -73,15 +71,15 @@ const SignIn = ({ toggleAccount }: ISignIn) => {
 
     if (provider) {
       try {
-        const data = await signInWithPopup(authService, provider);
+        const data = await signInWithPopup(auth, provider);
         const user = data.user;
         if (user) {
           const userRef = doc(db, 'users', user.uid);
           const userSnapshot = await getDoc(userRef);
-        if (userSnapshot.exists()) {
-          // 이미 등록된 계정일 경우
-          return;
-        }
+          if (userSnapshot.exists()) {
+            // 이미 등록된 계정일 경우
+            return;
+          }
           const nickName = await generateRandomNickName();
           await setDoc(userRef, { nickName, email: user.email, userPhoto: '' });
         }
@@ -93,7 +91,7 @@ const SignIn = ({ toggleAccount }: ISignIn) => {
 
   const handleValid = async ({ email, password }: ILoginForm) => {
     try {
-      await signInWithEmailAndPassword(authService, email, password);
+      await signInWithEmailAndPassword(auth, email, password);
       alert('로그인 성공');
     } catch (error) {
       console.error(error);

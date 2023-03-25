@@ -6,8 +6,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { faHeart, faPenToSquare } from '@fortawesome/free-regular-svg-icons';
 import { useQuery } from 'react-query';
-import { getMovieDetail, IMovie } from '../services/api';
-import { makeImagePath } from '../utils/utils';
+import { getMovieDetail, IMovie } from '../../services/movieApi';
+import { makeImagePath } from '../../utils/utils';
 
 const GlobalStyle = createGlobalStyle`
   body { overflow: hidden; }

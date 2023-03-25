@@ -1,6 +1,5 @@
 import { uuidv4 } from '@firebase/util';
-import { getAuth } from 'firebase/auth';
-import { doc, getDoc, getFirestore, updateDoc } from 'firebase/firestore';
+import { auth, db, doc, getDoc, updateDoc } from '../services/fbaseInit';
 import {
   deleteObject,
   getDownloadURL,
@@ -11,10 +10,10 @@ import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
-import AuthInput from '../components/auth/AuthInput';
-import { storageService } from '../services/fbase';
 import { RootState } from '../store';
-import { checkNickNameExists } from '../utils/utils';
+import { AuthInput } from '../components/components';
+import { storageService } from '../services/fbaseInit';
+import { checkNickNameExists } from '../services/fbaseFunc';
 import { User } from 'firebase/auth';
 
 const Wrapper = styled.div`
@@ -108,8 +107,6 @@ interface INickName {
 function Profile() {
   const userData = useSelector((state: RootState) => state.userData);
   const [editNick, setEditNick] = useState(false);
-  const auth = getAuth();
-  const db = getFirestore();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [attachment, setAttachment] = useState<string>('');
   const {
