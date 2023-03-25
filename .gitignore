@@ -1,10 +1,4 @@
 node_modules
 .env
-.firebase
-.github
 build
-.firebaserc
-firebase.json
-tsconfig.json
-package.json
 package-lock.json
