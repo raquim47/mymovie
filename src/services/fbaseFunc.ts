@@ -1,4 +1,8 @@
-import { browserSessionPersistence, fetchSignInMethodsForEmail } from 'firebase/auth';
+import {
+  browserSessionPersistence,
+  fetchSignInMethodsForEmail,
+} from 'firebase/auth';
+import firebase from 'firebase/app';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -18,7 +22,11 @@ import {
   where,
   doc,
   onSnapshot,
+  getDoc,
+  updateDoc,
 } from './fbaseInit';
+import { arrayRemove } from 'firebase/firestore';
+import { IMovie } from './movieApi';
 
 // firebase 초기화, 사용자 인증, userData 세팅
 export const useInitialize = () => {
@@ -79,6 +87,38 @@ export const checkNickNameExists = async (
     query(collection(db, 'users'), where('nickName', '==', nickName))
   );
   return querySnapshot.empty ? undefined : '이미 사용 중인 닉네임입니다';
+};
+// '보고 싶어요' 상태 확인
+export const checkIsFavorite = async (movieId: number): Promise<boolean> => {
+  const user = auth.currentUser;
+  if (user) {
+    const userRef = doc(db, 'users', user.uid);
+    const docData = await getDoc(userRef);
+    const favoriteMovie = docData.exists()
+      ? docData.data()?.favoriteMovie || []
+      : [];
+      return favoriteMovie.some((movie: IMovie) => movie.id === movieId);
+  }
+  return false;
+};
+// '보고 싶어요' 영화 데이터 firestore에 등록/삭제
+export const handleFavoriteList = async (movie: IMovie) => {
+  const user = auth.currentUser;
+  if (user) {
+    const userRef = doc(db, 'users', user.uid);
+    const docData = await getDoc(userRef);
+    // 문서가 있는지 ? favoriteMovie가있는지?(없으면 []반환) : 문서가 없으면 []
+    const favoriteMovie = docData.exists()
+      ? docData.data()?.favoriteMovie || []
+      : [];
+    if (favoriteMovie.some((m: IMovie) => m.id === movie.id)) {
+      await updateDoc(userRef, {
+        favoriteMovie: arrayRemove(movie),
+      });
+    } else {
+      await updateDoc(userRef, { favoriteMovie: [movie, ...favoriteMovie] });
+    }
+  }
 };
 // 닉네임으로 유저 찾기
 export const searchNickName = async (keyword: string) => {

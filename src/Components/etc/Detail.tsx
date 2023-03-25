@@ -3,11 +3,18 @@ import ReactStars from 'react-stars';
 import { useMatch, useNavigate } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faXmark } from '@fortawesome/free-solid-svg-icons';
+import {
+  faXmark,
+  faHeart as faHeartFill,
+} from '@fortawesome/free-solid-svg-icons';
 import { faHeart, faPenToSquare } from '@fortawesome/free-regular-svg-icons';
 import { useQuery } from 'react-query';
 import { getMovieDetail, IMovie } from '../../services/movieApi';
 import { makeImagePath } from '../../utils/utils';
+import { useEffect, useState } from 'react';
+import { checkIsFavorite, handleFavoriteList } from '../../services/fbaseFunc';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store';
 
 const GlobalStyle = createGlobalStyle`
   body { overflow: hidden; }
@@ -219,7 +226,7 @@ const Info = styled.ul`
   }
 `;
 
-const Option = styled.ul`
+const Option = styled.ul<{ isFavorite: boolean }>`
   display: flex;
   justify-content: space-between;
   background-color: ${(props) => props.theme.black.middle};
@@ -229,7 +236,6 @@ const Option = styled.ul`
 
   li {
     flex: 1;
-    /* border: 1px solid white; */
     display: flex;
     flex-direction: column;
     text-align: center;
@@ -260,7 +266,12 @@ const Option = styled.ul`
     cursor: pointer;
     font-size: 24px;
   }
+
+  .heart {
+    color: ${(props) => (props.isFavorite ? props.theme.purple : 'inherit')};
+  }
 `;
+
 // ContentMiddle
 const ContentMiddle = styled.section`
   display: flex;
@@ -347,9 +358,11 @@ interface IDetail {
 }
 
 function Detail({ movieId, keyword }: IDetail) {
+  const [isFavorite, setIsfavorite] = useState(false);
+  const { isLoggedIn } = useSelector((state: RootState) => state.init);
   const navigate = useNavigate();
   const detailMatch = useMatch(`/:page/:listType/:movieId`);
-
+  // Overay클릭했을 때 popup 닫고 경로 이동
   const closeDetail = () => {
     if (keyword) {
       navigate(`/${detailMatch?.params.page}/?keyword=${keyword}`);
@@ -357,11 +370,38 @@ function Detail({ movieId, keyword }: IDetail) {
       navigate(`/${detailMatch?.params.page}`);
     }
   };
+  // useQuery
   const { data, isLoading, isError } = useQuery<IMovie>(
     ['movieDetail', movieId],
     () => getMovieDetail(movieId)
   );
-
+  // onClickHeart
+  const onClickHeart = () => {
+    if (!data) return;
+    if (!isLoggedIn) {
+      alert('로그인 후 이용해주세요');
+      return;
+    }
+    const genre_ids = data?.genres ? data?.genres.map((m) => m.id) : [];
+    const favoriteMovieData = {
+      id: movieId,
+      title: data.title,
+      poster_path: data.poster_path,
+      vote_average: data.vote_average,
+      genre_ids,
+    };
+    handleFavoriteList(favoriteMovieData);
+    setIsfavorite((prev) => !prev);
+  };
+  // movieId의 favorite을 확인해서 isFavorite에 반영
+  useEffect(() => {
+    if (!isLoggedIn) return;
+    const getIsFavorite = async () => {
+      const isFavorite = await checkIsFavorite(movieId);
+      setIsfavorite(isFavorite);
+    };
+    getIsFavorite();
+  }, [movieId]);
   return (
     <>
       <GlobalStyle />
@@ -404,15 +444,17 @@ function Detail({ movieId, keyword }: IDetail) {
                   <Info>
                     <li>{getYear(data?.release_date)}</li>
                     <li>{data?.runtime}분</li>
-                    <li>
-                      {data?.genres.map((genre, i) => {
-                        if (i === data?.genres.length - 1) {
-                          return <span key={genre.name}>{genre.name}</span>;
-                        } else {
-                          return <span key={genre.name}>{genre.name}, </span>;
-                        }
-                      })}
-                    </li>
+                    {data?.genres && (
+                      <li>
+                        {data?.genres.map((genre, i) => {
+                          if (data?.genres && i === data?.genres.length - 1) {
+                            return <span key={genre.name}>{genre.name}</span>;
+                          } else {
+                            return <span key={genre.name}>{genre.name}, </span>;
+                          }
+                        })}
+                      </li>
+                    )}
                     <li className="averageStar">
                       평균
                       <ReactStars
@@ -427,7 +469,7 @@ function Detail({ movieId, keyword }: IDetail) {
                     </li>
                   </Info>
                 </Head>
-                <Option>
+                <Option isFavorite={isFavorite}>
                   <li className="myStar">
                     <ReactStars
                       onChange={(rate) => console.log(rate)}
@@ -441,9 +483,13 @@ function Detail({ movieId, keyword }: IDetail) {
                     />
                     <em>평가하기</em>
                   </li>
-                  <li>
-                    <div className="detailOptionIcon">
-                      <FontAwesomeIcon icon={faHeart} />
+                  <li className="heart">
+                    <div className="detailOptionIcon" onClick={onClickHeart}>
+                      {!isFavorite ? (
+                        <FontAwesomeIcon icon={faHeart} />
+                      ) : (
+                        <FontAwesomeIcon icon={faHeartFill} />
+                      )}
                     </div>
                     <em>보고싶어요</em>
                   </li>

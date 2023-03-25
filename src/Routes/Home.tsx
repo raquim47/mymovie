@@ -9,11 +9,11 @@ import {
   IGetMovieResult,
   IMovie,
 } from '../services/movieApi';
-import {Banner, List} from '../components/components';
+import { Banner, List } from '../components/components';
 
 const Wrapper = styled.div`
   padding: 0 30px;
-`
+`;
 
 const SliderGrid = styled.section`
   display: grid;

@@ -2,7 +2,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { Nav, PrivateRoute, Header } from './components/components';
-import { Home, Auth, NotFound, Rate, Search, Profile } from './routes/routes';
+import { Home, Auth, NotFound, Rate, Search, Profile, Favorite } from './routes/routes';
 import { RootState } from './store';
 import { useInitialize } from './services/fbaseFunc';
 
@@ -31,6 +31,14 @@ function App() {
               element={
                 <PrivateRoute>
                   <Rate />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/favorite"
+              element={
+                <PrivateRoute>
+                  <Favorite />
                 </PrivateRoute>
               }
             />

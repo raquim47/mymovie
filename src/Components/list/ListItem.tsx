@@ -165,7 +165,7 @@ const ListItem = React.memo((props: IListItem) => {
     displayMode,
     keyword,
   } = props;
-
+  
   const navigate = useNavigate();
 
   const onBoxClicked = () => {

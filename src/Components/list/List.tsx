@@ -2,7 +2,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { IMovie } from '../../services/movieApi';
-import {ListItem} from './../components';
+import { ListItem } from './../components';
 
 const Wrapper = styled.div`
   position: relative;
@@ -10,7 +10,7 @@ const Wrapper = styled.div`
     button {
       opacity: 1;
     }
-  } 
+  }
 `;
 
 const Content = styled.div<{ height: number }>`
@@ -97,14 +97,14 @@ function List({
   const [hoveredIndex, setHoveredIndex] = useState(-1);
   const [itemHight, setItemHight] = useState(0);
   const contentRef = useRef<HTMLDivElement>(null);
-  
   // 좌우 슬라이드 동작
   const changeIndex = (direction = 'next') => {
     if (!data) return;
     if (leaving) return;
     setLeaving(true);
     const totalMovies = data.length - 1;
-    const maxIndex = Math.floor(totalMovies / rowSize) - 1;
+    const maxIndex =
+      totalMovies < rowSize ? 0 : Math.floor(totalMovies / rowSize) - 1;
     direction === 'next' ? setIsNext(true) : setIsNext(false);
 
     if (isNext) {

@@ -44,6 +44,7 @@ const Photo = styled.div`
 const Info = styled.div`
   width: 180px;
 `;
+
 const NickName = styled.div`
   height: 110px;
 
@@ -100,6 +101,7 @@ const AddPhoto = styled.div`
     display: none;
   }
 `;
+
 interface INickName {
   nickName: string;
 }

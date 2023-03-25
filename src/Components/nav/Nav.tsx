@@ -71,7 +71,7 @@ function Nav() {
   const navDataArr = [
     { name: '홈', url: 'home', icon: faFilm },
     { name: '평가한 영화', url: 'rate', icon: faStar },
-    { name: '보고 싶은 영화', url: 'library', icon: faHeart },
+    { name: '찜한 영화', url: 'favorite', icon: faHeart },
   ];
 
   const location = useLocation();
