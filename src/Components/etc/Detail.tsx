@@ -16,8 +16,11 @@ import { checkIsFavorite, handleFavoriteList } from '../../services/fbaseFunc';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 
-const GlobalStyle = createGlobalStyle`
-  body { overflow: hidden; }
+const GlobalStyle = createGlobalStyle<{ isScroll: boolean }>`
+  body {
+    overflow: hidden; 
+    padding-right: ${(props) => (props.isScroll ? '6px' : 0)};
+  }
 `;
 
 const Overlay = styled(motion.div)`
@@ -358,6 +361,8 @@ interface IDetail {
 }
 
 function Detail({ movieId, keyword }: IDetail) {
+  const isScroll = window.innerHeight < document.body.clientHeight;
+  console.log(isScroll);
   const [isFavorite, setIsfavorite] = useState(false);
   const { isLoggedIn } = useSelector((state: RootState) => state.init);
   const navigate = useNavigate();
@@ -404,7 +409,7 @@ function Detail({ movieId, keyword }: IDetail) {
   }, [movieId]);
   return (
     <>
-      <GlobalStyle />
+      <GlobalStyle isScroll={isScroll} />
       <Overlay
         onClick={closeDetail}
         animate={{ opacity: 1 }}
