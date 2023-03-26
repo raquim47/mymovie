@@ -30,6 +30,7 @@ import { arrayRemove } from 'firebase/firestore';
 import { IMovie } from './movieApi';
 
 // firebase 초기화, 사용자 인증, userData 세팅
+// firebase 초기화, 사용자 인증, userData 세팅
 export const useInitialize = (isLoggedIn: boolean) => {
   const dispatch = useDispatch();
   //firebase 초기화, 사용자 인증,
@@ -49,25 +50,26 @@ export const useInitialize = (isLoggedIn: boolean) => {
       .catch((error) => {
         // 오류 처리
       });
-  }, [auth]);
-  // 초기 userData 세팅
+  }, []);
+  // serData 세팅
   useEffect(() => {
-    if (currentUser) {
-      console.log('hi');
-      const userRef = doc(db, 'users', currentUser.uid);
-      const unsubscribe = onSnapshot(userRef, (doc) => {
-        const userData = doc.data() as IUserData;
-        dispatch(setUserData(userData));
-      });
-
-      // Clean up subscription
-      return () => {
-        unsubscribe();
-      };
+    if (isLoggedIn) {
+      const user = auth.currentUser;
+      if (user) {
+        const userRef = doc(db, 'users', user.uid);
+        const unsubscribe = onSnapshot(userRef, (doc) => {
+          const userData = doc.data() as IUserData;
+          dispatch(setUserData(userData));
+        });
+        // Clean up subscription
+        return () => {
+          unsubscribe();
+        };
+      }
     } else {
       dispatch(clearUserData());
     }
-  }, [auth, db, isLoggedIn]);
+  }, [isLoggedIn]);
 };
 // 이메일 중복 체크
 export const checkEmailExists = async (email: string) => {

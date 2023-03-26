@@ -2,7 +2,15 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { Nav, PrivateRoute, Header } from './components/components';
-import { Home, Auth, NotFound, Rate, Search, Profile, Favorite } from './routes/routes';
+import {
+  Home,
+  Auth,
+  NotFound,
+  Rate,
+  Search,
+  Profile,
+  Favorite,
+} from './routes/routes';
 import { RootState } from './store';
 import { useInitialize } from './services/fbaseFunc';
 
@@ -11,7 +19,9 @@ const Wrapper = styled.div`
 `;
 
 function App() {
-  const { initFirebase, isLoggedIn } = useSelector((state: RootState) => state.init);
+  const { initFirebase, isLoggedIn } = useSelector(
+    (state: RootState) => state.init
+  );
   useInitialize(isLoggedIn);
   return (
     <>
@@ -25,38 +35,11 @@ function App() {
             <Route path="/home/:listType/:movieId" element={<Home />} />
             <Route path="/search" element={<Search />} />
             <Route path="/search/:listType/:movieId" element={<Search />} />
-            <Route
-              path="/rate"
-              element={
-                <PrivateRoute>
-                  <Rate />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/favorite"
-              element={
-                <PrivateRoute>
-                  <Favorite />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/auth"
-              element={
-                <PrivateRoute>
-                  <Auth />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/profile"
-              element={
-                <PrivateRoute>
-                  <Profile />
-                </PrivateRoute>
-              }
-            />
+            <Route path="/rate" element={<PrivateRoute><Rate /></PrivateRoute>}/>
+            <Route path="/favorite" element={<PrivateRoute><Favorite /></PrivateRoute>}/>
+            <Route path="/favorite/favorite/:movieId" element={<PrivateRoute><Favorite /></PrivateRoute>}/>
+            <Route path="/auth" element={<PrivateRoute><Auth /></PrivateRoute>}/>
+            <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>}/>
             <Route path="/*" element={<NotFound />} />
           </Routes>
         </Wrapper>
