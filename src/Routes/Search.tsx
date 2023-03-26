@@ -117,7 +117,7 @@ function Search() {
       queryClient.removeQueries('search');
     };
   }, [keyword, queryClient]);
-
+  console.log(loaderRef)
   return (
     <Wrapper>
       <SearchedKeyword>

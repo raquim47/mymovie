@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useMatch, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { IMovie } from '../../services/movieApi';
@@ -165,12 +165,11 @@ const ListItem = React.memo((props: IListItem) => {
     displayMode,
     keyword,
   } = props;
-  
+
   const navigate = useNavigate();
 
   const onBoxClicked = () => {
     if (keyword) {
-      console.log('hi');
       navigate(`${listType}/${movieData.id}?keyword=${keyword}`);
     } else {
       navigate(`${listType}/${movieData.id}`);
@@ -181,6 +180,7 @@ const ListItem = React.memo((props: IListItem) => {
   const isPushed = hoveredIndex !== -1 && hoveredIndex !== index;
   const isHovered = hoveredIndex === index;
   const detailMatch = useMatch(`/:page/${listType}/${movieData.id}`);
+  
   const displayImg =
     displayMode === 'landscape'
       ? movieData.backdrop_path

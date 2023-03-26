@@ -2,7 +2,6 @@ import {
   browserSessionPersistence,
   fetchSignInMethodsForEmail,
 } from 'firebase/auth';
-import firebase from 'firebase/app';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -24,12 +23,10 @@ import {
   onSnapshot,
   getDoc,
   updateDoc,
-  currentUser,
 } from './fbaseInit';
 import { arrayRemove } from 'firebase/firestore';
 import { IMovie } from './movieApi';
 
-// firebase 초기화, 사용자 인증, userData 세팅
 // firebase 초기화, 사용자 인증, userData 세팅
 export const useInitialize = (isLoggedIn: boolean) => {
   const dispatch = useDispatch();
@@ -53,19 +50,17 @@ export const useInitialize = (isLoggedIn: boolean) => {
   }, []);
   // serData 세팅
   useEffect(() => {
-    if (isLoggedIn) {
-      const user = auth.currentUser;
-      if (user) {
-        const userRef = doc(db, 'users', user.uid);
-        const unsubscribe = onSnapshot(userRef, (doc) => {
-          const userData = doc.data() as IUserData;
-          dispatch(setUserData(userData));
-        });
-        // Clean up subscription
-        return () => {
-          unsubscribe();
-        };
-      }
+    const user = auth.currentUser;
+    if (user) {
+      const userRef = doc(db, 'users', user.uid);
+      const unsubscribe = onSnapshot(userRef, (doc) => {
+        const userData = doc.data() as IUserData;
+        dispatch(setUserData(userData));
+      });
+      // Clean up subscription
+      return () => {
+        unsubscribe();
+      };
     } else {
       dispatch(clearUserData());
     }
@@ -97,6 +92,7 @@ export const checkIsFavorite = (
 };
 // '보고 싶어요' 영화 데이터 firestore에 등록/삭제
 export const handleFavoriteList = async (movie: IMovie) => {
+  const currentUser = auth.currentUser;
   if (currentUser) {
     const userRef = doc(db, 'users', currentUser.uid);
     const docData = await getDoc(userRef);

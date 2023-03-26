@@ -30,6 +30,7 @@ const SliderItem = styled.div`
 `;
 
 function Home() {
+  
   // useQuery for Latest Movie
   const {
     data: latestData,

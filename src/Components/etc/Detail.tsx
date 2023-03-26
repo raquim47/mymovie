@@ -369,6 +369,7 @@ function Detail({ movieId, keyword }: IDetail) {
   );
   const navigate = useNavigate();
   const detailMatch = useMatch(`/:page/:listType/:movieId`);
+  const favoriteMatch = useMatch(`/favorite/:listType/:movieId`);
   // Overay클릭했을 때 popup 닫고 경로 이동
   const closeDetail = () => {
     if (keyword) {
@@ -389,6 +390,10 @@ function Detail({ movieId, keyword }: IDetail) {
       alert('로그인 후 이용해주세요');
       return;
     }
+    // 삭제와 동시에 navigate
+    if(isFavorite && favoriteMatch){
+      navigate('/favorite');
+    }
     const genre_ids = data?.genres ? data?.genres.map((m) => m.id) : [];
     const favoriteMovieData = {
       id: movieId,
@@ -398,7 +403,6 @@ function Detail({ movieId, keyword }: IDetail) {
       genre_ids,
     };
     handleFavoriteList(favoriteMovieData);
-    setIsfavorite((prev) => !prev);
   };
   // movieId의 favorite을 확인해서 isFavorite에 반영
   useEffect(() => {

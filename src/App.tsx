@@ -37,7 +37,7 @@ function App() {
             <Route path="/search/:listType/:movieId" element={<Search />} />
             <Route path="/rate" element={<PrivateRoute><Rate /></PrivateRoute>}/>
             <Route path="/favorite" element={<PrivateRoute><Favorite /></PrivateRoute>}/>
-            <Route path="/favorite/favorite/:movieId" element={<PrivateRoute><Favorite /></PrivateRoute>}/>
+            <Route path="/favorite/:listType/:movieId" element={<PrivateRoute><Favorite /></PrivateRoute>}/>
             <Route path="/auth" element={<PrivateRoute><Auth /></PrivateRoute>}/>
             <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>}/>
             <Route path="/*" element={<NotFound />} />

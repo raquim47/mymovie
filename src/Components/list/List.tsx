@@ -106,7 +106,6 @@ function List({
     const maxIndex =
       totalMovies < rowSize ? 0 : Math.floor(totalMovies / rowSize) - 1;
     direction === 'next' ? setIsNext(true) : setIsNext(false);
-
     if (isNext) {
       setIndex((prev) => (prev === maxIndex ? 0 : prev + 1));
     } else {
