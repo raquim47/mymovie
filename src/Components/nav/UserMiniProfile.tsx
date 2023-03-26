@@ -84,7 +84,7 @@ function UserMiniProfile() {
             평가<small>0</small>
           </span>
           <span>
-            찜<small>0</small>
+            찜<small>{userData?.favoriteMovie.length}</small>
           </span>
         </UserMovie>
       </UserInfo>

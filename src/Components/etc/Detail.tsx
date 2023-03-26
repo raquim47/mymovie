@@ -362,9 +362,11 @@ interface IDetail {
 
 function Detail({ movieId, keyword }: IDetail) {
   const isScroll = window.innerHeight < document.body.clientHeight;
-  console.log(isScroll);
   const [isFavorite, setIsfavorite] = useState(false);
-  const { isLoggedIn } = useSelector((state: RootState) => state.init);
+  const isLoggedIn = useSelector((state: RootState) => state.init.isLoggedIn);
+  const favoriteMovie = useSelector(
+    (state: RootState) => state.userData?.favoriteMovie
+  );
   const navigate = useNavigate();
   const detailMatch = useMatch(`/:page/:listType/:movieId`);
   // Overay클릭했을 때 popup 닫고 경로 이동
@@ -380,7 +382,7 @@ function Detail({ movieId, keyword }: IDetail) {
     ['movieDetail', movieId],
     () => getMovieDetail(movieId)
   );
-  // onClickHeart
+  // '보고 싶어요' 눌렀을 때
   const onClickHeart = () => {
     if (!data) return;
     if (!isLoggedIn) {
@@ -400,13 +402,10 @@ function Detail({ movieId, keyword }: IDetail) {
   };
   // movieId의 favorite을 확인해서 isFavorite에 반영
   useEffect(() => {
-    if (!isLoggedIn) return;
-    const getIsFavorite = async () => {
-      const isFavorite = await checkIsFavorite(movieId);
-      setIsfavorite(isFavorite);
-    };
-    getIsFavorite();
-  }, [movieId]);
+    if (!isLoggedIn || !favoriteMovie) return;
+    const isFavorite = checkIsFavorite(movieId, favoriteMovie);
+    setIsfavorite(isFavorite);
+  }, [movieId,favoriteMovie]);
   return (
     <>
       <GlobalStyle isScroll={isScroll} />

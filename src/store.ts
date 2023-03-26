@@ -1,9 +1,11 @@
 import { configureStore, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { IMovie } from './services/movieApi';
 
 export interface IUserData {
   email?: string;
   nickName: string;
   userPhoto: string;
+  favoriteMovie: IMovie[];
 }
 
 const initSlice = createSlice({

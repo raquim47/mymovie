@@ -11,9 +11,8 @@ const Wrapper = styled.div`
 `;
 
 function App() {
-  useInitialize();
-  const { initFirebase } = useSelector((state: RootState) => state.init);
-
+  const { initFirebase, isLoggedIn } = useSelector((state: RootState) => state.init);
+  useInitialize(isLoggedIn);
   return (
     <>
       {/* <Header /> */}
