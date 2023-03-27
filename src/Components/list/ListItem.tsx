@@ -90,8 +90,8 @@ const ListInfo = styled(motion.div)`
 `;
 
 const MyRate = styled.div`
-display: flex;
-justify-content: center;
+  display: flex;
+  justify-content: center;
   position: absolute;
   top: 1vw;
   width: 100%;
@@ -200,7 +200,7 @@ const ListItem = React.memo((props: IListItem) => {
     <>
       <Wrapper
         variants={WrapperVariants}
-        initial="initial"
+        initial='initial'
         animate={isHovered ? 'hovered' : isPushed ? 'pushed' : 'initial'}
         onClick={onBoxClicked}
         onHoverStart={() => onHoverChange(index)}
@@ -219,21 +219,23 @@ const ListItem = React.memo((props: IListItem) => {
           <MyRate>
             <ReactStars
               count={5}
-              color1="#E6E6E6"
-              color2="#FFCC33"
+              color1='#E6E6E6'
+              color2='#FFCC33'
               half
-              className="icon"
+              className='icon'
               value={movieData.myRate}
             />
           </MyRate>
         )}
-        <ListInfo variants={infoVariants} whileHover="hover">
+        <ListInfo variants={infoVariants} whileHover='hover'>
           <h4>{movieData.title}</h4>
           <small>평점 : {movieData.vote_average?.toFixed(1)}</small>
           <article>
-            {movieData.genre_ids?.map((id) => (
-              <span key={id}>{genres[String(id)]}</span>
-            ))}
+            {movieData.genre_ids?.map((id, i) => {
+              if (i <= 2) {
+                return <span key={id}>{genres[String(id)]}</span>;
+              }
+            })}
           </article>
         </ListInfo>
         <InitialDetailBox layoutId={listType + movieData.id} />
