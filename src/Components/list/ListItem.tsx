@@ -1,10 +1,11 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import React, { useEffect, useState } from 'react';
 import { useMatch, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { IMovie } from '../../services/movieApi';
 import { makeImagePath } from '../../utils/utils';
 import { Detail } from '../components';
+import ReactStars from 'react-stars';
+import React from 'react';
 
 interface IGenres {
   [key: string]: string;
@@ -85,6 +86,18 @@ const ListInfo = styled(motion.div)`
       margin-top: 0.2vw;
       font-size: 0.7vw;
     }
+  }
+`;
+
+const MyRate = styled.div`
+display: flex;
+justify-content: center;
+  position: absolute;
+  top: 1vw;
+  width: 100%;
+  z-index: 100;
+  .icon span {
+    font-size: 1.5vw !important;
   }
 `;
 
@@ -202,6 +215,18 @@ const ListItem = React.memo((props: IListItem) => {
               : require('../../assets/no-image-icon-6.png')
           }
         />
+        {movieData.myRate && (
+          <MyRate>
+            <ReactStars
+              count={5}
+              color1="#E6E6E6"
+              color2="#FFCC33"
+              half
+              className="icon"
+              value={movieData.myRate}
+            />
+          </MyRate>
+        )}
         <ListInfo variants={infoVariants} whileHover="hover">
           <h4>{movieData.title}</h4>
           <small>평점 : {movieData.vote_average?.toFixed(1)}</small>

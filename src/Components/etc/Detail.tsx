@@ -379,9 +379,10 @@ function Detail({ movieId, keyword }: IDetail) {
   const navigate = useNavigate();
   const detailMatch = useMatch(`/:page/:listType/:movieId`);
   const favoriteMatch = useMatch(`/favorite/:listType/:movieId`);
+  const rateMatch = useMatch(`/rate/:listType/:movieId`);
   // Overay클릭했을 때 popup 닫고 경로 이동
   const closeDetail = () => {
-    if(!detailMatch) return;
+    if (!detailMatch) return;
     if (keyword) {
       navigate(`/${detailMatch?.params.page}/?keyword=${keyword}`);
     } else {
@@ -412,6 +413,9 @@ function Detail({ movieId, keyword }: IDetail) {
     handleRatedList(ratedMovieData, rate === myRate);
     if (rate === myRate) {
       alert('별점 취소');
+      if (rateMatch) {
+        navigate('/rate');
+      }
     } else {
       alert('별점 등록');
     }
