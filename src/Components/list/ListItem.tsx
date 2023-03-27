@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useMatch, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { IMovie } from '../../services/movieApi';
@@ -167,7 +167,15 @@ const ListItem = React.memo((props: IListItem) => {
   } = props;
 
   const navigate = useNavigate();
-
+  const xDirection = hoveredIndex !== -1 ? (hoveredIndex < index ? 1 : -1) : 0;
+  const isPushed = hoveredIndex !== -1 && hoveredIndex !== index;
+  const isHovered = hoveredIndex === index;
+  const detailMatch = useMatch(`/:page/${listType}/${movieData.id}`);
+  const displayImg =
+    displayMode === 'landscape'
+      ? movieData.backdrop_path
+      : movieData.poster_path;
+  // 영화 박스 클릭
   const onBoxClicked = () => {
     if (keyword) {
       navigate(`${listType}/${movieData.id}?keyword=${keyword}`);
@@ -175,16 +183,6 @@ const ListItem = React.memo((props: IListItem) => {
       navigate(`${listType}/${movieData.id}`);
     }
   };
-
-  const xDirection = hoveredIndex !== -1 ? (hoveredIndex < index ? 1 : -1) : 0;
-  const isPushed = hoveredIndex !== -1 && hoveredIndex !== index;
-  const isHovered = hoveredIndex === index;
-  const detailMatch = useMatch(`/:page/${listType}/${movieData.id}`);
-  
-  const displayImg =
-    displayMode === 'landscape'
-      ? movieData.backdrop_path
-      : movieData.poster_path;
   return (
     <>
       <Wrapper

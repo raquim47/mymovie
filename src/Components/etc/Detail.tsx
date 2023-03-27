@@ -381,6 +381,7 @@ function Detail({ movieId, keyword }: IDetail) {
   const favoriteMatch = useMatch(`/favorite/:listType/:movieId`);
   // Overay클릭했을 때 popup 닫고 경로 이동
   const closeDetail = () => {
+    if(!detailMatch) return;
     if (keyword) {
       navigate(`/${detailMatch?.params.page}/?keyword=${keyword}`);
     } else {
