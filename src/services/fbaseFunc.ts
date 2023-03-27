@@ -166,11 +166,11 @@ export const getRatings = (movieId: number, callback: (ratings: any) => void) =>
   return unsubscribe;
 };
 
-export const getUsersInfo = async (uid:string) => {
+export const getUsersInfo = async (uid:string, rating:number) => {
   const userRef = doc(db, 'users', uid);
   const docData = await getDoc(userRef);
   if(docData.exists()){
     const { nickName, userPhoto } = docData.data() as IUserInfo;
-    return { nickName, userPhoto };
+    return { nickName, userPhoto, rating };
   }
 }

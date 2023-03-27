@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { IUserData } from './../../store';
+import { IUserInfo } from './Detail';
 
 const Wrapper = styled.div`
   width: 250px;
@@ -22,7 +23,7 @@ const Wrapper = styled.div`
   }
 `;
 
-function UserItem({ nickName, userPhoto }: IUserData) {
+function UserItem({ nickName, userPhoto, rating }: IUserInfo) {
   return (
     <Wrapper>
       <img
@@ -30,6 +31,7 @@ function UserItem({ nickName, userPhoto }: IUserData) {
         alt="유저 이미지"
       />
       <h5>{nickName}</h5>
+      {rating && <p>별점 {rating}점</p>}
     </Wrapper>
   );
 }

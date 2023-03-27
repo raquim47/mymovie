@@ -3,7 +3,10 @@ import ReactStars from 'react-stars';
 import { useMatch, useNavigate } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faXmark, faHeart as faHeartFill } from '@fortawesome/free-solid-svg-icons';
+import {
+  faXmark,
+  faHeart as faHeartFill,
+} from '@fortawesome/free-solid-svg-icons';
 import { faHeart, faPenToSquare } from '@fortawesome/free-regular-svg-icons';
 import { useQuery } from 'react-query';
 import { getMovieDetail, IMovie } from '../../services/movieApi';
@@ -116,7 +119,8 @@ const ContentTopBg = styled.div<{ $bgPhoto: string }>`
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent), url(${(props) => props.$bgPhoto});
+  background-image: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent),
+    url(${(props) => props.$bgPhoto});
   background-size: cover;
   background-position: center center;
 
@@ -374,6 +378,7 @@ export interface IRating {
 export interface IUserInfo {
   nickName: string;
   userPhoto: string;
+  rating?: number;
 }
 function Detail({ movieId, keyword }: IDetail) {
   const [ratings, setRatings] = useState<IRating[]>([]);
@@ -382,9 +387,9 @@ function Detail({ movieId, keyword }: IDetail) {
     const unsubscribe = getRatings(movieId, (data) => {
       setRatings(data);
       // data가 변경될 때마다 사용자 정보를 업데이트
-      data.forEach(async ({ uid }: { uid: string }) => {
-        const userInfo = await getUsersInfo(uid);
-        setUsersInfo((prev) => ([ ...prev, userInfo ]));
+      data.forEach(async ({ uid, rating }: { uid: string; rating: number }) => {
+        const userInfo = await getUsersInfo(uid, rating);
+        setUsersInfo((prev) => [...prev, userInfo]);
       });
     });
 
@@ -393,13 +398,17 @@ function Detail({ movieId, keyword }: IDetail) {
       unsubscribe();
     };
   }, [movieId]);
-  console.log(usersInfo);
+  console.log(ratings, usersInfo);
   const isScroll = window.innerHeight < document.body.clientHeight;
   const [isFavorite, setIsfavorite] = useState(false);
   const isLoggedIn = useSelector((state: RootState) => state.init.isLoggedIn);
   const [myRate, setMyrate] = useState(0);
-  const favoriteMovie = useSelector((state: RootState) => state.userData?.favoriteMovie);
-  const ratedMovie = useSelector((state: RootState) => state.userData?.ratedMovie);
+  const favoriteMovie = useSelector(
+    (state: RootState) => state.userData?.favoriteMovie
+  );
+  const ratedMovie = useSelector(
+    (state: RootState) => state.userData?.ratedMovie
+  );
   const navigate = useNavigate();
   const detailMatch = useMatch(`/:page/:listType/:movieId`);
   const favoriteMatch = useMatch(`/favorite/:listType/:movieId`);
@@ -414,7 +423,10 @@ function Detail({ movieId, keyword }: IDetail) {
     }
   };
   // useQuery
-  const { data, isLoading, isError } = useQuery<IMovie>(['movieDetail', movieId], () => getMovieDetail(movieId));
+  const { data, isLoading, isError } = useQuery<IMovie>(
+    ['movieDetail', movieId],
+    () => getMovieDetail(movieId)
+  );
   // 별점 매기기 눌렀을 때
   const onChangeStars = (rate: number) => {
     if (!data) return;
@@ -478,20 +490,34 @@ function Detail({ movieId, keyword }: IDetail) {
   return (
     <>
       <GlobalStyle isScroll={isScroll} />
-      <Overlay onClick={closeDetail} animate={{ opacity: 1 }} exit={{ opacity: 0 }} />
-      <Wrapper layoutId={`${detailMatch?.params.listType}${movieId}`} transition={{ type: 'easeInOut', duration: 0.4 }}>
+      <Overlay
+        onClick={closeDetail}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+      />
+      <Wrapper
+        layoutId={`${detailMatch?.params.listType}${movieId}`}
+        transition={{ type: 'easeInOut', duration: 0.4 }}
+      >
         {isLoading ? (
           <p>loading...</p>
         ) : (
           <Content>
             <ContentTop>
               <ContentTopBg
-                $bgPhoto={data?.backdrop_path ? makeImagePath(data.backdrop_path, 'w1280') : ''}
+                $bgPhoto={
+                  data?.backdrop_path
+                    ? makeImagePath(data.backdrop_path, 'w1280')
+                    : ''
+                }
               ></ContentTopBg>
               <ContentTopInner>
                 <Poster>
                   <img
-                    src={makeImagePath(data?.poster_path || '../assets/no-image-icon-6.png', 'w500')}
+                    src={makeImagePath(
+                      data?.poster_path || '../assets/no-image-icon-6.png',
+                      'w500'
+                    )}
                     alt={data?.title}
                   />
                 </Poster>
@@ -516,8 +542,15 @@ function Detail({ movieId, keyword }: IDetail) {
                     )}
                     <li className='averageStar'>
                       평균
-                      <ReactStars count={1} color1='#FFCC33' size={14} edit={false} />
-                      <span className='ratingValue'>{data?.vote_average.toFixed(1)}</span>
+                      <ReactStars
+                        count={1}
+                        color1='#FFCC33'
+                        size={14}
+                        edit={false}
+                      />
+                      <span className='ratingValue'>
+                        {data?.vote_average.toFixed(1)}
+                      </span>
                     </li>
                   </Info>
                 </Head>
@@ -538,7 +571,11 @@ function Detail({ movieId, keyword }: IDetail) {
                   </li>
                   <li className='heart'>
                     <div className='detailOptionIcon' onClick={onClickHeart}>
-                      {!isFavorite ? <FontAwesomeIcon icon={faHeart} /> : <FontAwesomeIcon icon={faHeartFill} />}
+                      {!isFavorite ? (
+                        <FontAwesomeIcon icon={faHeart} />
+                      ) : (
+                        <FontAwesomeIcon icon={faHeartFill} />
+                      )}
                     </div>
                     <em>보고싶어요</em>
                   </li>
@@ -555,7 +592,8 @@ function Detail({ movieId, keyword }: IDetail) {
               <Commented>
                 <div className='profile'></div>
                 <p>
-                  코멘트 남기는 곳 코멘트 남기는 곳코멘트 남기는 곳 코멘트 남기는 곳코멘트 남기는 곳 코멘트 남기는 곳
+                  코멘트 남기는 곳 코멘트 남기는 곳코멘트 남기는 곳 코멘트
+                  남기는 곳코멘트 남기는 곳 코멘트 남기는 곳
                 </p>
                 <div className='edit'>
                   <span>수정</span>
@@ -569,12 +607,16 @@ function Detail({ movieId, keyword }: IDetail) {
                 </OverView>
               ) : null}
               {usersInfo.map((info, i) => (
-                <UserItem key={i} {...info}/>
+                <UserItem key={i} nickName={info.nickName} userPhoto={info.userPhoto} rating={info.rating} />
               ))}
             </ContentMiddle>
           </Content>
         )}
-        <FontAwesomeIcon onClick={closeDetail} icon={faXmark} className='closeBtn' />
+        <FontAwesomeIcon
+          onClick={closeDetail}
+          icon={faXmark}
+          className='closeBtn'
+        />
       </Wrapper>
     </>
   );
