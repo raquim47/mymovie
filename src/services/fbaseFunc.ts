@@ -26,6 +26,7 @@ import {
 } from './fbaseInit';
 import { arrayRemove } from 'firebase/firestore';
 import { IMovie } from './movieApi';
+import Favorite from '../routes/Favorite';
 
 // firebase 초기화, 사용자 인증, userData 세팅
 export const useInitialize = (isLoggedIn: boolean) => {
@@ -107,6 +108,34 @@ export const handleFavoriteList = async (movie: IMovie) => {
     } else {
       await updateDoc(userRef, { favoriteMovie: [movie, ...favoriteMovie] });
     }
+  }
+};
+// 등록된 별점 확인
+export const checkMyRate = (movieId: number, ratedMovie: IMovie[]): number => {
+  const movie = ratedMovie.find((m: IMovie) => m.id === movieId);
+  return movie?.myRate || 0;
+};
+// 별점 매기기 firestore에 등록/삭제
+export const handleRatedList = async (
+  movie: IMovie,
+  isCancle: boolean = false
+) => {
+  const currentUser = auth.currentUser;
+  if (currentUser) {
+    const userRef = doc(db, 'users', currentUser.uid);
+    const docData = await getDoc(userRef);
+    // 문서가 있는지 ? ratedMovie가있는지?(없으면 []반환) : 문서가 없으면 []
+    let ratedMovie = docData.exists() ? docData.data()?.ratedMovie || [] : [];
+    const index = ratedMovie.findIndex((m: IMovie) => m.id === movie.id);
+    if (isCancle) {// ratedMovie에서 현재 movie를 제거
+      ratedMovie.splice(index, 1); 
+    } else if (index !== -1) {// 이미 있을 때 myRate만 업데이트
+      ratedMovie[index].myRate = movie.myRate;
+    } else {
+      ratedMovie = [movie, ...ratedMovie];
+    }
+    // ratedMovie 컬렉션을 업데이트
+    await updateDoc(userRef, { ratedMovie });
   }
 };
 // 닉네임으로 유저 찾기

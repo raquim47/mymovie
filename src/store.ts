@@ -6,6 +6,7 @@ export interface IUserData {
   nickName: string;
   userPhoto: string;
   favoriteMovie: IMovie[];
+  ratedMovie: IMovie[]
 }
 
 const initSlice = createSlice({

@@ -10,9 +10,14 @@ import {
 import { faHeart, faPenToSquare } from '@fortawesome/free-regular-svg-icons';
 import { useQuery } from 'react-query';
 import { getMovieDetail, IMovie } from '../../services/movieApi';
-import { makeImagePath } from '../../utils/utils';
+import { makeImagePath, rateMassage } from '../../utils/utils';
 import { useEffect, useState } from 'react';
-import { checkIsFavorite, handleFavoriteList } from '../../services/fbaseFunc';
+import {
+  checkIsFavorite,
+  handleFavoriteList,
+  handleRatedList,
+  checkMyRate,
+} from '../../services/fbaseFunc';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 
@@ -364,8 +369,12 @@ function Detail({ movieId, keyword }: IDetail) {
   const isScroll = window.innerHeight < document.body.clientHeight;
   const [isFavorite, setIsfavorite] = useState(false);
   const isLoggedIn = useSelector((state: RootState) => state.init.isLoggedIn);
+  const [myRate, setMyrate] = useState(0);
   const favoriteMovie = useSelector(
     (state: RootState) => state.userData?.favoriteMovie
+  );
+  const ratedMovie = useSelector(
+    (state: RootState) => state.userData?.ratedMovie
   );
   const navigate = useNavigate();
   const detailMatch = useMatch(`/:page/:listType/:movieId`);
@@ -383,6 +392,29 @@ function Detail({ movieId, keyword }: IDetail) {
     ['movieDetail', movieId],
     () => getMovieDetail(movieId)
   );
+  // 별점 매기기 눌렀을 때
+  const onChangeStars = (rate: number) => {
+    if (!data) return;
+    if (!isLoggedIn) {
+      alert('로그인 후 이용해주세요');
+      return;
+    }
+    const genre_ids = data?.genres ? data?.genres.map((m) => m.id) : [];
+    const ratedMovieData = {
+      id: movieId,
+      title: data.title,
+      poster_path: data.poster_path,
+      vote_average: data.vote_average,
+      genre_ids,
+      myRate: rate,
+    };
+    handleRatedList(ratedMovieData, rate === myRate);
+    if (rate === myRate) {
+      alert('별점 취소');
+    } else {
+      alert('별점 등록');
+    }
+  };
   // '보고 싶어요' 눌렀을 때
   const onClickHeart = () => {
     if (!data) return;
@@ -391,7 +423,7 @@ function Detail({ movieId, keyword }: IDetail) {
       return;
     }
     // 삭제와 동시에 navigate
-    if(isFavorite && favoriteMatch){
+    if (isFavorite && favoriteMatch) {
       navigate('/favorite');
     }
     const genre_ids = data?.genres ? data?.genres.map((m) => m.id) : [];
@@ -404,12 +436,18 @@ function Detail({ movieId, keyword }: IDetail) {
     };
     handleFavoriteList(favoriteMovieData);
   };
+  // movieId의 ratedMovie 확인해서 isFavorite에 반영
+  useEffect(() => {
+    if (!isLoggedIn || !ratedMovie) return;
+    const rate = checkMyRate(movieId, ratedMovie);
+    setMyrate(rate);
+  }, [movieId, ratedMovie]);
   // movieId의 favorite을 확인해서 isFavorite에 반영
   useEffect(() => {
     if (!isLoggedIn || !favoriteMovie) return;
     const isFavorite = checkIsFavorite(movieId, favoriteMovie);
     setIsfavorite(isFavorite);
-  }, [movieId,favoriteMovie]);
+  }, [movieId, favoriteMovie]);
   return (
     <>
       <GlobalStyle isScroll={isScroll} />
@@ -478,9 +516,9 @@ function Detail({ movieId, keyword }: IDetail) {
                   </Info>
                 </Head>
                 <Option isFavorite={isFavorite}>
-                  <li className="myStar">
+                  <li>
                     <ReactStars
-                      onChange={(rate) => console.log(rate)}
+                      onChange={(rate) => onChangeStars(rate)}
                       count={5}
                       color1="#E6E6E6"
                       color2="#FFCC33"
@@ -488,8 +526,9 @@ function Detail({ movieId, keyword }: IDetail) {
                       size={30}
                       edit={true}
                       className="detailOptionIcon"
+                      value={myRate}
                     />
-                    <em>평가하기</em>
+                    <em>{rateMassage[myRate]}</em>
                   </li>
                   <li className="heart">
                     <div className="detailOptionIcon" onClick={onClickHeart}>
