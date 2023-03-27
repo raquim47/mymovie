@@ -3,10 +3,7 @@ import ReactStars from 'react-stars';
 import { useMatch, useNavigate } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faXmark,
-  faHeart as faHeartFill,
-} from '@fortawesome/free-solid-svg-icons';
+import { faXmark, faHeart as faHeartFill } from '@fortawesome/free-solid-svg-icons';
 import { faHeart, faPenToSquare } from '@fortawesome/free-regular-svg-icons';
 import { useQuery } from 'react-query';
 import { getMovieDetail, IMovie } from '../../services/movieApi';
@@ -17,9 +14,14 @@ import {
   handleFavoriteList,
   handleRatedList,
   checkMyRate,
+  saveOnRatings,
+  getRatings,
+  getUsersInfo,
 } from '../../services/fbaseFunc';
+import { Timestamp } from 'firebase/firestore';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
+import UserItem from './UserItem';
 
 const GlobalStyle = createGlobalStyle<{ isScroll: boolean }>`
   body {
@@ -114,8 +116,7 @@ const ContentTopBg = styled.div<{ $bgPhoto: string }>`
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent),
-    url(${(props) => props.$bgPhoto});
+  background-image: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent), url(${(props) => props.$bgPhoto});
   background-size: cover;
   background-position: center center;
 
@@ -364,18 +365,41 @@ interface IDetail {
   movieId: number;
   keyword?: string;
 }
+export interface IRating {
+  uid: string;
+  rating: number;
+  timestamp?: Timestamp;
+}
 
+export interface IUserInfo {
+  nickName: string;
+  userPhoto: string;
+}
 function Detail({ movieId, keyword }: IDetail) {
+  const [ratings, setRatings] = useState<IRating[]>([]);
+  const [usersInfo, setUsersInfo] = useState<any[]>([]);
+  useEffect(() => {
+    const unsubscribe = getRatings(movieId, (data) => {
+      setRatings(data);
+      // data가 변경될 때마다 사용자 정보를 업데이트
+      data.forEach(async ({ uid }: { uid: string }) => {
+        const userInfo = await getUsersInfo(uid);
+        setUsersInfo((prev) => ([ ...prev, userInfo ]));
+      });
+    });
+
+    return () => {
+      // 컴포넌트가 언마운트될 때 구독 취소
+      unsubscribe();
+    };
+  }, [movieId]);
+  console.log(usersInfo);
   const isScroll = window.innerHeight < document.body.clientHeight;
   const [isFavorite, setIsfavorite] = useState(false);
   const isLoggedIn = useSelector((state: RootState) => state.init.isLoggedIn);
   const [myRate, setMyrate] = useState(0);
-  const favoriteMovie = useSelector(
-    (state: RootState) => state.userData?.favoriteMovie
-  );
-  const ratedMovie = useSelector(
-    (state: RootState) => state.userData?.ratedMovie
-  );
+  const favoriteMovie = useSelector((state: RootState) => state.userData?.favoriteMovie);
+  const ratedMovie = useSelector((state: RootState) => state.userData?.ratedMovie);
   const navigate = useNavigate();
   const detailMatch = useMatch(`/:page/:listType/:movieId`);
   const favoriteMatch = useMatch(`/favorite/:listType/:movieId`);
@@ -390,10 +414,7 @@ function Detail({ movieId, keyword }: IDetail) {
     }
   };
   // useQuery
-  const { data, isLoading, isError } = useQuery<IMovie>(
-    ['movieDetail', movieId],
-    () => getMovieDetail(movieId)
-  );
+  const { data, isLoading, isError } = useQuery<IMovie>(['movieDetail', movieId], () => getMovieDetail(movieId));
   // 별점 매기기 눌렀을 때
   const onChangeStars = (rate: number) => {
     if (!data) return;
@@ -411,6 +432,7 @@ function Detail({ movieId, keyword }: IDetail) {
       myRate: rate,
     };
     handleRatedList(ratedMovieData, rate === myRate);
+    saveOnRatings(movieId, rate, rate === myRate);
     if (rate === myRate) {
       alert('별점 취소');
       if (rateMatch) {
@@ -456,34 +478,20 @@ function Detail({ movieId, keyword }: IDetail) {
   return (
     <>
       <GlobalStyle isScroll={isScroll} />
-      <Overlay
-        onClick={closeDetail}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-      />
-      <Wrapper
-        layoutId={`${detailMatch?.params.listType}${movieId}`}
-        transition={{ type: 'easeInOut', duration: 0.4 }}
-      >
+      <Overlay onClick={closeDetail} animate={{ opacity: 1 }} exit={{ opacity: 0 }} />
+      <Wrapper layoutId={`${detailMatch?.params.listType}${movieId}`} transition={{ type: 'easeInOut', duration: 0.4 }}>
         {isLoading ? (
           <p>loading...</p>
         ) : (
           <Content>
             <ContentTop>
               <ContentTopBg
-                $bgPhoto={
-                  data?.backdrop_path
-                    ? makeImagePath(data.backdrop_path, 'w1280')
-                    : ''
-                }
+                $bgPhoto={data?.backdrop_path ? makeImagePath(data.backdrop_path, 'w1280') : ''}
               ></ContentTopBg>
               <ContentTopInner>
                 <Poster>
                   <img
-                    src={makeImagePath(
-                      data?.poster_path || '../assets/no-image-icon-6.png',
-                      'w500'
-                    )}
+                    src={makeImagePath(data?.poster_path || '../assets/no-image-icon-6.png', 'w500')}
                     alt={data?.title}
                   />
                 </Poster>
@@ -506,17 +514,10 @@ function Detail({ movieId, keyword }: IDetail) {
                         })}
                       </li>
                     )}
-                    <li className="averageStar">
+                    <li className='averageStar'>
                       평균
-                      <ReactStars
-                        count={1}
-                        color1="#FFCC33"
-                        size={14}
-                        edit={false}
-                      />
-                      <span className="ratingValue">
-                        {data?.vote_average.toFixed(1)}
-                      </span>
+                      <ReactStars count={1} color1='#FFCC33' size={14} edit={false} />
+                      <span className='ratingValue'>{data?.vote_average.toFixed(1)}</span>
                     </li>
                   </Info>
                 </Head>
@@ -525,28 +526,24 @@ function Detail({ movieId, keyword }: IDetail) {
                     <ReactStars
                       onChange={(rate) => onChangeStars(rate)}
                       count={5}
-                      color1="#E6E6E6"
-                      color2="#FFCC33"
+                      color1='#E6E6E6'
+                      color2='#FFCC33'
                       half
                       size={30}
                       edit={true}
-                      className="detailOptionIcon"
+                      className='detailOptionIcon'
                       value={myRate}
                     />
                     <em>{rateMassage[myRate]}</em>
                   </li>
-                  <li className="heart">
-                    <div className="detailOptionIcon" onClick={onClickHeart}>
-                      {!isFavorite ? (
-                        <FontAwesomeIcon icon={faHeart} />
-                      ) : (
-                        <FontAwesomeIcon icon={faHeartFill} />
-                      )}
+                  <li className='heart'>
+                    <div className='detailOptionIcon' onClick={onClickHeart}>
+                      {!isFavorite ? <FontAwesomeIcon icon={faHeart} /> : <FontAwesomeIcon icon={faHeartFill} />}
                     </div>
                     <em>보고싶어요</em>
                   </li>
                   <li>
-                    <div className="detailOptionIcon">
+                    <div className='detailOptionIcon'>
                       <FontAwesomeIcon icon={faPenToSquare} />
                     </div>
                     <em>코멘트 남기기</em>
@@ -556,12 +553,11 @@ function Detail({ movieId, keyword }: IDetail) {
             </ContentTop>
             <ContentMiddle>
               <Commented>
-                <div className="profile"></div>
+                <div className='profile'></div>
                 <p>
-                  코멘트 남기는 곳 코멘트 남기는 곳코멘트 남기는 곳 코멘트
-                  남기는 곳코멘트 남기는 곳 코멘트 남기는 곳
+                  코멘트 남기는 곳 코멘트 남기는 곳코멘트 남기는 곳 코멘트 남기는 곳코멘트 남기는 곳 코멘트 남기는 곳
                 </p>
-                <div className="edit">
+                <div className='edit'>
                   <span>수정</span>
                   <span>삭제</span>
                 </div>
@@ -572,14 +568,13 @@ function Detail({ movieId, keyword }: IDetail) {
                   <p>{data?.overview}</p>
                 </OverView>
               ) : null}
+              {usersInfo.map((info, i) => (
+                <UserItem key={i} {...info}/>
+              ))}
             </ContentMiddle>
           </Content>
         )}
-        <FontAwesomeIcon
-          onClick={closeDetail}
-          icon={faXmark}
-          className="closeBtn"
-        />
+        <FontAwesomeIcon onClick={closeDetail} icon={faXmark} className='closeBtn' />
       </Wrapper>
     </>
   );

@@ -81,10 +81,16 @@ function UserMiniProfile() {
         <h4>{userData?.nickName}</h4>
         <UserMovie>
           <span>
-            평가<small>{userData?.ratedMovie.length}</small>
+            평가
+            <small>
+              {userData?.ratedMovie ? userData?.ratedMovie.length : 0}
+            </small>
           </span>
           <span>
-            찜<small>{userData?.favoriteMovie.length}</small>
+            찜
+            <small>
+              {userData?.favoriteMovie ? userData?.favoriteMovie.length : 0}
+            </small>
           </span>
         </UserMovie>
       </UserInfo>
