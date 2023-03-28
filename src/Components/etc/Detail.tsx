@@ -360,6 +360,21 @@ const OverView = styled.div`
   }
 `;
 
+const Ratings = styled.div`
+  border-radius: 4px;
+  padding: 16px;
+  background-color: ${(props) => props.theme.black.middle};
+`;
+const UserItemWrapper = styled.div`
+  border-radius: 10px;
+  background-color: ${(props) => props.theme.black.lighter};
+  margin-bottom: 16px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+`;
+
 const getYear = (date?: string) => {
   if (date) return date.split('-')[0];
   return '';
@@ -380,6 +395,7 @@ export interface IUserInfo {
   userPhoto: string;
   rating?: number;
 }
+
 function Detail({ movieId, keyword }: IDetail) {
   const [ratings, setRatings] = useState<IRating[]>([]);
   const [usersInfo, setUsersInfo] = useState<any[]>([]);
@@ -398,7 +414,6 @@ function Detail({ movieId, keyword }: IDetail) {
       unsubscribe();
     };
   }, [movieId]);
-  console.log(ratings, usersInfo);
   const isScroll = window.innerHeight < document.body.clientHeight;
   const [isFavorite, setIsfavorite] = useState(false);
   const isLoggedIn = useSelector((state: RootState) => state.init.isLoggedIn);
@@ -606,9 +621,17 @@ function Detail({ movieId, keyword }: IDetail) {
                   <p>{data?.overview}</p>
                 </OverView>
               ) : null}
-              {usersInfo.map((info, i) => (
-                <UserItem key={i} nickName={info.nickName} userPhoto={info.userPhoto} rating={info.rating} />
-              ))}
+              <Ratings>
+                {usersInfo.map((info, i) => (
+                  <UserItemWrapper key={i}>
+                    <UserItem
+                      nickName={info.nickName}
+                      userPhoto={info.userPhoto}
+                      rating={info.rating}
+                    />
+                  </UserItemWrapper>
+                ))}
+              </Ratings>
             </ContentMiddle>
           </Content>
         )}
