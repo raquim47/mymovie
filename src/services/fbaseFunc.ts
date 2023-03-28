@@ -144,25 +144,7 @@ export const handleRatedList = async (
     await updateDoc(userRef, { ratedMovie });
   }
 };
-// 코멘트 등록 / 삭제
-export const handleCommentya = async (movie: IMovie) => {
-  const currentUser = auth.currentUser;
-  if (currentUser) {
-    const userRef = doc(db, 'users', currentUser.uid);
-    const docData = await getDoc(userRef);
-    // 문서가 있는지 ? ratedMovie가있는지?(없으면 []반환) : 문서가 없으면 []
-    let ratedMovie = docData.exists() ? docData.data()?.ratedMovie || [] : [];
-    const index = ratedMovie.findIndex((m: IMovie) => m.id === movie.id);
-    if (index !== -1) {
-      // 이미 있을 때 myRate만 업데이트
-      ratedMovie[index].myComment = movie.myComment;
-    } else {
-      ratedMovie = [movie, ...ratedMovie];
-    }
-    // ratedMovie 컬렉션을 업데이트
-    await updateDoc(userRef, { ratedMovie });
-  }
-};
+
 // 닉네임으로 유저 찾기
 export const searchNickName = async (keyword: string) => {
   const querySnapShot = await getDocs(
@@ -223,7 +205,7 @@ export const getRatings = (
         uid,
         rating: ratingData.rating,
         timestamp: ratingData.timestamp,
-        comment: ratingData.comment
+        comment: ratingData.comment,
       })) as IRating[];
       callback(ratings);
     } else {
@@ -246,5 +228,47 @@ export const getUsersInfo = async (
     return { nickName, userPhoto, rating, comment };
   }
 };
-
-export const deleteComment = () => {};
+// 코멘트만 삭제
+export const deleteComment = async (movieId: number) => {
+  const currentUser = auth.currentUser;
+  if (currentUser) {
+    const ratingsRef = doc(db, 'ratings', movieId.toString());
+    const ratingsDoc = await getDoc(ratingsRef);
+    const usersRef = doc(db, 'users', currentUser.uid);
+    const usersDoc = await getDoc(usersRef);
+    const ratedMovie = usersDoc.exists()
+      ? usersDoc.data()?.ratedMovie || []
+      : [];
+    const index = ratedMovie.findIndex((m: IMovie) => m.id === movieId);
+    if (index !== -1) {
+      delete ratedMovie[index].myComment;
+      await updateDoc(usersRef, { ratedMovie });
+    }
+    if (ratingsDoc.exists()) {
+      const ratingsData = ratingsDoc.data();
+      if (ratingsData[currentUser.uid]) {
+        delete ratingsData[currentUser.uid].comment;
+        await updateDoc(ratingsRef, ratingsData);
+      }
+    }
+  }
+};
+// 코멘트 등록
+export const handleCommentya = async (movie: IMovie) => {
+  const currentUser = auth.currentUser;
+  if (currentUser) {
+    const userRef = doc(db, 'users', currentUser.uid);
+    const docData = await getDoc(userRef);
+    // 문서가 있는지 ? ratedMovie가있는지?(없으면 []반환) : 문서가 없으면 []
+    let ratedMovie = docData.exists() ? docData.data()?.ratedMovie || [] : [];
+    const index = ratedMovie.findIndex((m: IMovie) => m.id === movie.id);
+    if (index !== -1) {
+      // 이미 있을 때 myRate만 업데이트
+      ratedMovie[index].myComment = movie.myComment;
+    } else {
+      ratedMovie = [movie, ...ratedMovie];
+    }
+    // ratedMovie 컬렉션을 업데이트
+    await updateDoc(userRef, { ratedMovie });
+  }
+};

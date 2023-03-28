@@ -332,7 +332,7 @@ function Detail({ movieId, keyword }: IDetail) {
                   <p>{myComment}</p>
                   <div className='edit'>
                     <button onClick={toggleComment}>수정</button>
-                    <button onClick={deleteComment}>삭제</button>
+                    <button onClick={() => deleteComment(movieId)}>삭제</button>
                   </div>
                 </Commented>
               )}
