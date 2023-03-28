@@ -1,7 +1,16 @@
-import { browserSessionPersistence, fetchSignInMethodsForEmail } from 'firebase/auth';
+import {
+  browserSessionPersistence,
+  fetchSignInMethodsForEmail,
+} from 'firebase/auth';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { clearUserData, IUserData, setInitFirebase, setIsLoggedIn, setUserData } from '../store';
+import {
+  clearUserData,
+  IUserData,
+  setInitFirebase,
+  setIsLoggedIn,
+  setUserData,
+} from '../store';
 import {
   auth,
   db,
@@ -17,7 +26,7 @@ import {
 } from './fbaseInit';
 import { arrayRemove, deleteField, serverTimestamp } from 'firebase/firestore';
 import { IMovie } from './movieApi';
-import { IRating, IUserInfo } from '../components/etc/Detail';
+import { IRating, IUserInfo } from '../components/detail/Detail';
 
 // firebase 초기화, 사용자 인증, userData 세팅
 export const useInitialize = (isLoggedIn: boolean) => {
@@ -64,14 +73,22 @@ export const checkEmailExists = async (email: string) => {
   return methods.length > 0 ? '이미 가입된 이메일입니다' : undefined;
 };
 // 닉네임 중복 체크
-export const checkNickNameExists = async (nickName: string, currentValue?: string) => {
+export const checkNickNameExists = async (
+  nickName: string,
+  currentValue?: string
+) => {
   if (currentValue === nickName) return;
 
-  const querySnapshot = await getDocs(query(collection(db, 'users'), where('nickName', '==', nickName)));
+  const querySnapshot = await getDocs(
+    query(collection(db, 'users'), where('nickName', '==', nickName))
+  );
   return querySnapshot.empty ? undefined : '이미 사용 중인 닉네임입니다';
 };
 // '보고 싶어요' 상태 확인
-export const checkIsFavorite = (movieId: number, favoriteMovie: IMovie[]): boolean => {
+export const checkIsFavorite = (
+  movieId: number,
+  favoriteMovie: IMovie[]
+): boolean => {
   return favoriteMovie.some((movie: IMovie) => movie.id === movieId);
 };
 // '보고 싶어요' 영화 데이터 firestore에 등록/삭제
@@ -81,7 +98,9 @@ export const handleFavoriteList = async (movie: IMovie) => {
     const userRef = doc(db, 'users', currentUser.uid);
     const docData = await getDoc(userRef);
     // 문서가 있는지 ? favoriteMovie가있는지?(없으면 []반환) : 문서가 없으면 []
-    const favoriteMovie = docData.exists() ? docData.data()?.favoriteMovie || [] : [];
+    const favoriteMovie = docData.exists()
+      ? docData.data()?.favoriteMovie || []
+      : [];
     if (favoriteMovie.some((m: IMovie) => m.id === movie.id)) {
       await updateDoc(userRef, {
         favoriteMovie: arrayRemove(movie),
@@ -92,12 +111,19 @@ export const handleFavoriteList = async (movie: IMovie) => {
   }
 };
 // 등록된 별점 확인
-export const checkMyRate = (movieId: number, ratedMovie: IMovie[]): number => {
+export const checkMyRate = (
+  movieId: number,
+  ratedMovie: IMovie[]
+): { myRate: number; myComment: string } => {
   const movie = ratedMovie.find((m: IMovie) => m.id === movieId);
-  return movie?.myRate || 0;
+  console.log(movie?.myComment);
+  return { myRate: movie?.myRate || 0, myComment: movie?.myComment || '' };
 };
 // 별점 매기기 firestore에 등록/삭제
-export const handleRatedList = async (movie: IMovie, isCancle: boolean = false) => {
+export const handleRatedList = async (
+  movie: IMovie,
+  isCancle: boolean = false
+) => {
   const currentUser = auth.currentUser;
   if (currentUser) {
     const userRef = doc(db, 'users', currentUser.uid);
@@ -118,15 +144,53 @@ export const handleRatedList = async (movie: IMovie, isCancle: boolean = false) 
     await updateDoc(userRef, { ratedMovie });
   }
 };
+// 코멘트 등록 / 삭제
+export const handleCommentya = async (movie: IMovie) => {
+  const currentUser = auth.currentUser;
+  if (currentUser) {
+    const userRef = doc(db, 'users', currentUser.uid);
+    const docData = await getDoc(userRef);
+    // 문서가 있는지 ? ratedMovie가있는지?(없으면 []반환) : 문서가 없으면 []
+    let ratedMovie = docData.exists() ? docData.data()?.ratedMovie || [] : [];
+    const index = ratedMovie.findIndex((m: IMovie) => m.id === movie.id);
+    if (index !== -1) {
+      // 이미 있을 때 myRate만 업데이트
+      ratedMovie[index].myComment = movie.myComment;
+    } else {
+      ratedMovie = [movie, ...ratedMovie];
+    }
+    // ratedMovie 컬렉션을 업데이트
+    await updateDoc(userRef, { ratedMovie });
+  }
+};
 // 닉네임으로 유저 찾기
 export const searchNickName = async (keyword: string) => {
   const querySnapShot = await getDocs(
-    query(collection(db, 'users'), where('nickName', '>=', keyword), where('nickName', '<=', keyword + '\uf8ff'))
+    query(
+      collection(db, 'users'),
+      where('nickName', '>=', keyword),
+      where('nickName', '<=', keyword + '\uf8ff')
+    )
   );
   return querySnapShot;
 };
+export const saveOnComment = async (movieId: number, comment: string) => {
+  const currentUser = auth.currentUser;
+  if (currentUser) {
+    const docRef = doc(db, 'ratings', movieId.toString());
+    await setDoc(
+      docRef,
+      { [currentUser.uid]: { comment: comment, timestamp: serverTimestamp() } },
+      { merge: true }
+    );
+  }
+};
 // 공용 별점 정보 저장
-export const saveOnRatings = async (movieId: number, rating: number, isCancle: boolean) => {
+export const saveOnRatings = async (
+  movieId: number,
+  rating: number,
+  isCancle: boolean
+) => {
   const currentUser = auth.currentUser;
   if (currentUser) {
     const ratingRef = doc(db, 'ratings', movieId.toString());
@@ -147,7 +211,10 @@ export const saveOnRatings = async (movieId: number, rating: number, isCancle: b
   }
 };
 // Detail 마운트시 firestore의 ratings 가져오기
-export const getRatings = (movieId: number, callback: (ratings: any) => void) => {
+export const getRatings = (
+  movieId: number,
+  callback: (ratings: any) => void
+) => {
   const ratingRef = doc(db, 'ratings', movieId.toString());
   const unsubscribe = onSnapshot(ratingRef, (docSnapshot) => {
     const data = docSnapshot.data();
@@ -156,6 +223,7 @@ export const getRatings = (movieId: number, callback: (ratings: any) => void) =>
         uid,
         rating: ratingData.rating,
         timestamp: ratingData.timestamp,
+        comment: ratingData.comment
       })) as IRating[];
       callback(ratings);
     } else {
@@ -166,11 +234,17 @@ export const getRatings = (movieId: number, callback: (ratings: any) => void) =>
   return unsubscribe;
 };
 
-export const getUsersInfo = async (uid:string, rating:number) => {
+export const getUsersInfo = async (
+  uid: string,
+  rating: number,
+  comment: string
+) => {
   const userRef = doc(db, 'users', uid);
   const docData = await getDoc(userRef);
-  if(docData.exists()){
+  if (docData.exists()) {
     const { nickName, userPhoto } = docData.data() as IUserInfo;
-    return { nickName, userPhoto, rating };
+    return { nickName, userPhoto, rating, comment };
   }
-}
+};
+
+export const deleteComment = () => {};

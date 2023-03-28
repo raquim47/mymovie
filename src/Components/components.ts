@@ -2,7 +2,7 @@ import AuthInput from './auth/AuthInput';
 import NewAccount from './auth/NewAccount';
 import SignIn from './auth/SignIn';
 import Banner from './etc/Banner';
-import Detail from './etc/Detail';
+import Detail from './detail/Detail';
 import Header from './etc/Header';
 import List from './list/List';
 import ListItem from './list/ListItem';

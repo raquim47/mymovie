@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { IUserData } from './../../store';
-import { IUserInfo } from './Detail';
+import { IUserInfo } from '../detail/Detail';
 
 const Wrapper = styled.div`
   /* width: 250px; */
@@ -52,7 +52,7 @@ const Comment = styled.p`
   -webkit-box-orient: vertical;
 `;
 
-function UserItem({ nickName, userPhoto, rating }: IUserInfo) {
+function UserItem({ nickName, userPhoto, rating, comment }: IUserInfo) {
   return (
     <Wrapper>
       <img
@@ -76,13 +76,7 @@ function UserItem({ nickName, userPhoto, rating }: IUserInfo) {
           <span>{rating}</span>
         </Star>
       )}
-      <Comment>
-        똑똑똑, 휴가를 즐기는 가족에게 찾아온 선택의 그림자 휴가를 떠난 한
-        가족은 별장에 무단침입한 낯선 방문자들과 대치하게 된다. ‘레너드’(데이브
-        바티스타)와 낯선 방문자들은 세상의 종말을 막으러 왔다며, 가족 중 한 명을
-        희생시켜야만 인류의 멸망을 막을 수 있다는 잔혹한 선택을 하게 하는데…
-        가족을 살리면 인류가 멸망하고, 인류를 살리면 가족이 죽는다!
-      </Comment>
+      {comment && <Comment>{comment}</Comment>}
     </Wrapper>
   );
 }
