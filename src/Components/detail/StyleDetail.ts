@@ -124,7 +124,7 @@ export const ContentTopInner = styled.div`
   }
 `;
 
-export const Poster = styled.div`
+export const DetailPoster = styled.div`
   position: absolute;
   left: 30px;
   bottom: 0;
@@ -151,116 +151,6 @@ export const Poster = styled.div`
   }
 `;
 
-export const Head = styled.div`
-  margin-bottom: 10px;
-  padding-left: 16px;
-  padding-bottom: 10px;
-
-  @media only screen and (max-width: 960px) {
-    width: 75%;
-  }
-
-  @media only screen and (max-width: 768px) {
-    width: 100%;
-    margin-top: 10px;
-    background-color: ${(props) => props.theme.black.middle};
-    border-radius: 4px;
-    padding: 16px;
-  }
-`;
-
-export const Title = styled.div`
-  margin-bottom: 10px;
-
-  h2 {
-    font-size: 36px;
-    font-weight: 700;
-  }
-
-  h3 {
-    font-weight: 700;
-    font-size: 18px;
-  }
-`;
-
-export const Info = styled.ul`
-  display: flex;
-
-  li {
-    position: relative;
-    font-size: 14px;
-  }
-
-  li ~ li {
-    padding-left: 15px;
-    margin-left: 12px;
-  }
-
-  li.averageStar {
-    display: flex;
-    gap: 4px;
-    align-items: center;
-  }
-
-  li ~ li:before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 3px;
-    height: 3px;
-    border-radius: 50%;
-    background-color: ${(props) => props.theme.white.darker};
-  }
-`;
-
-export const Option = styled.ul<{ isFavorite: boolean }>`
-  display: flex;
-  justify-content: space-between;
-  background-color: ${(props) => props.theme.black.middle};
-  border-radius: 4px;
-  padding: 10px 0;
-  height: 75px;
-
-  li {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    font-size: 12px;
-    padding: 0 4%;
-  }
-
-  li ~ li {
-    position: relative;
-
-    ::before {
-      position: absolute;
-      top: 50%;
-      right: 100%;
-      transform: translateY(-50%);
-      width: 1px;
-      height: 80%;
-      background-color: ${(props) => props.theme.white.darker};
-      content: '';
-    }
-  }
-
-  .detailOptionIcon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 40px;
-    cursor: pointer;
-    font-size: 24px;
-  }
-
-  .heart {
-    color: ${(props) => (props.isFavorite ? props.theme.purple : 'inherit')};
-  }
-`;
-
 // ContentMiddle
 export const ContentMiddle = styled.section`
   display: flex;
@@ -276,102 +166,16 @@ export const ContentMiddle = styled.section`
   }
 `;
 
-export const Commented = styled.div`
-  display: flex;
-  align-items: center;
+export const CommentWrapper = styled.div`
   border-radius: 4px;
   padding: 16px;
   background-color: ${(props) => props.theme.black.middle};
 
-  .profile {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-color: ${(props) => props.theme.white.white};
-    margin-right: 20px;
-  }
-
-  p {
-    width: 70%;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    font-size: 14px;
-  }
-
-  .edit {
-    display: flex;
-    gap: 10px;
-    margin-left: auto;
-    margin-right: 0;
-    font-size: 12px;
-  }
-`;
-
-export const OverView = styled.div`
-  border-radius: 4px;
-  padding: 16px;
-  background-color: ${(props) => props.theme.black.middle};
-
-  h5 {
-    position: relative;
-    margin-bottom: 16px;
-    padding-left: 10px;
-    font-size: 14px;
-    :before {
-      content: '';
-      position: absolute;
-      width: 2px;
-      height: 10px;
-      left: 0;
-      top: 50%;
-      transform: translateY(-50%);
-      background-color: white;
-    }
-  }
-  p {
-    font-size: 14px;
-    line-height: 1.4;
-    word-break: keep-all;
-  }
-`;
-
-export const Ratings = styled.div`
-  border-radius: 4px;
-  padding: 16px;
-  background-color: ${(props) => props.theme.black.middle};
-`;
-export const UserItemWrapper = styled.div`
-  border-radius: 10px;
-  background-color: ${(props) => props.theme.black.lighter};
-  margin-bottom: 16px;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-`;
-export const CommentForm = styled.form`
-  display: flex;
-  width: 100%;
-
-  textarea {
-    flex: 1;
-    padding: 8px 16px;
-    border-radius: 4px;
-    box-sizing: border-box;
-    outline: none;
-    resize: none;
-    ::placeholder {
-      color: #a6adbd;
-    }
-  }
-
-  .btns {
+  .comment_edit {
     display: flex;
     align-items: center;
     gap: 6px;
-    padding-left: 2%;
-
+    margin-left: 2%;
     button {
       position: relative;
       background-color: transparent;
@@ -396,5 +200,109 @@ export const CommentForm = styled.form`
       background-color: ${(props) => props.theme.white.darker};
       content: '';
     }
+  }
+`;
+
+export const PostedComment = styled.div`
+  display: flex;
+  align-items: center;
+  
+  h4 {
+    position: relative;
+    padding-left: 10px;
+    margin-right: 16px;
+    font-size: 14px;
+    font-weight: 600;
+    color: ${(props) => props.theme.white.darker};
+  }
+
+  h4::before {
+    content: '';
+    position: absolute;
+    width: 2px;
+    height: 10px;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: ${(props) => props.theme.white.darker};
+  }
+
+  p {
+    flex: 1;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    font-size: 14px;
+  }
+`;
+export const CommentForm = styled.form`
+  position: relative;
+  display: flex;
+  width: 100%;
+
+  textarea {
+    flex: 1;
+    padding: 8px 16px;
+    border-radius: 4px;
+    box-sizing: border-box;
+    outline: none;
+    resize: none;
+    ::placeholder {
+      color: #a6adbd;
+    }
+  }
+
+  .comment_error {
+    position: absolute;
+    width: 100%;
+    top: 100%;
+    color: ${(props) => props.theme.purple};
+    font-size: 11px;
+    margin-top: 2px;
+    margin-left: 4px;
+  }
+`;
+export const OverView = styled.div`
+  border-radius: 4px;
+  padding: 16px;
+  background-color: ${(props) => props.theme.black.middle};
+
+  h5 {
+    position: relative;
+    margin-bottom: 10px;
+    padding-left: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    color: ${(props) => props.theme.white.darker};
+    :before {
+      content: '';
+      position: absolute;
+      width: 2px;
+      height: 10px;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: ${(props) => props.theme.white.darker};
+    }
+  }
+  p {
+    font-size: 14px;
+    line-height: 1.4;
+    word-break: keep-all;
+  }
+`;
+
+export const Ratings = styled.div`
+  border-radius: 4px;
+  padding: 16px;
+  background-color: ${(props) => props.theme.black.middle};
+`;
+export const UserItemWrapper = styled.div`
+  border-radius: 10px;
+  background-color: ${(props) => props.theme.black.lighter};
+  margin-bottom: 16px;
+
+  &:last-child {
+    margin-bottom: 0;
   }
 `;
