@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import { useEffect, useState } from 'react';
 import { IMovie } from '../../services/movieApi';
-import { checkIsFavorite, handleFavoriteList } from '../../services/fbaseFunc';
+import { handleUserFavoriteMovie } from '../../services/fbaseFunc';
 
 const Wrapper = styled.div<{ isFavorite: boolean }>`
   color: ${(props) => (props.isFavorite ? props.theme.purple : 'inherit')};
@@ -22,8 +22,8 @@ function DetailOptionFavorite({ movieData, movieId }: IDetailOptionFavorite) {
   const navigate = useNavigate();
   const favoriteMatch = useMatch(`/favorite/:listType/:movieId`);
   const isLoggedIn = useSelector((state: RootState) => state.init.isLoggedIn);
-  const favoriteMovie = useSelector(
-    (state: RootState) => state.userData?.favoriteMovie
+  const favoriteMovies = useSelector(
+    (state: RootState) => state.userData?.favoriteMovies
   );
   const [isFavorite, setIsfavorite] = useState(false);
   // '보고 싶어요' 눌렀을 때
@@ -36,24 +36,15 @@ function DetailOptionFavorite({ movieData, movieId }: IDetailOptionFavorite) {
     if (isFavorite && favoriteMatch) {
       navigate('/favorite');
     }
-
-    const favoriteMovieData = {
-      id: movieId,
-      title: movieData.title,
-      poster_path: movieData.poster_path,
-      vote_average: movieData.vote_average,
-      genre_ids: movieData?.genres ? movieData?.genres.map((m) => m.id) : [],
-    };
-    handleFavoriteList(favoriteMovieData);
+    handleUserFavoriteMovie(movieData);
   };
 
-  // movieId의 favorite을 확인해서 isFavorite에 반영
+  // store의 favoriteMovies를 확인해서 isFavorite에 반영
   useEffect(() => {
-    if (!isLoggedIn || !favoriteMovie) return;
-    const isFavorite = checkIsFavorite(movieId, favoriteMovie);
-    setIsfavorite(isFavorite);
-  }, [movieId, favoriteMovie]);
-  
+    if (!isLoggedIn || !favoriteMovies) return;
+    setIsfavorite(!!favoriteMovies[movieId]);
+  }, [movieId, favoriteMovies]);
+
   return (
     <Wrapper isFavorite={isFavorite}>
       <div className='detailOptionIcon' onClick={onClickFavorite}>

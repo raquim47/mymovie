@@ -7,11 +7,7 @@ import { getMovieDetail, IMovie } from '../../services/movieApi';
 import { makeImagePath } from '../../utils/utils';
 import { useEffect, useState } from 'react';
 import {
-  checkIsFavorite,
-  handleFavoriteList,
-  handleRatedList,
   checkMyRate,
-  saveOnRatings,
   getRatings,
   getUsersInfo,
   saveOnComment,

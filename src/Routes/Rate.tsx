@@ -14,7 +14,7 @@ function Rate() {
 
   return (
     <Wrapper>
-      {ratedMovie && <Library movieList={ratedMovie} rowSize={6} />}
+      {/* {ratedMovie && <Library movieList={ratedMovie} rowSize={6} />} */}
     </Wrapper>
   );
 }

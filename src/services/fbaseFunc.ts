@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import {
   clearUserData,
-  IUserData,
+  IUserAccount,
   setInitFirebase,
   setIsLoggedIn,
   setUserData,
@@ -24,7 +24,7 @@ import {
   updateDoc,
   setDoc,
 } from './fbaseInit';
-import { arrayRemove, deleteField, serverTimestamp } from 'firebase/firestore';
+import { arrayRemove, deleteField, serverTimestamp, Timestamp } from 'firebase/firestore';
 import { IMovie } from './movieApi';
 import { IRating, IUserInfo } from '../components/detail/Detail';
 
@@ -46,6 +46,7 @@ export const useInitialize = (isLoggedIn: boolean) => {
         });
       })
       .catch((error) => {
+        console.log(error);
         // 오류 처리
       });
   }, []);
@@ -55,7 +56,7 @@ export const useInitialize = (isLoggedIn: boolean) => {
     if (user) {
       const userRef = doc(db, 'users', user.uid);
       const unsubscribe = onSnapshot(userRef, (doc) => {
-        const userData = doc.data() as IUserData;
+        const userData = doc.data() as IUserAccount;
         dispatch(setUserData(userData));
       });
       // Clean up subscription
@@ -84,29 +85,34 @@ export const checkNickNameExists = async (
   );
   return querySnapshot.empty ? undefined : '이미 사용 중인 닉네임입니다';
 };
-// '보고 싶어요' 상태 확인
-export const checkIsFavorite = (
-  movieId: number,
-  favoriteMovie: IMovie[]
-): boolean => {
-  return favoriteMovie.some((movie: IMovie) => movie.id === movieId);
-};
+
 // '보고 싶어요' 영화 데이터 firestore에 등록/삭제
-export const handleFavoriteList = async (movie: IMovie) => {
+export const handleUserFavoriteMovie = async (movie: IMovie) => {
   const currentUser = auth.currentUser;
   if (currentUser) {
     const userRef = doc(db, 'users', currentUser.uid);
     const docData = await getDoc(userRef);
-    // 문서가 있는지 ? favoriteMovie가있는지?(없으면 []반환) : 문서가 없으면 []
-    const favoriteMovie = docData.exists()
-      ? docData.data()?.favoriteMovie || []
-      : [];
-    if (favoriteMovie.some((m: IMovie) => m.id === movie.id)) {
+    // 문서가 있는지 ? favoriteMovies가있는지?(없으면 {}반환) : 문서가 없으면 {}
+    const favoriteMovies = docData.exists()
+      ? docData.data()?.favoriteMovies || {}
+      : {};
+    // favorite이면 삭제
+    if (favoriteMovies[movie.id]) {
       await updateDoc(userRef, {
-        favoriteMovie: arrayRemove(movie),
+        [`favoriteMovies.${movie.id}`]: deleteField(),
       });
     } else {
-      await updateDoc(userRef, { favoriteMovie: [movie, ...favoriteMovie] });
+      // favorite이 아니면 새로운 객체 저장
+      await updateDoc(userRef, {
+        [`favoriteMovies.${movie.id}`]: {
+          id: movie.id,
+          title: movie.title,
+          poster_path: movie.poster_path,
+          vote_average: movie.vote_average,
+          genre_ids: movie?.genres ? movie?.genres.map((m) => m.id) : [],
+          timestamp: Date.now(),
+        },
+      });
     }
   }
 };
@@ -119,6 +125,7 @@ export const checkMyRate = (
   console.log(movie?.myComment);
   return { myRate: movie?.myRate || 0, myComment: movie?.myComment || '' };
 };
+
 // 별점 매기기 firestore에 등록/삭제
 export const handleRatedList = async (
   movie: IMovie,

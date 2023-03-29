@@ -89,7 +89,7 @@ function UserMiniProfile() {
           <span>
             찜
             <small>
-              {userData?.favoriteMovie ? userData?.favoriteMovie.length : 0}
+              {userData?.favoriteMovies ? Object.keys(userData?.favoriteMovies).length : 0}
             </small>
           </span>
         </UserMovie>

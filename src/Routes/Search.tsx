@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { GetSearched, IGetMovieResult, IMovie } from '../services/movieApi';
 import { List, UserItem } from '../components/components';
-import { IUserData } from '../store';
+import { IUserMiniInfo } from '../store';
 import { searchNickName } from '../services/fbaseFunc';
 
 const Wrapper = styled.div`
@@ -33,12 +33,12 @@ function Search() {
   const location = useLocation();
   const keyword = new URLSearchParams(location.search).get('keyword');
   const rowSize = 6;
-  const [searchedUser, setSearchedUser] = useState<IUserData[]>([]);
+  const [searchedUser, setSearchedUser] = useState<IUserMiniInfo[]>([]);
   // 검색한 유저 데이터 searchedUser에 저장
   useEffect(() => {
     searchNickName(keyword as string).then((querySnapshot) => {
       const searchResult = querySnapshot.docs.map(
-        (doc) => doc.data() as IUserData
+        (doc) => doc.data() as IUserMiniInfo
       );
       setSearchedUser(searchResult);
     });

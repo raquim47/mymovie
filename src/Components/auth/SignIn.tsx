@@ -84,6 +84,7 @@ const SignIn = ({ toggleAccount }: ISignIn) => {
           await setDoc(userRef, { nickName, email: user.email, userPhoto: '' });
         }
       } catch (error) {
+        alert(error);
         console.error(error);
       }
     }
@@ -94,6 +95,7 @@ const SignIn = ({ toggleAccount }: ISignIn) => {
       await signInWithEmailAndPassword(auth, email, password);
       alert('로그인 성공');
     } catch (error) {
+      alert(error);
       console.error(error);
     }
   };

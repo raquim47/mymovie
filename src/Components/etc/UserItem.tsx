@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { IUserData } from './../../store';
 import { IUserInfo } from '../detail/Detail';
 
 const Wrapper = styled.div`

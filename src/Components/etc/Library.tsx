@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { IMovie } from '../../services/movieApi';
+import { IFavoriteMovie } from '../../store';
 import { List } from '../components';
 
 // 2차원 배열 만들기
@@ -12,7 +13,7 @@ const splitArray = (array: any[], rowSize: number) => {
 };
 
 interface ILibrary {
-  movieList: IMovie[];
+  movieList: IFavoriteMovie[];
   rowSize: number;
 }
 
