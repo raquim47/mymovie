@@ -2,19 +2,22 @@ import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { RootState } from '../store';
 import Library from '../components/etc/Library';
+import { ISortType, sortMovies } from '../utils/utils';
+import { useState } from 'react';
 
 const Wrapper = styled.div`
   padding: 0 30px;
 `;
 
 function Rate() {
-  const ratedMovie = useSelector(
-    (state: RootState) => state.userData?.ratedMovie
+  const [sortType, setSortType] = useState<ISortType>('lowRate');
+  const ratedMovies = useSelector(
+    (state: RootState) => state.userData?.ratedMovies
   );
-
+  const sortedRatedMovies = ratedMovies ? sortMovies(ratedMovies, sortType) : [];
   return (
     <Wrapper>
-      {/* {ratedMovie && <Library movieList={ratedMovie} rowSize={6} />} */}
+      <Library movieList={sortedRatedMovies} rowSize={6} />
     </Wrapper>
   );
 }

@@ -9,13 +9,22 @@ export interface IFavoriteMovie {
   genre_ids: number[];
   timestamp: number;
 }
+export interface IRatedMovie {
+  id: number;
+  title: string;
+  poster_path: string;
+  vote_average: number;
+  genre_ids: number[];
+  timestamp: number;
+  rate: number;
+}
 
 export interface IUserAccount {
   email: string;
   nickName: string;
   userPhoto: string;
   favoriteMovies?: { [key: number]: IFavoriteMovie };
-  ratedMovie?: IMovie[];
+  ratedMovies?: { [key:number] :IRatedMovie};
 }
 
 export interface IUserMiniInfo {

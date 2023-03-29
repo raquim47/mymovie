@@ -15,10 +15,9 @@ const Wrapper = styled.div<{ isFavorite: boolean }>`
 
 interface IDetailOptionFavorite {
   movieData: IMovie;
-  movieId: number;
 }
 
-function DetailOptionFavorite({ movieData, movieId }: IDetailOptionFavorite) {
+function DetailOptionFavorite({ movieData }: IDetailOptionFavorite) {
   const navigate = useNavigate();
   const favoriteMatch = useMatch(`/favorite/:listType/:movieId`);
   const isLoggedIn = useSelector((state: RootState) => state.init.isLoggedIn);
@@ -42,8 +41,8 @@ function DetailOptionFavorite({ movieData, movieId }: IDetailOptionFavorite) {
   // store의 favoriteMovies를 확인해서 isFavorite에 반영
   useEffect(() => {
     if (!isLoggedIn || !favoriteMovies) return;
-    setIsfavorite(!!favoriteMovies[movieId]);
-  }, [movieId, favoriteMovies]);
+    setIsfavorite(!!favoriteMovies[movieData.id]);
+  }, [movieData, favoriteMovies]);
 
   return (
     <Wrapper isFavorite={isFavorite}>

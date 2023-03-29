@@ -7,7 +7,6 @@ import { getMovieDetail, IMovie } from '../../services/movieApi';
 import { makeImagePath } from '../../utils/utils';
 import { useEffect, useState } from 'react';
 import {
-  checkMyRate,
   getRatings,
   getUsersInfo,
   saveOnComment,
@@ -29,11 +28,8 @@ import {
   ContentTopInner,
   DetailPoster,
   ContentMiddle,
-  CommentWrapper,
-  PostedComment,
   OverView,
   Ratings,
-  CommentForm,
   UserItemWrapper,
 } from './StyleDetail';
 import DetailInfo from './DetailInfo';
@@ -100,13 +96,11 @@ function Detail({ movieId, keyword }: IDetail) {
   
   
   
-  const [myRate, setMyrate] = useState(0);
+  
   const [myComment, setMyComment] = useState('');
   const [commentOpen, setCommentOpen] = useState(false);
  
-  const ratedMovie = useSelector(
-    (state: RootState) => state.userData?.ratedMovie
-  );
+  
   const navigate = useNavigate();
   const detailMatch = useMatch(`/:page/:listType/:movieId`);
 
@@ -134,36 +128,28 @@ function Detail({ movieId, keyword }: IDetail) {
     setCommentOpen((prev) => !prev);
   };
   // 코멘트 눌렀을 때
-  const handleCommentValid = ({ comment }: { comment: string }) => {
-    if (!movieData) return;
+  // const handleCommentValid = ({ comment }: { comment: string }) => {
+  //   if (!movieData) return;
 
-    const genre_ids = movieData?.genres
-      ? movieData?.genres.map((m) => m.id)
-      : [];
-    const ratedMovieData = {
-      id: movieId,
-      title: movieData.title,
-      poster_path: movieData.poster_path,
-      vote_average: movieData.vote_average,
-      genre_ids,
-      myRate,
-      myComment: comment,
-    };
-    handleCommentya(ratedMovieData);
-    saveOnComment(movieId, comment);
-    setCommentOpen(false);
-  };
+  //   const genre_ids = movieData?.genres
+  //     ? movieData?.genres.map((m) => m.id)
+  //     : [];
+  //   const ratedMovieData = {
+  //     id: movieId,
+  //     title: movieData.title,
+  //     poster_path: movieData.poster_path,
+  //     vote_average: movieData.vote_average,
+  //     genre_ids,
+  //     myRate,
+  //     myComment: comment,
+  //   };
+  //   handleCommentya(ratedMovieData);
+  //   saveOnComment(movieId, comment);
+  //   setCommentOpen(false);
+  // };
 
-  // movieId의 ratedMovie 확인해서 isFavorite에 반영
-  useEffect(() => {
-    if (!isLoggedIn || !ratedMovie) return;
-    const { myRate, myComment } = checkMyRate(movieId, ratedMovie);
-    console.log(myComment);
-    setMyrate(myRate);
-    setMyComment(myComment);
-  }, [movieId, ratedMovie]);
   
-  console.log(myComment, myRate, usersInfo);
+  
   return (
     <>
       <GlobalStyle isScroll={isScroll} />
@@ -201,15 +187,13 @@ function Detail({ movieId, keyword }: IDetail) {
                 <DetailInfo movieData={movieData as IMovie} />
                 <DetailOption
                   movieData={movieData as IMovie}
-                  movieId={movieId}
                   toggleComment={toggleComment}
-                  myRate={myRate}
                   myComment={myComment}
                 />
               </ContentTopInner>
             </ContentTop>
             <ContentMiddle>
-              {commentOpen ? (
+              {/* {commentOpen ? (
                 <CommentWrapper>
                   <CommentForm onSubmit={handleSubmit(handleCommentValid)}>
                     <textarea
@@ -241,7 +225,7 @@ function Detail({ movieId, keyword }: IDetail) {
                     </PostedComment>
                   </CommentWrapper>
                 )
-              )}
+              )} */}
 
               {movieData?.overview ? (
                 <OverView>

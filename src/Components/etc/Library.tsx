@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { IMovie } from '../../services/movieApi';
 import { IFavoriteMovie } from '../../store';
 import { List } from '../components';
 

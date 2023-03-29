@@ -83,7 +83,7 @@ function UserMiniProfile() {
           <span>
             평가
             <small>
-              {userData?.ratedMovie ? userData?.ratedMovie.length : 0}
+              {userData?.ratedMovies ? Object.keys(userData?.ratedMovies).length : 0}
             </small>
           </span>
           <span>
