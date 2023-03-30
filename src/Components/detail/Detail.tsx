@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 import { getRatingUsers } from '../../services/fbaseFunc';
 import { useSelector } from 'react-redux';
 import { IRatingUsers, RootState } from '../../store';
-import UserItem from '../etc/UserItem';
+import UserItem from '../auth/UserItem';
 import {
   GlobalStyle,
   Overlay,

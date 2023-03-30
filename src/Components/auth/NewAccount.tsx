@@ -2,11 +2,11 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth, db, doc, setDoc } from '../../services/fbaseInit';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
-import { AuthInput } from './../components';
 import {
   checkEmailExists,
   checkNickNameExists,
 } from '../../services/fbaseFunc';
+import AuthInput from './AuthInput';
 
 interface IForm {
   email: string;

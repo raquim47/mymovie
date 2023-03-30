@@ -1,5 +1,7 @@
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
+import Banner from '../components/list/Banner';
+import List from '../components/list/List';
 import {
   getMovieDetail,
   getMoviesLatest,
@@ -9,7 +11,6 @@ import {
   IGetMovieResult,
   IMovie,
 } from '../services/movieApi';
-import { Banner, List } from '../components/components';
 
 const Wrapper = styled.div`
   padding: 0 30px;

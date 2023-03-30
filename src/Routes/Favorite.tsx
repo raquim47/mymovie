@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { RootState } from '../store';
-import Library from '../components/etc/Library';
+import Library from '../components/list/Library';
 import { useState } from 'react';
 import { ISortType, sortMovies } from '../utils/utils';
 

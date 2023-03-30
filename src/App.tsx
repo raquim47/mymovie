@@ -1,7 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { Nav, PrivateRoute, Header } from './components/components';
 import {
   Home,
   Auth,
@@ -13,6 +12,8 @@ import {
 } from './routes/routes';
 import { RootState } from './store';
 import { useInitialize } from './services/fbaseFunc';
+import Nav from './components/nav/Nav';
+import PrivateRoute from './components/etc/PrivateRoute';
 
 const Wrapper = styled.div`
   padding: 100px 0px 0px 240px;

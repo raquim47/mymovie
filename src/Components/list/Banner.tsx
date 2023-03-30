@@ -3,7 +3,7 @@ import { useMatch, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { IMovie } from '../../services/movieApi';
 import { makeImagePath } from '../../utils/utils';
-import { Detail } from './../components';
+import Detail from '../detail/Detail';
 
 const Wrapper = styled.div`
   margin: 0 -8px;

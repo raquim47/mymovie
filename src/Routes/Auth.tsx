@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import {SignIn, NewAccount} from '../components/components';
+import NewAccount from '../components/auth/NewAccount';
+import SignIn from '../components/auth/SignIn';
 
 const Wrapper = styled.div`
   width: 480px;

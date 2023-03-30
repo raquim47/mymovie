@@ -11,10 +11,10 @@ import { useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { RootState } from '../store';
-import { AuthInput } from '../components/components';
 import { storageService } from '../services/fbaseInit';
 import { checkNickNameExists } from '../services/fbaseFunc';
 import { User } from 'firebase/auth';
+import AuthInput from '../components/auth/AuthInput';
 
 const Wrapper = styled.div`
   width: 480px;

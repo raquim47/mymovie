@@ -202,6 +202,7 @@ export const Ratings = styled.div`
   padding: 16px;
   background-color: ${(props) => props.theme.black.middle};
 `;
+
 export const UserItemWrapper = styled.div`
   border-radius: 10px;
   background-color: ${(props) => props.theme.black.lighter};

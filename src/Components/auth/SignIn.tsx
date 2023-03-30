@@ -1,7 +1,6 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { AuthInput } from './../components';
 import { auth, db, doc, getDoc, setDoc } from '../../services/fbaseInit';
 import { checkNickNameExists } from '../../services/fbaseFunc';
 import styled from 'styled-components';
@@ -13,6 +12,7 @@ import {
 } from 'firebase/auth';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle, faGithub } from '@fortawesome/free-brands-svg-icons';
+import AuthInput from './AuthInput';
 
 const Btn = styled.button`
   margin-top: 12px;

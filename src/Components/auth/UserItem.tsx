@@ -1,9 +1,6 @@
 import styled from 'styled-components';
-import { IRatingUsers } from '../../store';
-// import { IUserInfo } from '../detail/Detail';
 
 const Wrapper = styled.div`
-  /* width: 250px; */
   display: flex;
   align-items: center;
   gap: 16px;

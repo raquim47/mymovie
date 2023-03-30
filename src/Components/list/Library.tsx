@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { IFavoriteMovie } from '../../store';
-import { List } from '../components';
+import List from './List';
 
 // 2차원 배열 만들기
 const splitArray = (array: any[], rowSize: number) => {

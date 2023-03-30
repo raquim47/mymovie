@@ -2,7 +2,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { IMovie } from '../../services/movieApi';
-import { ListItem } from './../components';
+import ListItem from './ListItem';
 
 const Wrapper = styled.div`
   position: relative;

@@ -3,9 +3,10 @@ import { useInfiniteQuery, useQueryClient } from 'react-query';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { GetSearched, IGetMovieResult, IMovie } from '../services/movieApi';
-import { List, UserItem } from '../components/components';
 import { IUserMiniInfo } from '../store';
 import { searchNickName } from '../services/fbaseFunc';
+import UserItem from '../components/auth/UserItem';
+import List from '../components/list/List';
 
 const Wrapper = styled.div`
   padding: 0 30px;

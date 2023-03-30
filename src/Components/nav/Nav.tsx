@@ -9,9 +9,11 @@ import { faStar, faHeart } from '@fortawesome/free-regular-svg-icons';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { auth } from '../../services/fbaseInit';
-import {UserMiniProfile, SearchForm, Logo} from '../components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
+import Logo from './Logo';
+import UserMiniProfile from './UserMiniProfile';
+import SearchForm from './SearchForm';
 
 const Wrapper = styled.nav`
   display: flex;
