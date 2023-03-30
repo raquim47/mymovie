@@ -1,6 +1,13 @@
 import { configureStore, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IMovie } from './services/movieApi';
 
+export interface IRatingUsers {
+  userId: string;
+  nickName: string;
+  userPhoto: string;
+  rate: number;
+  comment?: string;
+  timestamp: number;
+}
 export interface IFavoriteMovie {
   id: number;
   title: string;
@@ -15,8 +22,9 @@ export interface IRatedMovie {
   poster_path: string;
   vote_average: number;
   genre_ids: number[];
-  timestamp: number;
   rate: number;
+  comment?: string;
+  timestamp: number;
 }
 
 export interface IUserAccount {
@@ -24,7 +32,7 @@ export interface IUserAccount {
   nickName: string;
   userPhoto: string;
   favoriteMovies?: { [key: number]: IFavoriteMovie };
-  ratedMovies?: { [key:number] :IRatedMovie};
+  ratedMovies?: { [key: number]: IRatedMovie };
 }
 
 export interface IUserMiniInfo {

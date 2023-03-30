@@ -49,25 +49,25 @@ const Option = styled.ul`
 
 interface IDetailOption {
   movieData: IMovie;
-  toggleComment: () => void;
-  myComment: string;
+  myRate:number;
+  toggleCommentForm: () => void;
 }
 function DetailOption({
   movieData,
-  toggleComment,
-  myComment,
+  myRate,
+  toggleCommentForm,
 }: IDetailOption) {
   
   return (
     <Option>
       <li>
-        <DetailOptionRate movieData={movieData}/>
+        <DetailOptionRate movieData={movieData} myRate={myRate}/>
       </li>
       <li>
         <DetailOptionFavorite movieData={movieData}/>
       </li>
       <li>
-        <div className='detailOptionIcon' onClick={toggleComment}>
+        <div className='detailOptionIcon' onClick={toggleCommentForm}>
           <FontAwesomeIcon icon={faPenToSquare} />
         </div>
         <em>코멘트 남기기</em>

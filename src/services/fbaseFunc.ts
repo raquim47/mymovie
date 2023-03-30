@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import {
   clearUserData,
+  IRatingUsers,
   IUserAccount,
   setInitFirebase,
   setIsLoggedIn,
@@ -24,14 +25,8 @@ import {
   updateDoc,
   setDoc,
 } from './fbaseInit';
-import {
-  arrayRemove,
-  deleteField,
-  serverTimestamp,
-  Timestamp,
-} from 'firebase/firestore';
+import { deleteField } from 'firebase/firestore';
 import { IMovie } from './movieApi';
-import { IRating, IUserInfo } from '../components/detail/Detail';
 
 // firebase 초기화, 사용자 인증, userData 세팅
 export const useInitialize = (isLoggedIn: boolean) => {
@@ -90,7 +85,17 @@ export const checkNickNameExists = async (
   );
   return querySnapshot.empty ? undefined : '이미 사용 중인 닉네임입니다';
 };
-
+// 닉네임으로 유저 찾기
+export const searchNickName = async (keyword: string) => {
+  const querySnapShot = await getDocs(
+    query(
+      collection(db, 'users'),
+      where('nickName', '>=', keyword),
+      where('nickName', '<=', keyword + '\uf8ff')
+    )
+  );
+  return querySnapShot;
+};
 // '보고 싶어요' 영화 데이터 firestore에 등록/삭제
 export const handleUserFavoriteMovie = async (movie: IMovie) => {
   const currentUser = auth.currentUser;
@@ -121,7 +126,7 @@ export const handleUserFavoriteMovie = async (movie: IMovie) => {
     }
   }
 };
-// '별점' firestore에 등록/삭제
+// '별점' firestore(users/ratings) 등록/삭제
 export const handleUserRatedMovies = async (
   currRate: number,
   movie: IMovie,
@@ -129,14 +134,16 @@ export const handleUserRatedMovies = async (
 ) => {
   const currentUser = auth.currentUser;
   if (currentUser) {
-    const userRef = doc(db, 'users', currentUser.uid);
+    const usersRef = doc(db, 'users', currentUser.uid);
+    const ratingsRef = doc(db, 'ratings', movie.id.toString());
     if (isCancle) {
-      await updateDoc(userRef, {
+      await updateDoc(usersRef, {
         [`ratedMovies.${movie.id}`]: deleteField(),
       });
+      await updateDoc(ratingsRef, { [currentUser.uid]: deleteField() });
     } else {
       await setDoc(
-        userRef,
+        usersRef,
         {
           ratedMovies: {
             [movie.id]: {
@@ -152,27 +159,10 @@ export const handleUserRatedMovies = async (
         },
         { merge: true }
       );
-    }
-  }
-};
-// 공용 별점 정보 저장
-export const handleRatings = async (
-  movieId: number,
-  rating: number,
-  isCancle: boolean
-) => {
-  const currentUser = auth.currentUser;
-  if (currentUser) {
-    const ratingRef = doc(db, 'ratings', movieId.toString());
-    if (isCancle) {
-      // 필드를 삭제하기 위해 deleteField 사용
-      const updateData = { [currentUser.uid]: deleteField() };
-      await updateDoc(ratingRef, updateData);
-    } else {
       await setDoc(
-        ratingRef,
+        ratingsRef,
         {
-          [currentUser.uid]: { rating: rating, timestamp: Date.now() },
+          [currentUser.uid]: { rating: currRate, timestamp: Date.now() },
         },
         { merge: true }
       );
@@ -180,106 +170,82 @@ export const handleRatings = async (
     }
   }
 };
-// 닉네임으로 유저 찾기
-export const searchNickName = async (keyword: string) => {
-  const querySnapShot = await getDocs(
-    query(
-      collection(db, 'users'),
-      where('nickName', '>=', keyword),
-      where('nickName', '<=', keyword + '\uf8ff')
-    )
-  );
-  return querySnapShot;
-};
-export const saveOnComment = async (movieId: number, comment: string) => {
+// '코멘트' firestore(users/ratings) 등록
+export const addComment = async (movieId: number, comment: string) => {
   const currentUser = auth.currentUser;
   if (currentUser) {
-    const docRef = doc(db, 'ratings', movieId.toString());
+    const usersRef = doc(db, 'users', currentUser.uid);
+    const ratingsRef = doc(db, 'ratings', movieId.toString());
     await setDoc(
-      docRef,
-      { [currentUser.uid]: { comment: comment, timestamp: serverTimestamp() } },
+      ratingsRef,
+      { [currentUser.uid]: { comment: comment, timestamp: Date.now() } },
+      { merge: true }
+    );
+    await setDoc(
+      usersRef,
+      {
+        ratedMovies: {
+          [movieId]: {
+            timestamp: Date.now(),
+            comment,
+          },
+        },
+      },
       { merge: true }
     );
   }
 };
-
-// Detail 마운트시 firestore의 ratings 가져오기
-export const getRatings = (
-  movieId: number,
-  callback: (ratings: any) => void
-) => {
-  const ratingRef = doc(db, 'ratings', movieId.toString());
-  const unsubscribe = onSnapshot(ratingRef, (docSnapshot) => {
-    const data = docSnapshot.data();
-    if (data) {
-      const ratings = Object.entries(data).map(([uid, ratingData]) => ({
-        uid,
-        rating: ratingData.rating,
-        timestamp: ratingData.timestamp,
-        comment: ratingData.comment,
-      })) as IRating[];
-      callback(ratings);
-    } else {
-      callback({});
-    }
-  });
-
-  return unsubscribe;
-};
-
-export const getUsersInfo = async (
-  uid: string,
-  rating: number,
-  comment: string
-) => {
-  const userRef = doc(db, 'users', uid);
-  const docData = await getDoc(userRef);
-  if (docData.exists()) {
-    const { nickName, userPhoto } = docData.data() as IUserInfo;
-    return { nickName, userPhoto, rating, comment };
-  }
-};
-// 코멘트만 삭제
+// 코멘트만 firestore(users/ratings) 삭제
 export const deleteComment = async (movieId: number) => {
   const currentUser = auth.currentUser;
   if (currentUser) {
-    const ratingsRef = doc(db, 'ratings', movieId.toString());
-    const ratingsDoc = await getDoc(ratingsRef);
     const usersRef = doc(db, 'users', currentUser.uid);
-    const usersDoc = await getDoc(usersRef);
-    const ratedMovie = usersDoc.exists()
-      ? usersDoc.data()?.ratedMovie || []
-      : [];
-    const index = ratedMovie.findIndex((m: IMovie) => m.id === movieId);
-    if (index !== -1) {
-      delete ratedMovie[index].myComment;
-      await updateDoc(usersRef, { ratedMovie });
-    }
-    if (ratingsDoc.exists()) {
-      const ratingsData = ratingsDoc.data();
-      if (ratingsData[currentUser.uid]) {
-        delete ratingsData[currentUser.uid].comment;
-        await updateDoc(ratingsRef, ratingsData);
+    const ratingsRef = doc(db, 'ratings', movieId.toString());
+    // usersRef에서 해당 영화에 대한 코멘트 삭제
+    await updateDoc(usersRef, {
+      ratedMovies: {
+        [movieId]: {
+          comment: deleteField(),
+        },
+      },
+    });
+    // ratingsRef에서 해당 사용자의 코멘트 삭제
+    await updateDoc(ratingsRef, {
+      [currentUser.uid]: { comment: deleteField() },
+    });
+  }
+};
+// Detail 마운트시 firestore의 ratings 가져오기
+export const getRatingUsers = async (movieId:number) => {
+  const ratingsResult = [];
+  const ratingsRef = doc(db, 'ratings', movieId.toString());
+  const ratingsDoc = await getDoc(ratingsRef);
+  if(ratingsDoc.exists()){
+    const movieRatings = ratingsDoc.data();
+    for (const userId in movieRatings) {
+      const usersRef = doc(db, 'users', userId);
+      const usersDoc = await getDoc(usersRef);
+
+      if (usersDoc.exists()) {
+        const userData = usersDoc.data();
+        const ratingData = movieRatings[userId];
+        const ratingObj:IRatingUsers = {
+          userId: userId,
+          nickName: userData.nickName,
+          userPhoto: userData.userPhoto,
+          rate: ratingData.rating,
+          timestamp: ratingData.timestamp,
+        };
+
+        if (ratingData.comment) {
+          ratingObj.comment = ratingData.comment;
+        }
+
+        ratingsResult.push(ratingObj);
       }
     }
   }
-};
-// 코멘트 등록
-export const handleCommentya = async (movie: IMovie) => {
-  const currentUser = auth.currentUser;
-  if (currentUser) {
-    const userRef = doc(db, 'users', currentUser.uid);
-    const docData = await getDoc(userRef);
-    // 문서가 있는지 ? ratedMovie가있는지?(없으면 []반환) : 문서가 없으면 []
-    let ratedMovie = docData.exists() ? docData.data()?.ratedMovie || [] : [];
-    const index = ratedMovie.findIndex((m: IMovie) => m.id === movie.id);
-    if (index !== -1) {
-      // 이미 있을 때 myRate만 업데이트
-      ratedMovie[index].myComment = movie.myComment;
-    } else {
-      ratedMovie = [movie, ...ratedMovie];
-    }
-    // ratedMovie 컬렉션을 업데이트
-    await updateDoc(userRef, { ratedMovie });
-  }
-};
+  
+  ratingsResult.sort((a, b) => b.timestamp - a.timestamp);
+  return ratingsResult;
+} 
