@@ -49,19 +49,21 @@ const Option = styled.ul`
 
 interface IDetailOption {
   movieData: IMovie;
-  myRate:number;
   toggleCommentForm: () => void;
+  myRate: number;
+  myComment:string;
 }
 function DetailOption({
   movieData,
   myRate,
+  myComment,
   toggleCommentForm,
 }: IDetailOption) {
   
   return (
     <Option>
       <li>
-        <DetailOptionRate movieData={movieData} myRate={myRate}/>
+        <DetailOptionRate movieData={movieData} myRate={myRate} myComment={myComment}/>
       </li>
       <li>
         <DetailOptionFavorite movieData={movieData}/>

@@ -9,8 +9,9 @@ import { rateMassage } from '../../utils/utils';
 interface IDetailOptionRate {
   movieData: IMovie;
   myRate:number;
+  myComment:string;
 }
-function DetailOptionRate({ movieData, myRate }: IDetailOptionRate) {
+function DetailOptionRate({ movieData, myRate, myComment }: IDetailOptionRate) {
   const navigate = useNavigate();
   const rateMatch = useMatch(`/rate/:listType/:movieId`);
   const isLoggedIn = useSelector((state: RootState) => state.init.isLoggedIn);
@@ -20,8 +21,7 @@ function DetailOptionRate({ movieData, myRate }: IDetailOptionRate) {
       alert('로그인 후 이용해주세요');
       return;
     }
-
-    if (currRate === myRate) {
+    if (myComment && currRate === myRate) {
       const cancleConfirm = window.confirm(
         '별점을 취소하면 저장된 코멘트도 삭제됩니다. 취소하시겠습니까?'
       );
@@ -30,15 +30,11 @@ function DetailOptionRate({ movieData, myRate }: IDetailOptionRate) {
     handleUserRatedMovies(currRate, movieData, currRate === myRate);
 
     if (currRate === myRate) {
-      alert('별점 취소');
       if (rateMatch) {
         navigate('/rate');
       }
-    } else {
-      alert('별점 등록');
     }
   };
-  console.log(myRate)
   return (
     <>
       <ReactStars

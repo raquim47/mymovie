@@ -199,28 +199,30 @@ export const addComment = async (movieId: number, comment: string) => {
 export const deleteComment = async (movieId: number) => {
   const currentUser = auth.currentUser;
   if (currentUser) {
-    const usersRef = doc(db, 'users', currentUser.uid);
-    const ratingsRef = doc(db, 'ratings', movieId.toString());
     // usersRef에서 해당 영화에 대한 코멘트 삭제
-    await updateDoc(usersRef, {
-      ratedMovies: {
-        [movieId]: {
-          comment: deleteField(),
-        },
-      },
-    });
+    const usersRef = doc(db, 'users', currentUser.uid);
+    const usersDoc = await getDoc(usersRef);
+    const usersData = usersDoc.data();
+    if (usersData) {
+      delete usersData.ratedMovies[movieId].comment;
+      await updateDoc(usersRef, { ratedMovies: usersData.ratedMovies });
+    }
     // ratingsRef에서 해당 사용자의 코멘트 삭제
-    await updateDoc(ratingsRef, {
-      [currentUser.uid]: { comment: deleteField() },
-    });
+    const ratingsRef = doc(db, 'ratings', movieId.toString());
+    const ratingsDoc = await getDoc(ratingsRef);
+    const ratingsData = ratingsDoc.data();
+    if (ratingsData) {
+      delete ratingsData[currentUser.uid].comment;
+      await updateDoc(ratingsRef, ratingsData);
+    }
   }
 };
-// Detail 마운트시 firestore의 ratings 가져오기
-export const getRatingUsers = async (movieId:number) => {
+// firestore ratings의 유저 정보 가져오기
+export const getRatingUsers = async (movieId: number) => {
   const ratingsResult = [];
   const ratingsRef = doc(db, 'ratings', movieId.toString());
   const ratingsDoc = await getDoc(ratingsRef);
-  if(ratingsDoc.exists()){
+  if (ratingsDoc.exists()) {
     const movieRatings = ratingsDoc.data();
     for (const userId in movieRatings) {
       const usersRef = doc(db, 'users', userId);
@@ -229,7 +231,7 @@ export const getRatingUsers = async (movieId:number) => {
       if (usersDoc.exists()) {
         const userData = usersDoc.data();
         const ratingData = movieRatings[userId];
-        const ratingObj:IRatingUsers = {
+        const ratingObj: IRatingUsers = {
           userId: userId,
           nickName: userData.nickName,
           userPhoto: userData.userPhoto,
@@ -245,7 +247,7 @@ export const getRatingUsers = async (movieId:number) => {
       }
     }
   }
-  
+
   ratingsResult.sort((a, b) => b.timestamp - a.timestamp);
   return ratingsResult;
-} 
+};

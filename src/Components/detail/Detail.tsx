@@ -47,17 +47,22 @@ function Detail({ movieId, keyword }: IDetail) {
 
   // myRate, myComment 갱신
   useEffect(() => {
-    if (!isLoggedIn || !ratedMovies || !ratedMovies[movieId]) return;
-    setmyRate(ratedMovies[movieId].rate);
-    setMyComment(ratedMovies[movieId].comment || '');
+    if (!isLoggedIn || !ratedMovies) return;
+    if (!ratedMovies[movieId]) {
+      setmyRate(0);
+      setMyComment('');
+    } else {
+      setmyRate(ratedMovies[movieId].rate);
+      setMyComment(ratedMovies[movieId].comment || '');
+    }
   }, [isLoggedIn, ratedMovies, movieId]);
-  // ratingUsers 갱신
+
+  // 변경된 코드
   useEffect(() => {
-    const fetchRatingUsers = async () => {
+    (async () => {
       const ratingUsersData = await getRatingUsers(movieId);
       setRatingUsers(ratingUsersData);
-    };
-    fetchRatingUsers();
+    })();
   }, [movieId, myRate, myComment]);
 
   // Overay클릭했을 때 popup 닫고 경로 이동
@@ -87,7 +92,6 @@ function Detail({ movieId, keyword }: IDetail) {
     }
     setCommentFormOpen((prev) => !prev);
   };
-  console.log(ratingUsers);
   return (
     <>
       <GlobalStyle isScroll={isScroll} />
@@ -127,6 +131,7 @@ function Detail({ movieId, keyword }: IDetail) {
                   movieData={movieData as IMovie}
                   toggleCommentForm={toggleCommentForm}
                   myRate={myRate}
+                  myComment={myComment}
                 />
               </ContentTopInner>
             </ContentTop>
@@ -138,24 +143,26 @@ function Detail({ movieId, keyword }: IDetail) {
                 myComment={myComment}
                 toggleCommentForm={toggleCommentForm}
               />
-              {movieData?.overview ? (
+              {movieData?.overview && (
                 <OverView>
                   {movieData?.tagline ? <h5>{movieData.tagline}</h5> : null}
                   <p>{movieData?.overview}</p>
                 </OverView>
-              ) : null}
-              <Ratings>
-                {ratingUsers.map((user, i) => (
-                  <UserItemWrapper key={i}>
-                    <UserItem
-                      userPhoto={user.userPhoto}
-                      nickName={user.nickName}
-                      rate={user.rate}
-                      comment={user.comment}
-                    />
-                  </UserItemWrapper>
-                ))}
-              </Ratings>
+              )}
+              {ratingUsers.length > 0 && (
+                <Ratings>
+                  {ratingUsers.map((user, i) => (
+                    <UserItemWrapper key={i}>
+                      <UserItem
+                        userPhoto={user.userPhoto}
+                        nickName={user.nickName}
+                        rate={user.rate}
+                        comment={user.comment}
+                      />
+                    </UserItemWrapper>
+                  ))}
+                </Ratings>
+              )}
             </ContentMiddle>
           </Content>
         )}
