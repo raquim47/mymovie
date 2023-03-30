@@ -61,10 +61,11 @@ function Detail({ movieId, keyword }: IDetail) {
   useEffect(() => {
     (async () => {
       const ratingUsersData = await getRatingUsers(movieId);
+      console.log('useEffect: ', ratingUsersData)
       setRatingUsers(ratingUsersData);
     })();
   }, [movieId, myRate, myComment]);
-
+  console.log('result: ', ratingUsers)
   // Overay클릭했을 때 popup 닫고 경로 이동
   const closeDetail = () => {
     if (!detailMatch) return;
@@ -92,6 +93,7 @@ function Detail({ movieId, keyword }: IDetail) {
     }
     setCommentFormOpen((prev) => !prev);
   };
+
   return (
     <>
       <GlobalStyle isScroll={isScroll} />

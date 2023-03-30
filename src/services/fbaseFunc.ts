@@ -137,11 +137,18 @@ export const handleUserRatedMovies = async (
     const usersRef = doc(db, 'users', currentUser.uid);
     const ratingsRef = doc(db, 'ratings', movie.id.toString());
     if (isCancle) {
+      await updateDoc(ratingsRef, { [currentUser.uid]: deleteField() });
       await updateDoc(usersRef, {
         [`ratedMovies.${movie.id}`]: deleteField(),
       });
-      await updateDoc(ratingsRef, { [currentUser.uid]: deleteField() });
     } else {
+      await setDoc(
+        ratingsRef,
+        {
+          [currentUser.uid]: { rating: currRate, timestamp: Date.now() },
+        },
+        { merge: true }
+      );
       await setDoc(
         usersRef,
         {
@@ -156,13 +163,6 @@ export const handleUserRatedMovies = async (
               rate: currRate,
             },
           },
-        },
-        { merge: true }
-      );
-      await setDoc(
-        ratingsRef,
-        {
-          [currentUser.uid]: { rating: currRate, timestamp: Date.now() },
         },
         { merge: true }
       );
@@ -199,14 +199,6 @@ export const addComment = async (movieId: number, comment: string) => {
 export const deleteComment = async (movieId: number) => {
   const currentUser = auth.currentUser;
   if (currentUser) {
-    // usersRef에서 해당 영화에 대한 코멘트 삭제
-    const usersRef = doc(db, 'users', currentUser.uid);
-    const usersDoc = await getDoc(usersRef);
-    const usersData = usersDoc.data();
-    if (usersData) {
-      delete usersData.ratedMovies[movieId].comment;
-      await updateDoc(usersRef, { ratedMovies: usersData.ratedMovies });
-    }
     // ratingsRef에서 해당 사용자의 코멘트 삭제
     const ratingsRef = doc(db, 'ratings', movieId.toString());
     const ratingsDoc = await getDoc(ratingsRef);
@@ -214,6 +206,14 @@ export const deleteComment = async (movieId: number) => {
     if (ratingsData) {
       delete ratingsData[currentUser.uid].comment;
       await updateDoc(ratingsRef, ratingsData);
+    }
+    // usersRef에서 해당 영화에 대한 코멘트 삭제
+    const usersRef = doc(db, 'users', currentUser.uid);
+    const usersDoc = await getDoc(usersRef);
+    const usersData = usersDoc.data();
+    if (usersData) {
+      delete usersData.ratedMovies[movieId].comment;
+      await updateDoc(usersRef, { ratedMovies: usersData.ratedMovies });
     }
   }
 };
@@ -249,5 +249,6 @@ export const getRatingUsers = async (movieId: number) => {
   }
 
   ratingsResult.sort((a, b) => b.timestamp - a.timestamp);
+  console.log('getFunc: ', ratingsResult)
   return ratingsResult;
 };
