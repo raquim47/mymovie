@@ -15,6 +15,7 @@ import { storageService } from '../services/fbaseInit';
 import { checkNickNameExists } from '../services/fbaseFunc';
 import { User } from 'firebase/auth';
 import AuthInput from '../components/auth/AuthInput';
+import { useNavigate } from 'react-router-dom';
 
 const Wrapper = styled.div`
   width: 480px;
@@ -49,13 +50,13 @@ const NickName = styled.div`
   height: 110px;
 
   h2 {
-    font-size: 36px;
+    font-size: ${(props) => props.theme.fontSizePx['4xl']};
     font-weight: 800;
     margin-bottom: 6px;
   }
   span {
     color: ${(props) => props.theme.purple};
-    font-size: 14px;
+    font-size: ${(props) => props.theme.fontSizePx.s};
     font-weight: 500;
     text-decoration: underline;
     cursor: pointer;
@@ -71,7 +72,7 @@ const Btn = styled.button`
   background-color: ${(props) => props.theme.gray};
   color: ${(props) => props.theme.white.white};
   border-radius: 4px;
-  font-size: 14px;
+  font-size: ${(props) => props.theme.fontSizePx.s};
   font-weight: 400;
   text-align: center;
   cursor: pointer;
@@ -79,12 +80,11 @@ const Btn = styled.button`
     background-color: ${(props) => props.theme.purpleDark};
   }
 `;
-
 const ColoredBtn = styled(Btn)`
   background-color: ${(props) => props.theme.purple};
   margin-top: 4px;
   padding: 4px 0;
-  font-size: 12px;
+  font-size: ${(props) => props.theme.fontSizePx.xs};
 `;
 
 const EditNickForm = styled.form`
@@ -92,7 +92,8 @@ const EditNickForm = styled.form`
 `;
 
 const Email = styled.p`
-  font-size: 14px;
+  font-size: ${(props) => props.theme.fontSizePx.s};
+  margin-bottom: 30px;
 `;
 
 const AddPhoto = styled.div`
@@ -107,6 +108,7 @@ interface INickName {
 }
 
 function Profile() {
+  const navigate = useNavigate();
   const userData = useSelector((state: RootState) => state.userData);
   const [editNick, setEditNick] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -194,6 +196,15 @@ function Profile() {
       setAttachment('');
     }
   };
+
+  // 로그 아웃
+  const onClickLogOut = () => {
+    const confirmLogout = window.confirm('로그아웃 하시겠습니까?');
+    if (confirmLogout) {
+      auth.signOut();
+      navigate('/home');
+    }
+  };
   return (
     <Wrapper>
       <ProfileInfo>
@@ -204,17 +215,17 @@ function Profile() {
                 ? userData?.userPhoto
                 : require('../assets/profile.png')
             }
-            alt="프로필 이미지"
+            alt='프로필 이미지'
           />
           <AddPhoto>
-            <Btn as="label" htmlFor="attach-file">
+            <Btn as='label' htmlFor='attach-file'>
               이미지 업로드
               {/* <Btn>이미지 업로드</Btn> */}
             </Btn>
             <input
-              id="attach-file"
-              type="file"
-              accept="image/*"
+              id='attach-file'
+              type='file'
+              accept='image/*'
               onChange={onFileChange}
               ref={fileInputRef}
             />
@@ -231,7 +242,7 @@ function Profile() {
           ) : (
             <EditNickForm onSubmit={handleSubmit(handleNickNameValid)}>
               <AuthInput
-                name="nickName"
+                name='nickName'
                 registerOptions={register('nickName', {
                   required: '닉네임을 입력해주세요',
                   pattern: {
@@ -241,14 +252,15 @@ function Profile() {
                   validate: async (value) =>
                     await checkNickNameExists(value, userData?.nickName),
                 })}
-                placeholder="닉네임"
+                placeholder='닉네임'
                 defaultValue={userData?.nickName}
                 errors={errors}
               />
-              <ColoredBtn type="submit">저장</ColoredBtn>
+              <ColoredBtn type='submit'>저장</ColoredBtn>
             </EditNickForm>
           )}
           <Email>계정 : {userData?.email}</Email>
+          <Btn onClick={onClickLogOut}>로그아웃</Btn>
         </Info>
       </ProfileInfo>
     </Wrapper>

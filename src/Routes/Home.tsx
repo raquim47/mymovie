@@ -1,4 +1,6 @@
+import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import Banner from '../components/list/Banner';
 import List from '../components/list/List';
@@ -11,27 +13,39 @@ import {
   IGetMovieResult,
   IMovie,
 } from '../services/movieApi';
-
-const Wrapper = styled.div`
-  padding: 0 30px;
-`;
+import { RootState } from '../store';
 
 const SliderGrid = styled.section`
   display: grid;
+  gap: 1vw 0;
+  margin-top: 5px;
+  padding-bottom: 40px;
 `;
 
-const SliderItem = styled.div`
-  margin-top: 1vw;
-  h3 {
-    margin-bottom: 0.4vw;
-    font-size: 1.5vw;
-    font-weight: 600;
-    color: ${(props) => props.theme.white.darker};
+export const SectionTitle = styled.h3`
+  font-size: ${(props) => props.theme.fontSizePx.l};
+  font-weight: 500;
+  color: ${(props) => props.theme.white.darker};
+  @media only screen and (max-width: 960px) {
+    font-size: ${(props) => props.theme.fontSizeVw.l};
+  }
+  @media only screen and (max-width: 768px) {
+    font-size: ${(props) => props.theme.fontSizeVw['3xl']};
   }
 `;
 
 function Home() {
-  
+  const [slideRow, setSlideRow] = useState(5);
+  const windowWidth = useSelector((state: RootState) => state.windowWidth);
+  useEffect(() => {
+    if (windowWidth >= 1200) {
+      setSlideRow(5);
+    } else if (windowWidth >= 1024) {
+      setSlideRow(4);
+    } else {
+      setSlideRow(3);
+    }
+  }, [windowWidth]);
   // useQuery for Latest Movie
   const {
     data: latestData,
@@ -96,42 +110,42 @@ function Home() {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {(error as Error).message}</p>;
   return (
-    <Wrapper>
+    <>
       <Banner<IMovie>
         bannerLeftData={bannerLeftData}
         bannerRightData={bannerRightData}
       />
       <SliderGrid>
-        <SliderItem>
-          <h3>최신 개봉</h3>
+        <div>
+          <SectionTitle>최신 개봉</SectionTitle>
           <List
             data={latestData?.results as IMovie[]}
             startIndex={1}
-            rowSize={5}
-            listType="latest"
+            rowSize={slideRow}
+            listType='latest'
             isSlideEnabled={true}
           />
-        </SliderItem>
-        <SliderItem>
-          <h3>요즘 인기</h3>
+        </div>
+        <div>
+          <SectionTitle>요즘 인기</SectionTitle>
           <List
             data={trendingData?.results as IMovie[]}
-            rowSize={5}
-            listType="trending"
+            rowSize={slideRow}
+            listType='trending'
             isSlideEnabled={true}
           />
-        </SliderItem>
-        <SliderItem>
-          <h3>Top 평점</h3>
+        </div>
+        <div>
+          <SectionTitle>Top 평점</SectionTitle>
           <List
             data={topRatedData?.results as IMovie[]}
-            rowSize={5}
-            listType="topRated"
+            rowSize={slideRow}
+            listType='topRated'
             isSlideEnabled={true}
           />
-        </SliderItem>
+        </div>
       </SliderGrid>
-    </Wrapper>
+    </>
   );
 }
 export default Home;

@@ -7,7 +7,6 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { faStar, faHeart } from '@fortawesome/free-regular-svg-icons';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
 import { auth } from '../../services/fbaseInit';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
@@ -18,7 +17,7 @@ import SearchForm from './SearchForm';
 const Wrapper = styled.nav`
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 25px;
   position: fixed;
   width: 240px;
   height: 100%;
@@ -33,8 +32,6 @@ const Wrapper = styled.nav`
     margin-left: 12px;
   }
 `;
-
-const NavList = styled.ul``;
 
 const NavItem = styled.li<{ isClicked?: boolean | null }>`
   display: flex;
@@ -68,7 +65,7 @@ const NavItemSearch = styled(NavItem)`
   padding: 0;
 `;
 
-function Nav() {
+function NavLeft() {
   const { isLoggedIn } = useSelector((state: RootState) => state.init);
   const navDataArr = [
     { name: '홈', url: 'home', icon: faFilm },
@@ -79,7 +76,7 @@ function Nav() {
   const location = useLocation();
   const navigate = useNavigate();
   const onClickNavItem = (url: string) => () => navigate(`/${url}`);
-  const onLogOutClick = () => {
+  const onClickLogOut = () => {
     const confirmLogout = window.confirm('로그아웃 하시겠습니까?');
     if (confirmLogout) {
       auth.signOut();
@@ -88,11 +85,9 @@ function Nav() {
   };
   return (
     <Wrapper>
-      <Link to="/home">
-        <Logo />
-      </Link>
+      <Logo />
       {isLoggedIn ? <UserMiniProfile /> : null}
-      <NavList>
+      <ul>
         {navDataArr.map((item) => (
           <NavItem
             key={item.url}
@@ -115,7 +110,7 @@ function Nav() {
           <div>
             <NavItem
               isClicked={location.pathname === `/auth`}
-              onClick={onLogOutClick}
+              onClick={onClickLogOut}
             >
               <FontAwesomeIcon icon={faRightFromBracket} />
               <span>로그아웃</span>
@@ -125,9 +120,9 @@ function Nav() {
         <NavItemSearch>
           <SearchForm />
         </NavItemSearch>
-      </NavList>
+      </ul>
     </Wrapper>
   );
 }
 
-export default Nav;
+export default NavLeft;

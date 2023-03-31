@@ -45,20 +45,37 @@ const ListInfo = styled(motion.div)`
   color: ${(props) => props.theme.white.white};
 
   h4 {
-    font-size: 1.2vw;
+    font-size: ${(props) => props.theme.fontSizePx.m};
     font-weight: 500;
     margin-bottom: 0.4vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    @media only screen and (max-width: 1200px) {
+      font-size: ${(props) => props.theme.fontSizeVw.m};
+    }
+    @media only screen and (max-width: 960px) {
+      font-size: ${(props) => props.theme.fontSizeVw.xl};
+    }
   }
   small {
-    font-size: 0.7vw;
     font-weight: 400;
+    font-size: ${(props) => props.theme.fontSizeVw.xs};
+    @media only screen and (max-width: 960px) {
+      font-size: ${(props) => props.theme.fontSizeVw.m};
+    }
   }
   article {
     display: flex;
     gap: 5px;
     span {
       margin-top: 0.2vw;
-      font-size: 0.7vw;
+      font-size: ${(props) => props.theme.fontSizeVw.xs};
+      @media only screen and (max-width: 960px) {
+        font-size: ${(props) => props.theme.fontSizeVw.m};
+      }
     }
   }
 `;

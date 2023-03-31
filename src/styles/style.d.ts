@@ -14,8 +14,15 @@ declare module 'styled-components' {
       white: string;
       darker: string;
     };
-    purple:string;
-    purpleDark:string;
+    purple: string;
+    purpleDark: string;
     gray: string;
+
+    fontSizeVw: {
+      [key: string]: string;
+    };
+    fontSizePx: {
+      [key: string]: string;
+    };
   }
 }

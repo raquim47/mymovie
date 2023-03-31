@@ -1,5 +1,5 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import {
   Home,
@@ -10,24 +10,39 @@ import {
   Profile,
   Favorite,
 } from './routes/routes';
-import { RootState } from './store';
+import { RootState, setWidth } from './store';
 import { useInitialize } from './services/fbaseFunc';
-import Nav from './components/nav/Nav';
 import PrivateRoute from './components/etc/PrivateRoute';
+import { useEffect } from 'react';
+import Header from './components/header/Header';
 
 const Wrapper = styled.div`
-  padding: 100px 0px 0px 240px;
+  padding: 100px 30px 0px 270px;
+  @media only screen and (max-width: 960px) {
+    padding: 25px 20px 0px;
+  }
 `;
 
 function App() {
+  const dispatch = useDispatch();
   const { initFirebase, isLoggedIn } = useSelector(
     (state: RootState) => state.init
   );
+  // 초기화, userData 업데이트
   useInitialize(isLoggedIn);
+  // windowWidth
+  useEffect(() => {
+    const handleResize = () => {
+      dispatch(setWidth(window.innerWidth));
+    };
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []); 
   return (
     <>
-      {/* <Header /> */}
-      <Nav />
+      <Header />
       {initFirebase ? (
         <Wrapper>
           <Routes>

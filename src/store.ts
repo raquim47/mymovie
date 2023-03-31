@@ -1,4 +1,5 @@
 import { configureStore, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { Dispatch } from 'react';
 
 export interface IRatingUsers {
   userId: string;
@@ -41,7 +42,7 @@ export interface IUserMiniInfo {
   comment: string;
   rate: number;
 }
-
+// 로그인 확인, firebase init
 const initSlice = createSlice({
   name: 'init',
   initialState: {
@@ -57,7 +58,7 @@ const initSlice = createSlice({
     },
   },
 });
-
+// userData
 const userDataSlice = createSlice({
   name: 'userData',
   initialState: null as IUserAccount | null,
@@ -66,16 +67,29 @@ const userDataSlice = createSlice({
     clearUserData: (state) => null,
   },
 });
+// viewPort
+const windowWidthSlice = createSlice({
+  name: 'windowWidth',
+  initialState: window.innerWidth,
+  reducers: {
+    setWidth: (state, action) => {
+      return action.payload;
+    },
+  },
+});
 
+export const { setWidth } = windowWidthSlice.actions;
 export const { setUserData, clearUserData } = userDataSlice.actions;
 export const { setInitFirebase, setIsLoggedIn } = initSlice.actions;
 export const userDataReducer = userDataSlice.reducer;
 export const initReducer = initSlice.reducer;
+export const windowWidthReducer = windowWidthSlice.reducer;
 
 export const store = configureStore({
   reducer: {
     init: initReducer,
     userData: userDataReducer,
+    windowWidth: windowWidthReducer,
   },
 });
 
