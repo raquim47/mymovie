@@ -165,9 +165,11 @@ function Search() {
           keyword={keyword || ''}
         />
       ))}
-      <LoaderWrapper ref={loaderRef}>
-        <Loader />
-      </LoaderWrapper>
+      {hasNextPage && (
+        <LoaderWrapper ref={loaderRef}>
+          <Loader />
+        </LoaderWrapper>
+      )}
     </Wrapper>
   );
 }
