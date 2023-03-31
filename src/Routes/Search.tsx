@@ -8,6 +8,7 @@ import { searchNickName } from '../services/fbaseFunc';
 import UserItem from '../components/auth/UserItem';
 import List from '../components/list/List';
 import { useSelector } from 'react-redux';
+import Loader from '../components/etc/Loader';
 
 const Wrapper = styled.div`
   padding: 0 30px;
@@ -31,6 +32,14 @@ const SearchedUser = styled.section`
   border-bottom: 1px solid ${(props) => props.theme.gray};
 `;
 
+const LoaderWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  margin-top: 60px;
+`;
+
 function Search() {
   const location = useLocation();
   const keyword = new URLSearchParams(location.search).get('keyword');
@@ -42,10 +51,13 @@ function Search() {
       setListRow(6);
     } else if (windowWidth >= 768) {
       setListRow(5);
-    } else {
+    } else if (windowWidth >= 600) {
       setListRow(4);
+    } else {
+      setListRow(3);
     }
   }, [windowWidth]);
+
   // 검색한 유저 데이터 searchedUser에 저장
   useEffect(() => {
     searchNickName(keyword as string).then((querySnapshot) => {
@@ -129,7 +141,7 @@ function Search() {
       queryClient.removeQueries('search');
     };
   }, [keyword, queryClient]);
-  console.log(loaderRef)
+  console.log(loaderRef);
   return (
     <Wrapper>
       <SearchedKeyword>
@@ -147,16 +159,15 @@ function Search() {
         <List
           key={i}
           data={rowData as IMovie[]}
-          listType="searched"
+          listType='searched'
           rowSize={listRow}
-          displayMode="portrait"
+          displayMode='portrait'
           keyword={keyword || ''}
         />
       ))}
-      <div
-        ref={loaderRef}
-        style={{ border: '10px solid blue', marginTop: '60px' }}
-      ></div>
+      <LoaderWrapper ref={loaderRef}>
+        <Loader />
+      </LoaderWrapper>
     </Wrapper>
   );
 }

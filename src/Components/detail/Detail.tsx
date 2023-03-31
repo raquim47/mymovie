@@ -26,6 +26,16 @@ import {
 import DetailInfo from './DetailInfo';
 import DetailOption from './DetailOption';
 import DetailCommentForm from './DetailCommentForm';
+import styled from 'styled-components';
+import Loader from '../etc/Loader';
+
+const LoaderWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  margin-top: 60px;
+`;
 
 interface IDetail {
   movieId: number;
@@ -60,11 +70,11 @@ function Detail({ movieId, keyword }: IDetail) {
   useEffect(() => {
     (async () => {
       const ratingUsersData = await getRatingUsers(movieId);
-      console.log('useEffect: ', ratingUsersData)
+      console.log('useEffect: ', ratingUsersData);
       setRatingUsers(ratingUsersData);
     })();
   }, [movieId, myRate, myComment]);
-  console.log('result: ', ratingUsers)
+  console.log('result: ', ratingUsers);
   // Overay클릭했을 때 popup 닫고 경로 이동
   const closeDetail = () => {
     if (!detailMatch) return;
@@ -105,7 +115,9 @@ function Detail({ movieId, keyword }: IDetail) {
         transition={{ type: 'easeInOut', duration: 0.4 }}
       >
         {isLoading ? (
-          <p>loading...</p>
+          <LoaderWrapper>
+            <Loader />
+          </LoaderWrapper>
         ) : (
           <Content>
             <ContentTop>

@@ -18,7 +18,7 @@ import AuthInput from '../components/auth/AuthInput';
 import { useNavigate } from 'react-router-dom';
 
 const Wrapper = styled.div`
-  width: 480px;
+  max-width: 400px;
   margin: 0 auto;
 `;
 
@@ -51,7 +51,7 @@ const NickName = styled.div`
 
   h2 {
     font-size: ${(props) => props.theme.fontSizePx.xxl};
-    font-weight: 800;
+    font-weight: 600;
     margin-bottom: 6px;
     white-space: nowrap;
   }

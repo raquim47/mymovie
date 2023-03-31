@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
+import Loader from '../components/etc/Loader';
 import Banner from '../components/list/Banner';
 import List from '../components/list/List';
 import {
@@ -32,6 +33,14 @@ export const SectionTitle = styled.h3`
   @media only screen and (max-width: 768px) {
     font-size: ${(props) => props.theme.fontSizeVw['3xl']};
   }
+`;
+
+const LoaderWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  margin-top: 60px;
 `;
 
 function Home() {
@@ -107,7 +116,12 @@ function Home() {
     bannerLeftError ||
     bannerRightError;
 
-  if (loading) return <p>Loading...</p>;
+  if (loading)
+    return (
+      <LoaderWrapper>
+        <Loader />
+      </LoaderWrapper>
+    );
   if (error) return <p>Error: {(error as Error).message}</p>;
   return (
     <>

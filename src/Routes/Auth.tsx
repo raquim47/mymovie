@@ -4,7 +4,7 @@ import NewAccount from '../components/auth/NewAccount';
 import SignIn from '../components/auth/SignIn';
 
 const Wrapper = styled.div`
-  width: 480px;
+  max-width: 400px;
   margin: 0 auto;
 
   h2 {

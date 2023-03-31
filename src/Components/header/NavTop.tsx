@@ -18,7 +18,7 @@ const TopMenu = styled.div`
   height: 70px;
   width: 100%;
   padding: 0 20px;
-  background-color: ${(props) => props.theme.black.darker};
+  background-color: ${(props) => props.theme.black.black};
   z-index: 100;
 `;
 
@@ -52,7 +52,7 @@ const NavItem = styled.li<{ isClicked: boolean | null }>`
   font-size: ${(props) => props.theme.fontSizePx.xl};
   color: ${(props) =>
     props.isClicked ? props.theme.white.darker : props.theme.gray};
-  font-weight: 800;
+  font-weight: 600;
   cursor: pointer;
     
   :hover {
