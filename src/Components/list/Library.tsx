@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { IFavoriteMovie, RootState } from '../../store';
+import { IMovie } from '../../services/movieApi';
+import { RootState } from '../../store';
 import Loader from '../etc/Loader';
 import List from './List';
 
@@ -23,7 +24,7 @@ const LoaderWrapper = styled.div`
 `;
 
 interface ILibrary {
-  movieList: IFavoriteMovie[];
+  movieList: IMovie[];
 }
 
 function Library({ movieList }: ILibrary) {

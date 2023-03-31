@@ -25,8 +25,9 @@ export interface IMovie {
   original_title?: string;
   release_date?: string;
   runtime?: number;
-  myRate?: number;
-  myComment?: string;
+  rate?: number;
+  comment?: string;
+  timestamp?: number;
 }
 
 export interface IGetMovieResult {

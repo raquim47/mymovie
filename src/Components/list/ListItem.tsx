@@ -6,6 +6,7 @@ import { genres, makeImagePath } from '../../utils/utils';
 import ReactStars from 'react-stars';
 import React from 'react';
 import Detail from '../detail/Detail';
+import { IFavoriteMovie, IRatedMovie } from '../../store';
 
 const Wrapper = styled(motion.div)<{ display: string }>`
   position: relative;
@@ -179,6 +180,7 @@ const ListItem = React.memo((props: IListItem) => {
     displayMode === 'landscape'
       ? movieData.backdrop_path
       : movieData.poster_path;
+  console.log(movieData);
   // 영화 박스 클릭
   const onBoxClicked = () => {
     if (keyword) {
@@ -206,7 +208,7 @@ const ListItem = React.memo((props: IListItem) => {
               : require('../../assets/no-image-icon-6.png')
           }
         />
-        {movieData.myRate && (
+        {movieData.rate && (
           <MyRate>
             <ReactStars
               count={5}
@@ -214,7 +216,7 @@ const ListItem = React.memo((props: IListItem) => {
               color2='#FFCC33'
               half
               className='icon'
-              value={movieData.myRate}
+              value={movieData.rate}
             />
           </MyRate>
         )}

@@ -1,5 +1,4 @@
 import { configureStore, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Dispatch } from 'react';
 
 export interface IRatingUsers {
   userId: string;
