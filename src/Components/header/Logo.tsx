@@ -41,6 +41,9 @@ const LogoText = styled.h1`
   @media only screen and (max-width: 960px) {
     font-size: ${props => props.theme.fontSizePx.l};
   }
+  @media only screen and (max-width: 768px) {
+    display: none;
+  }
 `;
 
 function Logo() {

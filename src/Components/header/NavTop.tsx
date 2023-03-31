@@ -84,6 +84,7 @@ const SearchFormWrapper = styled.div`
 const LoginBtn = styled.div`
   margin-top: 5px;
   font-weight: 400;
+  font-size: ${props => props.theme.fontSizePx.s};
   cursor: pointer;
   :hover {
     color: white;
