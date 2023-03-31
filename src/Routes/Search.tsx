@@ -3,10 +3,11 @@ import { useInfiniteQuery, useQueryClient } from 'react-query';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { GetSearched, IGetMovieResult, IMovie } from '../services/movieApi';
-import { IUserMiniInfo } from '../store';
+import { IUserMiniInfo, RootState } from '../store';
 import { searchNickName } from '../services/fbaseFunc';
 import UserItem from '../components/auth/UserItem';
 import List from '../components/list/List';
+import { useSelector } from 'react-redux';
 
 const Wrapper = styled.div`
   padding: 0 30px;
@@ -33,8 +34,18 @@ const SearchedUser = styled.section`
 function Search() {
   const location = useLocation();
   const keyword = new URLSearchParams(location.search).get('keyword');
-  const rowSize = 6;
+  const [listRow, setListRow] = useState(6);
   const [searchedUser, setSearchedUser] = useState<IUserMiniInfo[]>([]);
+  const windowWidth = useSelector((state: RootState) => state.windowWidth);
+  useEffect(() => {
+    if (windowWidth >= 1200) {
+      setListRow(6);
+    } else if (windowWidth >= 768) {
+      setListRow(5);
+    } else {
+      setListRow(4);
+    }
+  }, [windowWidth]);
   // 검색한 유저 데이터 searchedUser에 저장
   useEffect(() => {
     searchNickName(keyword as string).then((querySnapshot) => {
@@ -75,8 +86,8 @@ function Search() {
   // resultList를 rowSize에 맞춰 여러 행으로 나누기
   const listLength = resultList?.length || 0;
   const rowList = [];
-  for (let i = 0; i < listLength; i += rowSize) {
-    const row = resultList?.slice(i, i + rowSize);
+  for (let i = 0; i < listLength; i += listRow) {
+    const row = resultList?.slice(i, i + listRow);
     rowList.push(row);
   }
 
@@ -137,7 +148,7 @@ function Search() {
           key={i}
           data={rowData as IMovie[]}
           listType="searched"
-          rowSize={rowSize}
+          rowSize={listRow}
           displayMode="portrait"
           keyword={keyword || ''}
         />
