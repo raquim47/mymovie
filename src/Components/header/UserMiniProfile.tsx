@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
-  gap: 18px;
+  gap: 12px;
   position: relative;
   padding: 12px;
   border-top: 1px solid ${(props) => props.theme.gray};
@@ -28,9 +28,10 @@ const UserImg = styled.div`
 `;
 
 const UserInfo = styled.div`
+  margin-top: 5px;
   h4 {
-    font-size: 15px;
-    font-weight: 500;
+    font-size: ${props => props.theme.fontSizePx.s};
+    font-weight: 400;
   }
 `;
 
@@ -48,9 +49,9 @@ const UserMovie = styled.div`
 
 const UserEdit = styled.div`
   position: absolute;
-  right: 10px;
-  top: 8px;
-  font-size: 13px;
+  right: 0;
+  top: 4px;
+  font-size: ${props => props.theme.fontSizePx.xs};
   cursor: pointer;
 
   :hover {

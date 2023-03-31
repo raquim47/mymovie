@@ -9,11 +9,13 @@ const Wrapper = styled.div`
 `;
 
 const LogoSvg = styled.svg`
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   fill: url(#grad1);
+  margin-left: 15px;
 
   @media only screen and (max-width: 960px) {
+    margin-left: 0;
     width: 35px;
     height: 35px;
   }

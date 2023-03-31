@@ -53,7 +53,7 @@ const SignIn = ({ toggleAccount }: ISignIn) => {
   const generateRandomNickName = async () => {
     let randomNickName: string;
     do {
-      randomNickName = Math.random().toString(36).slice(2, 10);
+      randomNickName = Math.random().toString(36).slice(2, 9);
     } while (await checkNickNameExists(randomNickName));
     return randomNickName;
   };

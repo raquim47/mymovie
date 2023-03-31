@@ -22,7 +22,7 @@ import {
   OverView,
   Ratings,
   UserItemWrapper,
-} from './StyleDetail';
+} from './DetailStyles';
 import DetailInfo from './DetailInfo';
 import DetailOption from './DetailOption';
 import DetailCommentForm from './DetailCommentForm';
@@ -56,8 +56,7 @@ function Detail({ movieId, keyword }: IDetail) {
       setMyComment(ratedMovies[movieId].comment || '');
     }
   }, [isLoggedIn, ratedMovies, movieId]);
-
-  // 변경된 코드
+  // ratingUsers 갱신
   useEffect(() => {
     (async () => {
       const ratingUsersData = await getRatingUsers(movieId);
@@ -80,7 +79,6 @@ function Detail({ movieId, keyword }: IDetail) {
     ['movieDetail', movieId],
     () => getMovieDetail(movieId)
   );
-
   // 코멘트 입력창 열기/닫기
   const toggleCommentForm = () => {
     if (!isLoggedIn) {

@@ -18,7 +18,7 @@ const Option = styled.ul`
     display: flex;
     flex-direction: column;
     text-align: center;
-    font-size: 12px;
+    font-size: ${props => props.theme.fontSizePx.xs};
     padding: 0 4%;
   }
 
@@ -43,7 +43,7 @@ const Option = styled.ul`
     justify-content: center;
     height: 40px;
     cursor: pointer;
-    font-size: 24px;
+    font-size: ${props => props.theme.fontSizePx.xl};
   }
 `;
 

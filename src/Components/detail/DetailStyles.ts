@@ -45,7 +45,7 @@ export const Wrapper = styled(motion.div)`
   .closeBtn {
     position: absolute;
     top: 16px;
-    right: 20px;
+    right: 14px;
     width: 20px;
     height: 20px;
     transition: all 0.3s ease-in-out;
@@ -82,7 +82,6 @@ export const Content = styled(motion.div)`
 export const ContentTop = styled.section`
   position: relative;
   height: 380px;
-
   @media only screen and (max-width: 768px) {
     height: auto;
     margin-bottom: 10px;
@@ -114,13 +113,14 @@ export const ContentTopInner = styled.div`
   padding-right: 30px;
 
   @media only screen and (max-width: 960px) {
-    padding-left: 30px;
+    padding-left: 10px;
+    padding-right: 10px;
   }
 
   @media only screen and (max-width: 768px) {
     position: relative;
     bottom: 0;
-    padding: 10px 20px 0;
+    padding: 0;
   }
 `;
 
@@ -159,24 +159,25 @@ export const ContentMiddle = styled.section`
   position: relative;
   margin-top: 95px;
   padding: 0 30px 20px;
-
+  @media only screen and (max-width: 960px) {
+    padding: 0 10px;
+  }
   @media only screen and (max-width: 768px) {
     margin-top: 0;
-    padding: 0 20px 20px;
+    padding: 0;
   }
 `;
-
 
 export const OverView = styled.div`
   border-radius: 4px;
   padding: 16px;
   background-color: ${(props) => props.theme.black.middle};
+  font-size: ${(props) => props.theme.fontSizePx.s};
 
   h5 {
     position: relative;
     margin-bottom: 10px;
     padding-left: 10px;
-    font-size: 14px;
     font-weight: 600;
     color: ${(props) => props.theme.white.darker};
     :before {
@@ -191,7 +192,6 @@ export const OverView = styled.div`
     }
   }
   p {
-    font-size: 14px;
     line-height: 1.4;
     word-break: keep-all;
   }

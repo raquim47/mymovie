@@ -25,13 +25,13 @@ const Title = styled.div`
   margin-bottom: 10px;
 
   h2 {
-    font-size: 36px;
+    font-size: ${props => props.theme.fontSizePx['4xl']};
     font-weight: 700;
   }
 
   h3 {
     font-weight: 700;
-    font-size: 18px;
+    font-size: ${props => props.theme.fontSizePx.l};
   }
 `;
 
@@ -40,7 +40,7 @@ const Info = styled.ul`
 
   li {
     position: relative;
-    font-size: 14px;
+    font-size: ${props => props.theme.fontSizePx.s};
   }
 
   li ~ li {

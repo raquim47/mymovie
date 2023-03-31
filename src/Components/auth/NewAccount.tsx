@@ -94,8 +94,8 @@ function NewAccount({ toggleAccount }: INewAccount) {
           registerOptions={register('nickName', {
             required: '닉네임을 입력해주세요',
             pattern: {
-              value: /^[가-힣a-zA-Z0-9]{2,16}$/,
-              message: '공백을 제외한 영어, 숫자, 한글 2자 ~ 12자',
+              value: /^[가-힣a-zA-Z0-9]{2,8}$/,
+              message: '공백을 제외한 영어, 숫자, 한글 2자 ~ 8자',
             },
             validate: async (value) => await checkNickNameExists(value),
           })}

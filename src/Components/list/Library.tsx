@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { IFavoriteMovie } from '../../store';
+import { useSelector } from 'react-redux';
+import { IFavoriteMovie, RootState } from '../../store';
 import List from './List';
 
 // 2차원 배열 만들기
@@ -13,12 +14,22 @@ const splitArray = (array: any[], rowSize: number) => {
 
 interface ILibrary {
   movieList: IFavoriteMovie[];
-  rowSize: number;
 }
 
-function Library({ movieList, rowSize }: ILibrary) {
+function Library({ movieList }: ILibrary) {
+  const [listRow, setListRow] = useState(6);
+  const windowWidth = useSelector((state: RootState) => state.windowWidth);
+  useEffect(() => {
+    if (windowWidth >= 1200) {
+      setListRow(6);
+    } else if (windowWidth >= 768) {
+      setListRow(5);
+    } else {
+      setListRow(4);
+    }
+  }, [windowWidth]);
   const chunks = useMemo(() => {
-    return movieList ? splitArray(movieList, rowSize) : [];
+    return movieList ? splitArray(movieList, listRow) : [];
   }, [movieList]);
   const [currentChunkIndex, setCurrentChunkIndex] = useState(2);
   const loadMoreRef = useRef<HTMLDivElement>(null);
@@ -56,9 +67,9 @@ function Library({ movieList, rowSize }: ILibrary) {
           <List
             key={i}
             data={chunk}
-            listType="library"
-            rowSize={rowSize}
-            displayMode="portrait"
+            listType='library'
+            rowSize={listRow}
+            displayMode='portrait'
           />
         ))}
       </div>

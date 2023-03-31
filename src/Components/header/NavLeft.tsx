@@ -17,7 +17,7 @@ import SearchForm from './SearchForm';
 const Wrapper = styled.nav`
   display: flex;
   flex-direction: column;
-  gap: 25px;
+  gap: 20px;
   position: fixed;
   width: 240px;
   height: 100%;
@@ -42,7 +42,7 @@ const NavItem = styled.li<{ isClicked?: boolean | null }>`
   border-radius: 8px;
   overflow: hidden;
   background-color: ${(props) => props.isClicked && props.theme.gray};
-  font-size: 14px;
+  font-size: ${props => props.theme.fontSizePx.s};
   font-weight: 400;
   cursor: pointer;
 

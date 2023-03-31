@@ -6,16 +6,21 @@ const Wrapper = styled.div`
   gap: 16px;
   position: relative;
   padding: 12px;
+  @media only screen and (max-width: 768px) {
+    gap: 12px;
+  }
   img {
     width: 40px;
     height: 40px;
     border-radius: 50%;
     object-fit: cover;
   }
-
+  
   h5 {
-    font-size: 14px;
+    font-size: ${props => props.theme.fontSizePx.s};
     font-weight: 400;
+    white-space: nowrap;
+    width: 95px;
   }
 `;
 
@@ -38,7 +43,7 @@ const Star = styled.div`
 `;
 
 const Comment = styled.p`
-  width: 65%;
+  flex: 1;
   margin-left: auto;
   margin-right: 2%;
   font-size: 14px;

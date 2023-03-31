@@ -50,9 +50,10 @@ const NickName = styled.div`
   height: 110px;
 
   h2 {
-    font-size: ${(props) => props.theme.fontSizePx['4xl']};
+    font-size: ${(props) => props.theme.fontSizePx.xxl};
     font-weight: 800;
     margin-bottom: 6px;
+    white-space: nowrap;
   }
   span {
     color: ${(props) => props.theme.purple};
@@ -246,8 +247,8 @@ function Profile() {
                 registerOptions={register('nickName', {
                   required: '닉네임을 입력해주세요',
                   pattern: {
-                    value: /^[가-힣a-zA-Z0-9]{2,16}$/,
-                    message: '공백 제외 영어, 숫자, 한글 2자~12자',
+                    value: /^[가-힣a-zA-Z0-9]{2,8}$/,
+                    message: '공백 제외 영어, 숫자, 한글 2자~8자',
                   },
                   validate: async (value) =>
                     await checkNickNameExists(value, userData?.nickName),
