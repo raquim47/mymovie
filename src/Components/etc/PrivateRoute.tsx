@@ -22,7 +22,7 @@ function PrivateRoute({ children }: { children: ReactNode }) {
       navigate('/auth');
       alert('로그인이 필요합니다.');
     }
-  }, [isLoggedIn, navigate, authMatch]);
+  }, [isLoggedIn, authMatch]);
 
   if (!authMatch && !isLoggedIn) {
     return null;

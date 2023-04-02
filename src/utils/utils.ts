@@ -82,3 +82,4 @@ export const genres: IGenres = {
   10752: '전쟁',
   37: '서부',
 };
+

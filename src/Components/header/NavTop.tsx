@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -54,7 +55,7 @@ const NavItem = styled.li<{ isClicked: boolean | null }>`
     props.isClicked ? props.theme.white.darker : props.theme.gray};
   font-weight: 600;
   cursor: pointer;
-    
+
   :hover {
     color: ${(props) => props.theme.white.darker};
   }
@@ -84,7 +85,7 @@ const SearchFormWrapper = styled.div`
 const LoginBtn = styled.div`
   margin-top: 5px;
   font-weight: 400;
-  font-size: ${props => props.theme.fontSizePx.s};
+  font-size: ${(props) => props.theme.fontSizePx.s};
   cursor: pointer;
   :hover {
     color: white;
@@ -98,14 +99,20 @@ function NavTop() {
     (state: RootState) => state.userData?.userPhoto
   );
   const navigate = useNavigate();
-  const navDataArr = [
-    { name: '홈', url: 'home' },
-    { name: '평가한 영화', url: 'rate' },
-    { name: '찜한 영화', url: 'favorite' },
-  ];
-  
+  const [navDataArr, setNavDataArr] = useState([
+    { name: '홈', url: 'home', isClicked: false },
+    { name: '평가한 영화', url: 'rate', isClicked: false },
+    { name: '찜한 영화', url: 'favorite', isClicked: false },
+  ]);
+  useEffect(() => {
+    setNavDataArr((prev) =>
+      prev.map((item) => ({
+        ...item,
+        isClicked: location.pathname === `/${item.url}`,
+      }))
+    );
+  }, [location]);
   const onClickNavItem = (url: string) => () => navigate(`/${url}`);
-
   return (
     <Wrapper>
       <TopMenu>
@@ -120,7 +127,7 @@ function NavTop() {
             <img
               src={userPhoto ? userPhoto : require('../../assets/profile.png')}
               alt='유저 이미지'
-            />{' '}
+            />
           </ProfileBtn>
         )}
       </TopMenu>
@@ -130,7 +137,7 @@ function NavTop() {
             <NavItem
               key={item.url}
               onClick={onClickNavItem(item.url)}
-              isClicked={location.pathname === `/${item.url}`}
+              isClicked={item.isClicked}
             >
               {item.name}
             </NavItem>

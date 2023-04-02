@@ -19,18 +19,9 @@ const Spinner = styled.div`
     }
   }
 `;
-const Wrapper = styled.div`
-  height: 100px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
+
 function Loader() {
-  return (
-    <Wrapper>
-      <Spinner></Spinner>
-    </Wrapper>
-  );
+  return <Spinner></Spinner>;
 }
 
 export default Loader;
