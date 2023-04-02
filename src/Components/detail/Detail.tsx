@@ -45,7 +45,10 @@ interface IDetail {
 function Detail({ movieId, keyword }: IDetail) {
   const navigate = useNavigate();
   const detailMatch = useMatch(`/:page/:listType/:movieId`);
-  const isScroll = window.innerHeight < document.body.clientHeight;
+  const isScroll =
+    window.innerWidth > 768
+      ? window.innerHeight < document.body.clientHeight
+      : false;
   const isLoggedIn = useSelector((state: RootState) => state.init.isLoggedIn);
   const ratedMovies = useSelector(
     (state: RootState) => state.userData?.ratedMovies

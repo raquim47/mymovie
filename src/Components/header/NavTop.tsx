@@ -105,12 +105,22 @@ function NavTop() {
     { name: '찜한 영화', url: 'favorite', isClicked: false },
   ]);
   useEffect(() => {
-    setNavDataArr((prev) =>
-      prev.map((item) => ({
-        ...item,
-        isClicked: location.pathname === `/${item.url}`,
-      }))
-    );
+    const updateNavDataArr = () => {
+      setNavDataArr((prev) =>
+        prev.map((item) => ({
+          ...item,
+          isClicked: location.pathname === `/${item.url}`,
+        }))
+      );
+    };
+  
+    updateNavDataArr(); // 첫 렌더링 시 상태 업데이트
+    // popstate 이벤트 리스너 추가
+    window.addEventListener('popstate', updateNavDataArr);
+    // 이벤트 리스너 정리
+    return () => {
+      window.removeEventListener('popstate', updateNavDataArr);
+    };
   }, [location]);
   const onClickNavItem = (url: string) => () => navigate(`/${url}`);
   return (
