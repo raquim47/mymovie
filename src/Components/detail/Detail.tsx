@@ -29,14 +29,6 @@ import DetailCommentForm from './DetailCommentForm';
 import styled from 'styled-components';
 import Loader from '../etc/Loader';
 
-const LoaderWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100px;
-  margin-top: 60px;
-`;
-
 interface IDetail {
   movieId: number;
   keyword?: string;
@@ -118,9 +110,7 @@ function Detail({ movieId, keyword }: IDetail) {
         transition={{ type: 'easeInOut', duration: 0.4 }}
       >
         {isLoading ? (
-          <LoaderWrapper>
-            <Loader />
-          </LoaderWrapper>
+          <Loader />
         ) : (
           <Content>
             <ContentTop>

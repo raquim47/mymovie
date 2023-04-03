@@ -35,14 +35,6 @@ export const SectionTitle = styled.h3`
   }
 `;
 
-const LoaderWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100px;
-  margin-top: 60px;
-`;
-
 function Home() {
   const [slideRow, setSlideRow] = useState(5);
   const windowWidth = useSelector((state: RootState) => state.windowWidth);
@@ -116,12 +108,7 @@ function Home() {
     bannerLeftError ||
     bannerRightError;
 
-  if (loading)
-    return (
-      <LoaderWrapper>
-        <Loader />
-      </LoaderWrapper>
-    );
+  if (loading) return <Loader />;
   if (error) return <p>Error: {(error as Error).message}</p>;
   return (
     <>

@@ -1,5 +1,13 @@
 import styled from 'styled-components';
 
+const Wrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  margin-top: 60px;
+`;
+
 const Spinner = styled.div`
   width: 30px;
   height: 30px;
@@ -21,7 +29,11 @@ const Spinner = styled.div`
 `;
 
 function Loader() {
-  return <Spinner></Spinner>;
+  return (
+    <Wrapper>
+      <Spinner></Spinner>
+    </Wrapper>
+  );
 }
 
 export default Loader;

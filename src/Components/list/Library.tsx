@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { IMovie } from '../../services/movieApi';
 import { RootState } from '../../store';
 import { ISortMovies, ISortType, sortMovies } from '../../utils/utils';
 import Loader from '../etc/Loader';
@@ -16,14 +15,6 @@ const splitArray = (array: any[], rowSize: number) => {
   }
   return result;
 };
-
-const LoaderWrapper = styled.div`
-  margin-top: 60px;
-  height: 100px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
 
 interface ILibrary {
   movieList: { [key: number]: ISortMovies };
@@ -45,12 +36,14 @@ function Library({ movieList = {}, sortTypeArr }: ILibrary) {
       setListRow(3);
     }
   }, [windowWidth]);
+
   // sortType에 따라 movieList 배열로 정렬
   const [sortType, setSortType] = useState<ISortType>(sortTypeArr[0]);
   const [sortedMovies, setSortedMovies] = useState<ISortMovies[]>([]);
   useEffect(() => {
-      setSortedMovies(sortMovies(movieList, sortType));
+    setSortedMovies(sortMovies(movieList, sortType));
   }, [movieList, sortType]);
+
   // 행별 랜더링을 위한 chucks 분리
   const chunks = useMemo(() => {
     return splitArray(sortedMovies, listRow);
@@ -69,6 +62,7 @@ function Library({ movieList = {}, sortTypeArr }: ILibrary) {
     },
     [currentChunkIndex, chunks]
   );
+
   // 무한 스크롤 구현을 위한 IntersectionObserver
   useEffect(() => {
     const observer = new IntersectionObserver(handleIntersection, {
@@ -99,11 +93,11 @@ function Library({ movieList = {}, sortTypeArr }: ILibrary) {
         ))}
       </div>
 
-      {currentChunkIndex < chunks.length - 1 ? (
-        <LoaderWrapper ref={loadMoreRef}>
+      {currentChunkIndex < chunks.length - 1 && (
+        <div ref={loadMoreRef}>
           <Loader />
-        </LoaderWrapper>
-      ) : null}
+        </div>
+      )}
     </>
   );
 }

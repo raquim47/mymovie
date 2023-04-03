@@ -32,14 +32,6 @@ const SearchedUser = styled.section`
   border-bottom: 1px solid ${(props) => props.theme.gray};
 `;
 
-const LoaderWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100px;
-  margin-top: 60px;
-`;
-
 function Search() {
   const location = useLocation();
   const keyword = new URLSearchParams(location.search).get('keyword');
@@ -166,9 +158,9 @@ function Search() {
         />
       ))}
       {hasNextPage && (
-        <LoaderWrapper ref={loaderRef}>
+        <div ref={loaderRef}>
           <Loader />
-        </LoaderWrapper>
+        </div>
       )}
     </Wrapper>
   );

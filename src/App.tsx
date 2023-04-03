@@ -23,13 +23,7 @@ const Wrapper = styled.div`
     padding: 25px 20px 0px;
   }
 `;
-const LoaderWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100px;
-  margin-top: 60px;
-`;
+
 function App() {
   const dispatch = useDispatch();
   const { initFirebase, isLoggedIn } = useSelector(
@@ -110,9 +104,7 @@ function App() {
           </Routes>
         </Wrapper>
       ) : (
-        <LoaderWrapper>
-          <Loader />
-        </LoaderWrapper>
+        <Loader />
       )}
     </>
   );
