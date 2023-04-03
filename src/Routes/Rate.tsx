@@ -1,19 +1,22 @@
 import { useSelector } from 'react-redux';
-import styled from 'styled-components';
 import { RootState } from '../store';
 import Library from '../components/list/Library';
-import { ISortType, sortMovies } from '../utils/utils';
-import { useState } from 'react';
+import { ISortType } from '../utils/utils';
 
 function Rate() {
-  const [sortType, setSortType] = useState<ISortType>('newest');
   const ratedMovies = useSelector(
     (state: RootState) => state.userData?.ratedMovies
   );
-  const sortedRatedMovies = ratedMovies ? sortMovies(ratedMovies, sortType) : [];
+  const sortTypeArr: ISortType[] = [
+    'newest',
+    'oldest',
+    'lowAveRate',
+    'highAveRate',
+  ];
+  if (!ratedMovies) return <div>loading</div>;
   return (
     <div>
-      <Library movieList={sortedRatedMovies}/>
+      <Library movieList={ratedMovies} sortTypeArr={sortTypeArr} />
     </div>
   );
 }

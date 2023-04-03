@@ -48,6 +48,8 @@ export const sortMovies = (
   sortType: ISortType
 ): ISortMovies[] => {
   const movieArr = Object.values(movie);
+  if(movieArr.length === 0) return [];
+
   switch (sortType) {
     case 'newest':
       return movieArr.sort(

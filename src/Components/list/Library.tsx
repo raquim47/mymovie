@@ -3,8 +3,10 @@ import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { IMovie } from '../../services/movieApi';
 import { RootState } from '../../store';
+import { ISortMovies, ISortType, sortMovies } from '../../utils/utils';
 import Loader from '../etc/Loader';
 import List from './List';
+import SortOption from './SortOption';
 
 // 2차원 배열 만들기
 const splitArray = (array: any[], rowSize: number) => {
@@ -24,10 +26,12 @@ const LoaderWrapper = styled.div`
 `;
 
 interface ILibrary {
-  movieList: IMovie[];
+  movieList: { [key: number]: ISortMovies };
+  sortTypeArr: ISortType[];
 }
 
-function Library({ movieList }: ILibrary) {
+function Library({ movieList = {}, sortTypeArr }: ILibrary) {
+  // 반응형 row 설정
   const [listRow, setListRow] = useState(6);
   const windowWidth = useSelector((state: RootState) => state.windowWidth);
   useEffect(() => {
@@ -41,9 +45,16 @@ function Library({ movieList }: ILibrary) {
       setListRow(3);
     }
   }, [windowWidth]);
+  // sortType에 따라 movieList 배열로 정렬
+  const [sortType, setSortType] = useState<ISortType>(sortTypeArr[0]);
+  const [sortedMovies, setSortedMovies] = useState<ISortMovies[]>([]);
+  useEffect(() => {
+      setSortedMovies(sortMovies(movieList, sortType));
+  }, [movieList, sortType]);
+  // 행별 랜더링을 위한 chucks 분리
   const chunks = useMemo(() => {
-    return movieList ? splitArray(movieList, listRow) : [];
-  }, [movieList]);
+    return splitArray(sortedMovies, listRow);
+  }, [sortedMovies]);
   const [currentChunkIndex, setCurrentChunkIndex] = useState(2);
   const loadMoreRef = useRef<HTMLDivElement>(null);
 
@@ -75,6 +86,7 @@ function Library({ movieList }: ILibrary) {
   }, [handleIntersection]);
   return (
     <>
+      <SortOption sortTypeArr={sortTypeArr} setSortType={setSortType} />
       <div>
         {chunks.slice(0, currentChunkIndex + 1).map((chunk, i) => (
           <List

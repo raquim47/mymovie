@@ -214,6 +214,7 @@ const ListItem = React.memo((props: IListItem) => {
               color1='#E6E6E6'
               color2='#FFCC33'
               half
+              edit={false}
               className='icon'
               value={movieData.rate}
             />

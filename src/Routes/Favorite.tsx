@@ -1,10 +1,7 @@
 import { useSelector } from 'react-redux';
 import { RootState } from '../store';
 import Library from '../components/list/Library';
-import { useEffect, useState } from 'react';
-import { ISortMovies, ISortType, sortMovies } from '../utils/utils';
-import styled from 'styled-components';
-import SortOption from '../components/list/SortOption';
+import { ISortType } from '../utils/utils';
 
 function Favorite() {
   const favoriteMovies = useSelector(
@@ -16,27 +13,10 @@ function Favorite() {
     'lowAveRate',
     'highAveRate',
   ];
-  const [sortType, setSortType] = useState<ISortType>(sortTypeArr[0]);
-  const [sortedFavoriteMovies, setSortedFavoriteMovies] = useState<ISortMovies[]>([]);
-
-  // const sortedFavoriteMovies = favoriteMovies
-  //   ? sortMovies(favoriteMovies, sortType)
-  //   : [];
-
-  
-  console.log(sortedFavoriteMovies)
-  useEffect(() => {
-    if (favoriteMovies) {
-      setSortedFavoriteMovies(sortMovies(favoriteMovies, sortType));
-    } else {
-      setSortedFavoriteMovies([]);
-    }
-  }, [favoriteMovies, sortType]);
-
+  if (!favoriteMovies) return <div>loading</div>;
   return (
     <div>
-      <SortOption sortTypeArr={sortTypeArr} setSortType={setSortType} />
-      {<Library movieList={sortedFavoriteMovies} />}
+      <Library movieList={favoriteMovies} sortTypeArr={sortTypeArr} />
     </div>
   );
 }

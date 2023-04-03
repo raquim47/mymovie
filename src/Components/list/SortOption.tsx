@@ -31,7 +31,7 @@ const DropdownMenu = styled.ul`
   background-color: ${(props) => props.theme.gray};
   border-radius: 0 0 4px 4px;
   overflow: hidden;
-  z-index: 100;
+  z-index: 1000;
 `;
 
 const DropdownOption = styled.li`
