@@ -6,7 +6,7 @@ import { ISortType, sortMovies } from '../utils/utils';
 import { useState } from 'react';
 
 function Rate() {
-  const [sortType, setSortType] = useState<ISortType>('lowRate');
+  const [sortType, setSortType] = useState<ISortType>('newest');
   const ratedMovies = useSelector(
     (state: RootState) => state.userData?.ratedMovies
   );

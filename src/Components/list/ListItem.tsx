@@ -180,7 +180,6 @@ const ListItem = React.memo((props: IListItem) => {
     displayMode === 'landscape'
       ? movieData.backdrop_path
       : movieData.poster_path;
-  console.log(movieData);
   // 영화 박스 클릭
   const onBoxClicked = () => {
     if (keyword) {

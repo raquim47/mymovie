@@ -1,4 +1,4 @@
-import { IFavoriteMovie, IRatedMovie } from "../store";
+import { IFavoriteMovie, IRatedMovie } from '../store';
 
 // 이미지 가져오기
 export const makeImagePath = (id: string, format?: string) => {
@@ -8,7 +8,7 @@ export const makeImagePath = (id: string, format?: string) => {
 interface IRateMassage {
   [key: number]: string;
 }
-export const rateMassage:IRateMassage = {
+export const rateMassage: IRateMassage = {
   0: '평가하기',
   0.5: '최악이에요',
   1: '싫어요',
@@ -28,13 +28,25 @@ export const getYear = (date?: string) => {
 };
 
 // 영화 리스트 정렬
+export type ISortMovies = IFavoriteMovie | IRatedMovie;
+
 interface ISortMoviesData {
-  [key:number] : IFavoriteMovie | IRatedMovie;
+  [key: number]: ISortMovies;
 }
 
-export type ISortType = 'newest' | 'oldest' | 'lowRate' | 'highRate';
+export type ISortType = 'newest' | 'oldest' | 'lowAveRate' | 'highAveRate';
 
-export const sortMovies = (movie: ISortMoviesData, sortType: ISortType) => {
+export const sortName = {
+  newest: '담은 순',
+  oldest: '담은 역순',
+  lowAveRate: '평균 별점 낮은 순',
+  highAveRate: '평균 별점 높은 순',
+};
+
+export const sortMovies = (
+  movie: ISortMoviesData,
+  sortType: ISortType
+): ISortMovies[] => {
   const movieArr = Object.values(movie);
   switch (sortType) {
     case 'newest':
@@ -47,9 +59,9 @@ export const sortMovies = (movie: ISortMoviesData, sortType: ISortType) => {
         (a, b) =>
           new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
       );
-    case 'lowRate':
+    case 'lowAveRate':
       return movieArr.sort((a, b) => a.vote_average - b.vote_average);
-    case 'highRate':
+    case 'highAveRate':
       return movieArr.sort((a, b) => b.vote_average - a.vote_average);
     default:
       return movieArr;
@@ -82,4 +94,3 @@ export const genres: IGenres = {
   10752: '전쟁',
   37: '서부',
 };
-
