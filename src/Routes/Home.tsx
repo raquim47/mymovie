@@ -78,9 +78,9 @@ function Home() {
     isLoading: bannerLeftLoading,
     error: bannerLeftError,
   } = useQuery<IMovie>(
-    ['bannerLeftData', latestData?.results[0].id],
-    () => getMovieDetail(latestData?.results[0].id),
-    { enabled: !!latestData?.results[0].id }
+    ['bannerLeftData', latestData?.results[1].id],
+    () => getMovieDetail(latestData?.results[1].id),
+    { enabled: !!latestData?.results[1].id }
   );
 
   const {
@@ -88,9 +88,9 @@ function Home() {
     isLoading: bannerRightLoading,
     error: bannerRightError,
   } = useQuery<IMovie>(
-    ['bannerRightData', upcomingData?.results[0].id],
-    () => getMovieDetail(upcomingData?.results[0].id),
-    { enabled: !!upcomingData?.results[0].id }
+    ['bannerRightData', upcomingData?.results[2].id],
+    () => getMovieDetail(upcomingData?.results[2].id),
+    { enabled: !!upcomingData?.results[2].id }
   );
 
   const loading =
@@ -121,7 +121,7 @@ function Home() {
           <SectionTitle>최신 개봉</SectionTitle>
           <List
             data={latestData?.results as IMovie[]}
-            startIndex={1}
+            startIndex={2}
             rowSize={slideRow}
             listType='latest'
             isSlideEnabled={true}

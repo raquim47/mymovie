@@ -34,13 +34,21 @@ interface ISortMoviesData {
   [key: number]: ISortMovies;
 }
 
-export type ISortType = 'newest' | 'oldest' | 'lowAveRate' | 'highAveRate';
+export type ISortType =
+  | 'newest'
+  | 'oldest'
+  | 'lowAveRate'
+  | 'highAveRate'
+  | 'lowMyRate'
+  | 'highMyRate';
 
 export const sortName = {
   newest: '담은 순',
   oldest: '담은 역순',
   lowAveRate: '평균 별점 낮은 순',
   highAveRate: '평균 별점 높은 순',
+  lowMyRate: '내 별점 낮은 순',
+  highMyRate: '내 별점 높은 순',
 };
 
 export const sortMovies = (
@@ -48,7 +56,7 @@ export const sortMovies = (
   sortType: ISortType
 ): ISortMovies[] => {
   const movieArr = Object.values(movie);
-  if(movieArr.length === 0) return [];
+  if (movieArr.length === 0) return [];
 
   switch (sortType) {
     case 'newest':
@@ -65,6 +73,10 @@ export const sortMovies = (
       return movieArr.sort((a, b) => a.vote_average - b.vote_average);
     case 'highAveRate':
       return movieArr.sort((a, b) => b.vote_average - a.vote_average);
+    case 'lowMyRate':
+      return movieArr.sort((a, b) => a.rate - b.rate);
+    case 'highMyRate':
+      return movieArr.sort((a, b) => b.rate - a.rate);
     default:
       return movieArr;
   }

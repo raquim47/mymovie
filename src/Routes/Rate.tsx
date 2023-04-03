@@ -12,6 +12,8 @@ function Rate() {
     'oldest',
     'lowAveRate',
     'highAveRate',
+    'lowMyRate',
+    'highMyRate'
   ];
   if (!ratedMovies) return <div>loading</div>;
   return (

@@ -8,7 +8,7 @@ import List from './List';
 import SortOption from './SortOption';
 
 // 2차원 배열 만들기
-const splitArray = (array: any[], rowSize: number) => {
+const splitArray = (array: ISortMovies[], rowSize: number) => {
   const result = [];
   for (let i = 0; i < array.length; i += rowSize) {
     result.push(array.slice(i, i + rowSize));
