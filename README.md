@@ -1,10 +1,11 @@
 # MyMovie-App
-## MyMovie-App with REACT, TYPESCRIPT
+## MyMovie-App
 - React, Redux, Typescript, Firebase, styled-component 
-
+- TheMovieDB API를 이용해 영화 검색, 저장, 평가를 할 수 있는 서비스 만들기
+- TypeScript을 사용 경험_프로젝트의 코드 안정성과 가독성을 향상
 ## Results
 [URL: https://mymovie-285fd.web.app/]
-TheMovieDB API를 이용해 영화 검색, 저장, 평가를 할 수 있는 서비스 만들기, TypeScript을 사용 경험_프로젝트의 코드 안정성과 가독성을 향상.
+
 <div>
   <h3>1. 메인</h3>
   
