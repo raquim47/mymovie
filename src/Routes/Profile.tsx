@@ -19,7 +19,7 @@ import { useNavigate } from 'react-router-dom';
 
 const Wrapper = styled.div`
   max-width: 400px;
-  margin: 0 auto;
+  margin: 100px auto 0;
 `;
 
 const ProfileInfo = styled.div`
