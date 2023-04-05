@@ -1,8 +1,8 @@
 # MyMovie-App
-## MyMovie-App
 - React, Redux, Typescript, Firebase, styled-component 
 - TheMovieDB API를 이용해 영화 검색, 저장, 평가를 할 수 있는 서비스 만들기
 - TypeScript을 사용 경험_프로젝트의 코드 안정성과 가독성을 향상
+
 ## Results
 [URL: https://mymovie-285fd.web.app/]
 
@@ -114,8 +114,8 @@
   <img width="90%" src="https://github.com/raquim47/data/blob/main/mymovie/mymovie_img04.gif?raw=true" />
   
   <h4>1) '보고싶어요' 기능_사용자가 '보고싶어요' 클릭시 firestore users컬렉션에 해당 영화 정보 저장, 찜한 영화 페이지에서 보여주기</h4>
-  <h4>2) '별점매기기','코멘트' 기능_사용자가 별점, 코멘트를 남길 시 firestore users컬렉션드에 해당 영화 정보 별점과 함께 저장, ratings컬렉션에 별점,코멘트 저장</h4>
-  <h4>3) users컬렉션의 데이터는 영화 세부 정보 페이지 UI, 평가한 영화 페이지에서 활용, ratings컬렉션의 데이터로 다른 사용자들이 남긴 별점, 코멘트를 실시간으로 화면에 업데이트</h4>
+  <h4>2) '별점매기기', '코멘트' 기능_사용자가 별점, 코멘트를 남길 시 firestore users 컬렉션에 해당 영화 정보 별점과 함께 저장, ratings 컬렉션에 별점,코멘트 저장</h4>
+  <h4>3) users 컬렉션의 데이터는 영화 세부 정보 페이지 UI, 평가한 영화 페이지에서 활용, ratings 컬렉션의 데이터로 다른 사용자들이 남긴 별점, 코멘트를 실시간으로 화면에 업데이트</h4>
 
   ```
   // '보고 싶어요' 영화 데이터 firestore에 등록/삭제
