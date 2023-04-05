@@ -26,7 +26,6 @@ const SliderGrid = styled.section`
 export const SectionTitle = styled.h3`
   font-size: ${(props) => props.theme.fontSizePx.l};
   font-weight: 500;
-  color: ${(props) => props.theme.white.darker};
   @media only screen and (max-width: 960px) {
     font-size: ${(props) => props.theme.fontSizeVw.l};
   }

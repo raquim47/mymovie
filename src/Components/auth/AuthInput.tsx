@@ -9,7 +9,7 @@ const InputField = styled.div`
     margin-bottom: 4px;
     font-size: 12px;
     font-weight: 500;
-    color: ${(props) => props.theme.white};
+    color: ${(props) => props.theme.color.white.normal};
   }
   input {
     height: 38px;
@@ -23,7 +23,7 @@ const InputField = styled.div`
     }
   }
   span {
-    color: ${(props) => props.theme.purple};
+    color: ${(props) => props.theme.color.purple.normal};
     font-size: 12px;
     margin-top: 4px;
     margin: 4px 0 0 2px;
@@ -33,7 +33,7 @@ const InputField = styled.div`
 const ErrorMassage = styled.p`
   position: absolute;
   bottom: 4px;
-  color: ${(props) => props.theme.purple};
+  color: ${(props) => props.theme.color.purple.normal};
   font-size: 12px;
   font-weight: 700;
   white-space: nowrap;

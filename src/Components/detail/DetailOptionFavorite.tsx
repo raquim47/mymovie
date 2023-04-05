@@ -10,7 +10,7 @@ import { IMovie } from '../../services/movieApi';
 import { handleUserFavoriteMovie } from '../../services/fbaseFunc';
 
 const Wrapper = styled.div<{ isFavorite: boolean }>`
-  color: ${(props) => (props.isFavorite ? props.theme.purple : 'inherit')};
+  color: ${(props) => (props.isFavorite ? props.theme.color.purple.normal : 'inherit')};
 `;
 
 interface IDetailOptionFavorite {

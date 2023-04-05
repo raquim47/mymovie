@@ -2,27 +2,36 @@ import 'styled-components';
 
 declare module 'styled-components' {
   export interface DefaultTheme {
-    red: string;
-    black: {
-      black: string;
-      lighter: string;
-      darker: string;
-      middle: string;
-      borderBlack: string;
+    color: {
+      black: {
+        light: string;
+        middle: string;
+        dark: string;
+        normal: string;
+      };
+      white: {
+        dark: string;
+        normal: string;
+      };
+      gray: string;
+      purple: {
+        dark: string;
+        normal: string;
+      };
     };
-    white: {
-      white: string;
-      darker: string;
-    };
-    purple: string;
-    purpleDark: string;
-    gray: string;
 
     fontSizeVw: {
       [key: string]: string;
     };
     fontSizePx: {
       [key: string]: string;
+    };
+    zIndex: {
+      initialDetailBox: number;
+      topMenu: number;
+      rateStar: number;
+      popup: number;
+      dropdownMenu: number;
     };
   }
 }

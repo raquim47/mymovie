@@ -11,6 +11,7 @@ interface IDetailOptionRate {
   myRate:number;
   myComment:string;
 }
+
 function DetailOptionRate({ movieData, myRate, myComment }: IDetailOptionRate) {
   const navigate = useNavigate();
   const rateMatch = useMatch(`/rate/:listType/:movieId`);

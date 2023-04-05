@@ -18,7 +18,7 @@ const SearchedKeyword = styled.h2`
   font-size: 30px;
   padding-bottom: 10px;
   margin-bottom: 15px;
-  border-bottom: 1px solid ${(props) => props.theme.gray};
+  border-bottom: 1px solid ${(props) => props.theme.color.gray};
 
   strong {
     font-weight: 600;
@@ -29,7 +29,7 @@ const SearchedKeyword = styled.h2`
 const SearchedUser = styled.section`
   padding-bottom: 10px;
   margin-bottom: 15px;
-  border-bottom: 1px solid ${(props) => props.theme.gray};
+  border-bottom: 1px solid ${(props) => props.theme.color.gray};
 `;
 
 function Search() {
@@ -133,7 +133,6 @@ function Search() {
       queryClient.removeQueries('search');
     };
   }, [keyword, queryClient]);
-  console.log(loaderRef);
   return (
     <Wrapper>
       <SearchedKeyword>

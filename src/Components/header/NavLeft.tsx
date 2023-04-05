@@ -24,9 +24,7 @@ const Wrapper = styled.nav`
   top: 0;
   left: 0;
   padding: 24px 16px;
-  background-color: ${(props) => props.theme.black.darker};
-  border-right: 1px solid ${(props) => props.theme.black.borderBlack};
-  z-index: 100;
+  background-color: ${(props) => props.theme.color.black.dark};
 
   a:first-child {
     margin-left: 12px;
@@ -41,7 +39,7 @@ const NavItem = styled.li<{ isClicked?: boolean | null }>`
   margin-bottom: 8px;
   border-radius: 8px;
   overflow: hidden;
-  background-color: ${(props) => props.isClicked && props.theme.gray};
+  background-color: ${(props) => props.isClicked && props.theme.color.gray};
   font-size: ${props => props.theme.fontSizePx.s};
   font-weight: 400;
   cursor: pointer;
@@ -53,11 +51,11 @@ const NavItem = styled.li<{ isClicked?: boolean | null }>`
 
   span {
     color: ${(props) =>
-      props.isClicked ? props.theme.white.white : props.theme.white.darker};
+      props.isClicked ? props.theme.color.white.normal : props.theme.color.white.dark};
   }
 
   &:hover span {
-    color: ${(props) => props.theme.white.white};
+    color: ${(props) => props.theme.color.white.normal};
   }
 `;
 

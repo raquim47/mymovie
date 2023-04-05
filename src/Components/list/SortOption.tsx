@@ -12,7 +12,7 @@ const Wrapper = styled.div`
 const DropdownBtn = styled.div<{ isOpen: boolean }>`
   position: relative;
   height: 34px;
-  background-color: ${(props) => props.theme.gray};
+  background-color: ${(props) => props.theme.color.gray};
   border-radius: ${(props) => (props.isOpen ? '4px 4px 0 0' : '4px')};
   padding: 8px;
   cursor: pointer;
@@ -28,18 +28,18 @@ const DropdownMenu = styled.ul`
   top: 100%;
   left: 0;
   width: 100%;
-  background-color: ${(props) => props.theme.gray};
+  background-color: ${(props) => props.theme.color.gray};
   border-radius: 0 0 4px 4px;
   overflow: hidden;
-  z-index: 1000;
+  z-index: ${props => props.theme.zIndex.dropdownMenu};
 `;
 
 const DropdownOption = styled.li`
-  border-top: 1px solid ${(props) => props.theme.black.middle};
+  border-top: 1px solid ${(props) => props.theme.color.black.middle};
   padding: 8px;
   cursor: pointer;
   &:hover {
-    background-color: ${(props) => props.theme.purpleDark};
+    background-color: ${(props) => props.theme.color.purple.dark};
   }
 `;
 

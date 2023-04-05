@@ -30,12 +30,11 @@ const Caption = styled.figcaption`
   bottom: 8%;
   width: 100%;
   padding: 0 6% 0 4%;
-  z-index: 10;
 
   h4 {
     font-size: ${(props) => props.theme.fontSizePx['4xl']};
     font-weight: 600;
-    color: ${(props) => props.theme.white.white};
+    color: ${(props) => props.theme.color.white.normal};
     @media only screen and (max-width: 1200px) {
       font-size: ${(props) => props.theme.fontSizeVw['xxl']};
     }
@@ -51,7 +50,6 @@ const Caption = styled.figcaption`
     font-weight: 400;
     overflow: hidden;
     text-overflow: ellipsis;
-    color: ${(props) => props.theme.white.darker};
     @media only screen and (max-width: 960px) {
       font-size: ${(props) => props.theme.fontSizeVw.l};
     }
@@ -99,7 +97,7 @@ const InitialDetailBox = styled(motion.div)`
   margin: auto;
   width: 100%;
   height: 100%;
-  z-index: -1;
+  z-index: ${props => props.theme.zIndex.initialDetailBox};
 `;
 
 interface IBannerProps<T> {

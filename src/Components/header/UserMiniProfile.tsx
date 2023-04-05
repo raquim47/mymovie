@@ -11,8 +11,8 @@ const Wrapper = styled.div`
   gap: 12px;
   position: relative;
   padding: 12px;
-  border-top: 1px solid ${(props) => props.theme.gray};
-  border-bottom: 1px solid ${(props) => props.theme.gray};
+  border-top: 1px solid ${(props) => props.theme.color.gray};
+  border-bottom: 1px solid ${(props) => props.theme.color.gray};
 `;
 
 const UserImg = styled.div`
@@ -55,7 +55,7 @@ const UserEdit = styled.div`
   cursor: pointer;
 
   :hover {
-    color: ${(props) => props.theme.white.white};
+    color: ${(props) => props.theme.color.white.normal};
     transform: rotate(50%);
   }
 `;

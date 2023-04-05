@@ -6,7 +6,7 @@ import { IMovie } from '../../services/movieApi';
 const Wrapper = styled.div`
   border-radius: 4px;
   padding: 16px;
-  background-color: ${(props) => props.theme.black.middle};
+  background-color: ${(props) => props.theme.color.black.middle};
 
   .comment_edit {
     display: flex;
@@ -19,12 +19,12 @@ const Wrapper = styled.div`
       border: none;
       font-size: 12px;
       font-weight: 400;
-      color: ${(props) => props.theme.white.darker};
+      color: ${(props) => props.theme.color.white.dark};
       cursor: pointer;
     }
 
     button:hover {
-      color: ${(props) => props.theme.purple};
+      color: ${(props) => props.theme.color.purple.normal};
     }
 
     button:first-child::before {
@@ -34,7 +34,7 @@ const Wrapper = styled.div`
       transform: translateY(-50%);
       width: 1px;
       height: 60%;
-      background-color: ${(props) => props.theme.white.darker};
+      background-color: ${(props) => props.theme.color.white.dark};
       content: '';
     }
   }
@@ -50,7 +50,7 @@ const PostedComment = styled.div`
     margin-right: 16px;
     font-size: 14px;
     font-weight: 600;
-    color: ${(props) => props.theme.white.darker};
+    color: ${(props) => props.theme.color.white.dark};
   }
 
   h4::before {
@@ -61,7 +61,7 @@ const PostedComment = styled.div`
     left: 0;
     top: 50%;
     transform: translateY(-50%);
-    background-color: ${(props) => props.theme.white.darker};
+    background-color: ${(props) => props.theme.color.white.dark};
   }
 
   p {
@@ -94,7 +94,7 @@ const CommentForm = styled.form`
     position: absolute;
     width: 100%;
     top: 100%;
-    color: ${(props) => props.theme.purple};
+    color: ${(props) => props.theme.color.purple.normal};
     font-size: 11px;
     margin-top: 2px;
     margin-left: 4px;

@@ -33,7 +33,7 @@ const Photo = styled.div`
   align-items: center;
   width: 180px;
   padding-right: 30px;
-  border-right: 1px solid ${(props) => props.theme.gray};
+  border-right: 1px solid ${(props) => props.theme.color.gray};
   img {
     width: 100px;
     height: 100px;
@@ -56,7 +56,7 @@ const NickName = styled.div`
     white-space: nowrap;
   }
   span {
-    color: ${(props) => props.theme.purple};
+    color: ${(props) => props.theme.color.purple.normal};
     font-size: ${(props) => props.theme.fontSizePx.s};
     font-weight: 500;
     text-decoration: underline;
@@ -70,19 +70,19 @@ const Btn = styled.button`
   margin-top: 12px;
   padding: 10px 0;
   border: none;
-  background-color: ${(props) => props.theme.gray};
-  color: ${(props) => props.theme.white.white};
+  background-color: ${(props) => props.theme.color.gray};
+  color: ${(props) => props.theme.color.white.normal};
   border-radius: 4px;
   font-size: ${(props) => props.theme.fontSizePx.s};
   font-weight: 400;
   text-align: center;
   cursor: pointer;
   :hover {
-    background-color: ${(props) => props.theme.purpleDark};
+    background-color: ${(props) => props.theme.color.purple.dark};
   }
 `;
 const ColoredBtn = styled(Btn)`
-  background-color: ${(props) => props.theme.purple};
+  background-color: ${(props) => props.theme.color.purple.normal};
   margin-top: 4px;
   padding: 4px 0;
   font-size: ${(props) => props.theme.fontSizePx.xs};

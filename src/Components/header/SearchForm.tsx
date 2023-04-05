@@ -13,7 +13,7 @@ const Wrapper = styled.div`
   max-width: 250px;
   padding: 8px 12px;
   border-radius: 8px;
-  background-color: ${(props) => props.theme.gray};
+  background-color: ${(props) => props.theme.color.gray};
 `;
 const Form = styled.form`
   display: flex;
@@ -29,7 +29,7 @@ const Input = styled(motion.input)`
   outline: none;
   color: white;
   font-size: 14px;
-  background-color: ${(props) => props.theme.gray};
+  background-color: ${(props) => props.theme.color.gray};
 
   &:-webkit-autofill,
   &:-webkit-autofill:hover,
@@ -41,13 +41,13 @@ const Input = styled(motion.input)`
 `;
 
 const Button = styled(motion.button)`
-  color: ${(props) => props.theme.white.darker};
+  color: ${(props) => props.theme.color.white.dark};
   background-color: transparent;
   border: none;
   padding: 0;
   cursor: pointer;
   &:hover {
-    color: ${(props) => props.theme.white.white};
+    color: ${(props) => props.theme.color.white.normal};
   }
 `;
 

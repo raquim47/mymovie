@@ -15,7 +15,7 @@ const Wrapper = styled.div`
   @media only screen and (max-width: 768px) {
     width: 100%;
     margin-top: 10px;
-    background-color: ${(props) => props.theme.black.middle};
+    background-color: ${(props) => props.theme.color.black.middle};
     border-radius: 4px;
     padding: 16px;
   }
@@ -63,7 +63,7 @@ const Info = styled.ul`
     width: 3px;
     height: 3px;
     border-radius: 50%;
-    background-color: ${(props) => props.theme.white.darker};
+    background-color: ${(props) => props.theme.color.white.dark};
   }
 `;
 

@@ -69,7 +69,7 @@ table {
 body {
   font-weight: 300;
   font-family: 'Source Sans Pro', sans-serif;
-  color:${(props) => props.theme.white.darker};
+  color:${(props) => props.theme.color.white.dark};
   line-height: 1.2;
   background-color: black;
 }

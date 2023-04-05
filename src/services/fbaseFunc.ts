@@ -50,7 +50,7 @@ export const useInitialize = (isLoggedIn: boolean) => {
         // 오류 처리
       });
   }, []);
-  // serData 세팅
+  // firestore의 user컬렉션을 구독, 리덕스 스토어에 실시간 업데이트
   useEffect(() => {
     const user = auth.currentUser;
     if (user) {
@@ -249,6 +249,5 @@ export const getRatingUsers = async (movieId: number) => {
   }
 
   ratingsResult.sort((a, b) => b.timestamp - a.timestamp);
-  console.log('getFunc: ', ratingsResult)
   return ratingsResult;
 };

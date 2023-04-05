@@ -8,7 +8,7 @@ import DetailOptionRate from './DetailOptionRate';
 const Option = styled.ul`
   display: flex;
   justify-content: space-between;
-  background-color: ${(props) => props.theme.black.middle};
+  background-color: ${(props) => props.theme.color.black.middle};
   border-radius: 4px;
   padding: 10px 0;
   height: 75px;
@@ -32,7 +32,7 @@ const Option = styled.ul`
       transform: translateY(-50%);
       width: 1px;
       height: 80%;
-      background-color: ${(props) => props.theme.white.darker};
+      background-color: ${(props) => props.theme.color.white.dark};
       content: '';
     }
   }

@@ -18,19 +18,19 @@ const Btn = styled.button`
   margin-top: 12px;
   width: 100%;
   border: none;
-  background-color: ${(props) => props.theme.gray};
-  color: ${(props) => props.theme.white.white};
+  background-color: ${(props) => props.theme.color.gray};
+  color: ${(props) => props.theme.color.white.normal};
   font-size: 16px;
   padding: 12px 0;
   border-radius: 4px;
   cursor: pointer;
   :hover {
-    background-color: ${(props) => props.theme.purpleDark};
+    background-color: ${(props) => props.theme.color.purple.normal};
   }
 `;
 
 const ColoredBtn = styled(Btn)`
-  background-color: ${(props) => props.theme.purple};
+  background-color: ${(props) => props.theme.color.purple.dark};
 `;
 
 interface ISignIn {

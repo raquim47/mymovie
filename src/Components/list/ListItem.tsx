@@ -43,7 +43,7 @@ const ListInfo = styled(motion.div)`
   padding: 10px;
   background-color: rgba(0, 0, 0, 0.4);
   opacity: 0;
-  color: ${(props) => props.theme.white.white};
+  color: ${(props) => props.theme.color.white.normal};
 
   h4 {
     font-size: ${(props) => props.theme.fontSizePx.m};
@@ -81,13 +81,13 @@ const ListInfo = styled(motion.div)`
   }
 `;
 
-const MyRate = styled.div`
+const RateStar = styled.div`
   display: flex;
   justify-content: center;
   position: absolute;
   top: 1vw;
   width: 100%;
-  z-index: 100;
+  z-index: ${(props) => props.theme.zIndex.rateStar};
   .icon span {
     font-size: 1.5vw !important;
   }
@@ -102,7 +102,7 @@ const InitialDetailBox = styled(motion.div)`
   margin: auto;
   width: 100%;
   height: 100%;
-  z-index: -1;
+  z-index: ${(props) => props.theme.zIndex.initialDetailBox};
 `;
 
 const infoVariants = {
@@ -208,7 +208,7 @@ const ListItem = React.memo((props: IListItem) => {
           }
         />
         {movieData.rate && (
-          <MyRate>
+          <RateStar>
             <ReactStars
               count={5}
               color1='#E6E6E6'
@@ -218,7 +218,7 @@ const ListItem = React.memo((props: IListItem) => {
               className='icon'
               value={movieData.rate}
             />
-          </MyRate>
+          </RateStar>
         )}
         <ListInfo variants={infoVariants} whileHover='hover'>
           <h4>{movieData.title}</h4>

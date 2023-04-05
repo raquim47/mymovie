@@ -2,22 +2,23 @@ import { DefaultTheme } from 'styled-components';
 
 export const theme: DefaultTheme = {
   // color
-  red: '#E51013',
-  black: {
-    lighter: '#2F2F2F',
-    middle: '#181818',
-    darker: '#141517',
-    black: '#000',
-    borderBlack: '1b1c1d',
+  color: {
+    black: {
+      light: '#2F2F2F',
+      middle: '#181818',
+      dark: '#141517',
+      normal: '#000',
+    },
+    white: {
+      dark: '#d4d7db',
+      normal: '#fff',
+    },
+    gray: '#303133',
+    purple: {
+      dark: '#462EB2',
+      normal: '#BD69D4',
+    },
   },
-  white: {
-    white: '#fff',
-    darker: '#d4d7db',
-  },
-  // purple: '#ca64f4',
-  purple: '#BD69D4',
-  purpleDark: '#462EB2',
-  gray: '#303133',
 
   // fontSize
   fontSizeVw: {
@@ -40,5 +41,12 @@ export const theme: DefaultTheme = {
     xxl: '28px',
     '3xl': '32px',
     '4xl': '36px',
+  },
+  zIndex: {
+    initialDetailBox: -1,
+    topMenu: 10,
+    rateStar: 1,
+    popup: 100,
+    dropdownMenu: 10,
   },
 };

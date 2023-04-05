@@ -19,8 +19,8 @@ const TopMenu = styled.div`
   height: 70px;
   width: 100%;
   padding: 0 20px;
-  background-color: ${(props) => props.theme.black.black};
-  z-index: 100;
+  background-color: ${(props) => props.theme.color.black.normal};
+  z-index: ${props => props.theme.zIndex.topMenu};
 `;
 
 const ProfileBtn = styled.div`
@@ -28,7 +28,7 @@ const ProfileBtn = styled.div`
   height: 45px;
   border-radius: 50%;
   overflow: hidden;
-  border: 3px solid ${(props) => props.theme.black.lighter};
+  border: 3px solid ${(props) => props.theme.color.black.light};
   cursor: pointer;
 
   img {
@@ -42,7 +42,7 @@ const Nav = styled.nav`
   padding: 0 20px;
   ul {
     display: flex;
-    border-bottom: 1px solid ${(props) => props.theme.gray};
+    border-bottom: 1px solid ${(props) => props.theme.color.gray};
     padding-bottom: 5px;
     gap: 25px;
   }
@@ -52,12 +52,12 @@ const NavItem = styled.li<{ isClicked: boolean | null }>`
   position: relative;
   font-size: ${(props) => props.theme.fontSizePx.xl};
   color: ${(props) =>
-    props.isClicked ? props.theme.white.darker : props.theme.gray};
+    props.isClicked ? props.theme.color.white.dark : props.theme.color.gray};
   font-weight: 600;
   cursor: pointer;
 
   :hover {
-    color: ${(props) => props.theme.white.darker};
+    color: ${(props) => props.theme.color.white.dark};
   }
 
   &::before {
@@ -67,7 +67,7 @@ const NavItem = styled.li<{ isClicked: boolean | null }>`
     transform: translateY(-50%);
     width: 1px;
     height: 60%;
-    background-color: ${(props) => props.theme.gray};
+    background-color: ${(props) => props.theme.color.gray};
     content: '';
   }
 

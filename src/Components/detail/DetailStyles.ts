@@ -17,7 +17,7 @@ export const Overlay = styled(motion.div)`
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.6);
   opacity: 0;
-  z-index: 100;
+  z-index: ${props => props.theme.zIndex.popup};
 `;
 
 export const Wrapper = styled(motion.div)`
@@ -33,8 +33,8 @@ export const Wrapper = styled(motion.div)`
   overflow: hidden;
   padding-bottom: 30px;
   border-radius: 25px;
-  background-color: ${(props) => props.theme.black.lighter};
-  z-index: 100;
+  background-color: ${(props) => props.theme.color.black.light};
+  z-index: ${props => props.theme.zIndex.popup};
 
   @media only screen and (max-width: 768px) {
     width: 100%;
@@ -60,7 +60,7 @@ export const Wrapper = styled(motion.div)`
 export const Content = styled(motion.div)`
   position: relative;
   height: 100%;
-  color: ${(props) => props.theme.white.white};
+  color: ${(props) => props.theme.color.white.normal};
   overflow: auto;
 
   ::-webkit-scrollbar {
@@ -171,7 +171,7 @@ export const ContentMiddle = styled.section`
 export const OverView = styled.div`
   border-radius: 4px;
   padding: 16px;
-  background-color: ${(props) => props.theme.black.middle};
+  background-color: ${(props) => props.theme.color.black.middle};
   font-size: ${(props) => props.theme.fontSizePx.s};
 
   h5 {
@@ -179,7 +179,7 @@ export const OverView = styled.div`
     margin-bottom: 10px;
     padding-left: 10px;
     font-weight: 600;
-    color: ${(props) => props.theme.white.darker};
+    color: ${(props) => props.theme.color.white.dark};
     :before {
       content: '';
       position: absolute;
@@ -188,7 +188,7 @@ export const OverView = styled.div`
       left: 0;
       top: 50%;
       transform: translateY(-50%);
-      background-color: ${(props) => props.theme.white.darker};
+      background-color: ${(props) => props.theme.color.white.dark};
     }
   }
   p {
@@ -200,12 +200,12 @@ export const OverView = styled.div`
 export const Ratings = styled.div`
   border-radius: 4px;
   padding: 16px;
-  background-color: ${(props) => props.theme.black.middle};
+  background-color: ${(props) => props.theme.color.black.middle};
 `;
 
 export const UserItemWrapper = styled.div`
   border-radius: 10px;
-  background-color: ${(props) => props.theme.black.lighter};
+  background-color: ${(props) => props.theme.color.black.light};
   margin-bottom: 16px;
 
   &:last-child {
