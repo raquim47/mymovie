@@ -8,10 +8,6 @@ import DetailOptionRate from './DetailOptionRate';
 const Option = styled.ul`
   display: flex;
   justify-content: space-between;
-  background-color: ${(props) => props.theme.color.black.middle};
-  border-radius: 4px;
-  padding: 10px 0;
-  height: 75px;
 
   li {
     flex: 1;

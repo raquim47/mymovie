@@ -17,7 +17,7 @@ export const Overlay = styled(motion.div)`
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.6);
   opacity: 0;
-  z-index: ${props => props.theme.zIndex.popup};
+  z-index: ${(props) => props.theme.zIndex.popup};
 `;
 
 export const Wrapper = styled(motion.div)`
@@ -28,18 +28,19 @@ export const Wrapper = styled(motion.div)`
   right: 0;
   width: 70vw;
   max-width: 900px;
-  height: 75vh;
+  height: 70vh;
   margin: auto;
   overflow: hidden;
   padding-bottom: 30px;
   border-radius: 25px;
   background-color: ${(props) => props.theme.color.black.light};
-  z-index: ${props => props.theme.zIndex.popup};
+  z-index: ${(props) => props.theme.zIndex.popup};
 
   @media only screen and (max-width: 768px) {
     width: 100%;
     height: 100%;
     border-radius: 0;
+    padding-bottom: 0;
   }
 
   .closeBtn {
@@ -55,6 +56,12 @@ export const Wrapper = styled(motion.div)`
       scale: 1.3;
     }
   }
+`;
+
+export const DarkBox = styled.section`
+  padding: 16px;
+  border-radius: 4px;
+  background-color: ${(props) => props.theme.color.black.middle};
 `;
 
 export const Content = styled(motion.div)`
@@ -78,37 +85,19 @@ export const Content = styled(motion.div)`
     border: 3px solid transparent;
   }
 `;
-// ContentTop
-export const ContentTop = styled.section`
-  position: relative;
+export const ContentBg = styled.div<{ $bgPhoto: string }>`
   height: 380px;
-  @media only screen and (max-width: 768px) {
-    height: auto;
-    margin-bottom: 10px;
-  }
-`;
-
-export const ContentTopBg = styled.div<{ $bgPhoto: string }>`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
   background-image: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent),
     url(${(props) => props.$bgPhoto});
   background-size: cover;
   background-position: center center;
-
-  @media only screen and (max-width: 768px) {
-    position: relative;
-    height: 350px;
-  }
 `;
 
-export const ContentTopInner = styled.div`
-  position: absolute;
-  bottom: -85px;
+// ContentTop
+export const ContentTop = styled.div`
+  position: relative;
   width: 100%;
+  margin-top: -105px;
   padding-left: calc(30% + 40px);
   padding-right: 30px;
 
@@ -118,16 +107,15 @@ export const ContentTopInner = styled.div`
   }
 
   @media only screen and (max-width: 768px) {
-    position: relative;
-    bottom: 0;
     padding: 0;
+    margin-top: 0;
   }
 `;
 
 export const DetailPoster = styled.div`
   position: absolute;
   left: 30px;
-  bottom: 0;
+  bottom: 2px;
   width: 30%;
   border-radius: 4px;
   overflow: hidden;
@@ -139,7 +127,7 @@ export const DetailPoster = styled.div`
   @media only screen and (max-width: 960px) {
     left: auto;
     right: 30px;
-    bottom: 95px;
+    bottom: 105px;
     width: 20%;
   }
 
@@ -151,27 +139,23 @@ export const DetailPoster = styled.div`
   }
 `;
 
-// ContentMiddle
-export const ContentMiddle = styled.section`
+// ContentBottom
+export const ContentBottom = styled.section`
   display: flex;
   flex-direction: column;
   gap: 10px;
   position: relative;
-  margin-top: 95px;
+  margin-top: 10px;
   padding: 0 30px 20px;
   @media only screen and (max-width: 960px) {
     padding: 0 10px;
   }
   @media only screen and (max-width: 768px) {
-    margin-top: 0;
     padding: 0;
   }
 `;
 
 export const OverView = styled.div`
-  border-radius: 4px;
-  padding: 16px;
-  background-color: ${(props) => props.theme.color.black.middle};
   font-size: ${(props) => props.theme.fontSizePx.s};
 
   h5 {
@@ -197,13 +181,7 @@ export const OverView = styled.div`
   }
 `;
 
-export const Ratings = styled.div`
-  border-radius: 4px;
-  padding: 16px;
-  background-color: ${(props) => props.theme.color.black.middle};
-`;
-
-export const UserItemWrapper = styled.div`
+export const RatingUsers = styled.div`
   border-radius: 10px;
   background-color: ${(props) => props.theme.color.black.light};
   margin-bottom: 16px;

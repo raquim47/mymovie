@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { IMovie } from '../../services/movieApi';
 import { getYear } from '../../utils/utils';
 
-const Wrapper = styled.div`
+const Wrapper = styled.section`
   margin-bottom: 10px;
   padding-left: 16px;
   padding-bottom: 10px;

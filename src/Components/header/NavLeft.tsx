@@ -40,7 +40,7 @@ const NavItem = styled.li<{ isClicked?: boolean | null }>`
   border-radius: 8px;
   overflow: hidden;
   background-color: ${(props) => props.isClicked && props.theme.color.gray};
-  font-size: ${props => props.theme.fontSizePx.s};
+  font-size: ${(props) => props.theme.fontSizePx.s};
   font-weight: 400;
   cursor: pointer;
 
@@ -51,7 +51,9 @@ const NavItem = styled.li<{ isClicked?: boolean | null }>`
 
   span {
     color: ${(props) =>
-      props.isClicked ? props.theme.color.white.normal : props.theme.color.white.dark};
+      props.isClicked
+        ? props.theme.color.white.normal
+        : props.theme.color.white.dark};
   }
 
   &:hover span {

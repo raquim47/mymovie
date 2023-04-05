@@ -11,22 +11,20 @@ import { IRatingUsers, RootState } from '../../store';
 import UserItem from '../auth/UserItem';
 import {
   GlobalStyle,
+  DarkBox,
   Overlay,
   Wrapper,
   Content,
-  ContentTop,
-  ContentTopBg,
-  ContentTopInner,
+  ContentBg,
   DetailPoster,
-  ContentMiddle,
+  ContentTop,
+  ContentBottom,
   OverView,
-  Ratings,
-  UserItemWrapper,
+  RatingUsers,
 } from './DetailStyles';
 import DetailInfo from './DetailInfo';
 import DetailOption from './DetailOption';
 import DetailCommentForm from './DetailCommentForm';
-import styled from 'styled-components';
 import Loader from '../etc/Loader';
 
 interface IDetail {
@@ -111,62 +109,68 @@ function Detail({ movieId, keyword }: IDetail) {
           <Loader />
         ) : (
           <Content>
+            <ContentBg
+              $bgPhoto={
+                movieData?.backdrop_path
+                  ? makeImagePath(movieData.backdrop_path, 'w1280')
+                  : ''
+              }
+            ></ContentBg>
             <ContentTop>
-              <ContentTopBg
-                $bgPhoto={
-                  movieData?.backdrop_path
-                    ? makeImagePath(movieData.backdrop_path, 'w1280')
-                    : ''
-                }
-              ></ContentTopBg>
-              <ContentTopInner>
-                <DetailPoster>
-                  <img
-                    src={makeImagePath(
-                      movieData?.poster_path || '../assets/no-image-icon-6.png',
-                      'w500'
-                    )}
-                    alt={movieData?.title}
-                  />
-                </DetailPoster>
-                <DetailInfo movieData={movieData as IMovie} />
+              <DetailPoster>
+                <img
+                  src={makeImagePath(
+                    movieData?.poster_path || '../assets/no-image-icon-6.png',
+                    'w500'
+                  )}
+                  alt={movieData?.title}
+                />
+              </DetailPoster>
+              <DetailInfo movieData={movieData as IMovie} />
+              <DarkBox>
                 <DetailOption
                   movieData={movieData as IMovie}
                   toggleCommentForm={toggleCommentForm}
                   myRate={myRate}
                   myComment={myComment}
                 />
-              </ContentTopInner>
+              </DarkBox>
             </ContentTop>
-            <ContentMiddle>
-              <DetailCommentForm
-                commentFormOpen={commentFormOpen}
-                movieData={movieData as IMovie}
-                myRate={myRate}
-                myComment={myComment}
-                toggleCommentForm={toggleCommentForm}
-              />
+            <ContentBottom>
+              {(commentFormOpen || myComment) && (
+                <DarkBox>
+                  <DetailCommentForm
+                    commentFormOpen={commentFormOpen}
+                    movieData={movieData as IMovie}
+                    myRate={myRate}
+                    myComment={myComment}
+                    toggleCommentForm={toggleCommentForm}
+                  />
+                </DarkBox>
+              )}
               {movieData?.overview && (
-                <OverView>
-                  {movieData?.tagline ? <h5>{movieData.tagline}</h5> : null}
-                  <p>{movieData?.overview}</p>
-                </OverView>
+                <DarkBox>
+                  <OverView>
+                    {movieData?.tagline ? <h5>{movieData.tagline}</h5> : null}
+                    <p>{movieData?.overview}</p>
+                  </OverView>
+                </DarkBox>
               )}
               {ratingUsers.length > 0 && (
-                <Ratings>
+                <DarkBox>
                   {ratingUsers.map((user, i) => (
-                    <UserItemWrapper key={i}>
+                    <RatingUsers key={i}>
                       <UserItem
                         userPhoto={user.userPhoto}
                         nickName={user.nickName}
                         rate={user.rate}
                         comment={user.comment}
                       />
-                    </UserItemWrapper>
+                    </RatingUsers>
                   ))}
-                </Ratings>
+                </DarkBox>
               )}
-            </ContentMiddle>
+            </ContentBottom>
           </Content>
         )}
         <FontAwesomeIcon

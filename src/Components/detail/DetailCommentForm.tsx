@@ -3,43 +3,36 @@ import styled from 'styled-components';
 import { addComment, deleteComment } from '../../services/fbaseFunc';
 import { IMovie } from '../../services/movieApi';
 
-const Wrapper = styled.div`
-  border-radius: 4px;
-  padding: 16px;
-  background-color: ${(props) => props.theme.color.black.middle};
+const Edit = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 2%;
+  button {
+    position: relative;
+    background-color: transparent;
+    border: none;
+    font-size: 12px;
+    font-weight: 400;
+    color: ${(props) => props.theme.color.white.dark};
+    cursor: pointer;
+  }
 
-  .comment_edit {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    margin-left: 2%;
-    button {
-      position: relative;
-      background-color: transparent;
-      border: none;
-      font-size: 12px;
-      font-weight: 400;
-      color: ${(props) => props.theme.color.white.dark};
-      cursor: pointer;
-    }
+  button:hover {
+    color: ${(props) => props.theme.color.purple.normal};
+  }
 
-    button:hover {
-      color: ${(props) => props.theme.color.purple.normal};
-    }
-
-    button:first-child::before {
-      position: absolute;
-      left: calc(100% + 3px);
-      top: 50%;
-      transform: translateY(-50%);
-      width: 1px;
-      height: 60%;
-      background-color: ${(props) => props.theme.color.white.dark};
-      content: '';
-    }
+  button:first-child::before {
+    position: absolute;
+    left: calc(100% + 3px);
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1px;
+    height: 60%;
+    background-color: ${(props) => props.theme.color.white.dark};
+    content: '';
   }
 `;
-
 const PostedComment = styled.div`
   display: flex;
   align-items: center;
@@ -132,38 +125,32 @@ function DetailCommentForm({
   return (
     <>
       {commentFormOpen ? (
-        <Wrapper>
-          <CommentForm onSubmit={handleSubmit(handleCommentValid)}>
-            <textarea
-              {...register('comment', {
-                required: '코멘트를 입력해주세요',
-              })}
-              defaultValue={myComment}
-              placeholder='작품에 대한 코멘트를 남겨주세요'
-            />
-            {errors.comment && (
-              <span className='comment_error'>{errors.comment.message}</span>
-            )}
-            <div className='comment_edit'>
-              <button type='submit'>저장</button>
-              <button onClick={toggleCommentForm}>취소</button>
-            </div>
-          </CommentForm>
-        </Wrapper>
+        <CommentForm onSubmit={handleSubmit(handleCommentValid)}>
+          <textarea
+            {...register('comment', {
+              required: '코멘트를 입력해주세요',
+            })}
+            defaultValue={myComment}
+            placeholder='작품에 대한 코멘트를 남겨주세요'
+          />
+          {errors.comment && (
+            <span className='comment_error'>{errors.comment.message}</span>
+          )}
+          <Edit>
+            <button type='submit'>저장</button>
+            <button onClick={toggleCommentForm}>취소</button>
+          </Edit>
+        </CommentForm>
       ) : (
         myComment && (
-          <Wrapper>
-            <PostedComment>
-              <h4>나의 코멘트</h4>
-              <p>{myComment}</p>
-              <div className='comment_edit'>
-                <button onClick={toggleCommentForm}>수정</button>
-                <button onClick={() => deleteComment(movieData.id)}>
-                  삭제
-                </button>
-              </div>
-            </PostedComment>
-          </Wrapper>
+          <PostedComment>
+            <h4>나의 코멘트</h4>
+            <p>{myComment}</p>
+            <Edit>
+              <button onClick={toggleCommentForm}>수정</button>
+              <button onClick={() => deleteComment(movieData.id)}>삭제</button>
+            </Edit>
+          </PostedComment>
         )
       )}
     </>
