@@ -17,13 +17,6 @@ import { useEffect } from 'react';
 import Header from './components/header/Header';
 import Loader from './components/etc/Loader';
 
-const Wrapper = styled.div`
-  padding: 50px 30px 0px 270px;
-  @media only screen and (max-width: 960px) {
-    padding: 25px 20px 0px;
-  }
-`;
-
 function App() {
   const dispatch = useDispatch();
   const { initFirebase, isLoggedIn } = useSelector(
@@ -45,15 +38,15 @@ function App() {
     <>
       <Header />
       {initFirebase ? (
-        <Wrapper>
+        <main className="main">
           <Routes>
-            <Route path='/' element={<Navigate to='/home' />} />
-            <Route path='/home' element={<Home />} />
-            <Route path='/home/:listType/:movieId' element={<Home />} />
-            <Route path='/search' element={<Search />} />
-            <Route path='/search/:listType/:movieId' element={<Search />} />
+            <Route path="/" element={<Navigate to="/home" />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/home/:listType/:movieId" element={<Home />} />
+            <Route path="/search" element={<Search />} />
+            <Route path="/search/:listType/:movieId" element={<Search />} />
             <Route
-              path='/rate'
+              path="/rate"
               element={
                 <PrivateRoute>
                   <Rate />
@@ -61,7 +54,7 @@ function App() {
               }
             />
             <Route
-              path='/rate/:listType/:movieId'
+              path="/rate/:listType/:movieId"
               element={
                 <PrivateRoute>
                   <Rate />
@@ -69,7 +62,7 @@ function App() {
               }
             />
             <Route
-              path='/favorite'
+              path="/favorite"
               element={
                 <PrivateRoute>
                   <Favorite />
@@ -77,7 +70,7 @@ function App() {
               }
             />
             <Route
-              path='/favorite/:listType/:movieId'
+              path="/favorite/:listType/:movieId"
               element={
                 <PrivateRoute>
                   <Favorite />
@@ -85,7 +78,7 @@ function App() {
               }
             />
             <Route
-              path='/auth'
+              path="/auth"
               element={
                 <PrivateRoute>
                   <Auth />
@@ -93,16 +86,16 @@ function App() {
               }
             />
             <Route
-              path='/profile'
+              path="/profile"
               element={
                 <PrivateRoute>
                   <Profile />
                 </PrivateRoute>
               }
             />
-            <Route path='/*' element={<NotFound />} />
+            <Route path="/*" element={<NotFound />} />
           </Routes>
-        </Wrapper>
+        </main>
       ) : (
         <Loader />
       )}

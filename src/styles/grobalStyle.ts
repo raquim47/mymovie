@@ -82,4 +82,11 @@ a {
   text-decoration:none;
   color:inherit;
 }
+
+.main {
+  padding: 50px 30px 0px 270px;
+  @media only screen and (max-width: 960px) {
+    padding: 25px 20px 0px;
+  }
+}
 `;
