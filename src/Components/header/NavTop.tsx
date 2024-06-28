@@ -8,6 +8,10 @@ import SearchForm from './SearchForm';
 
 const Wrapper = styled.div`
   padding-top: 80px;
+  
+  @media (min-width: 961px) {
+    display: none; 
+  }
 `;
 
 const TopMenu = styled.div`

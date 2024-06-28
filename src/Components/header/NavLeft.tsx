@@ -15,7 +15,7 @@ import UserMiniProfile from './UserMiniProfile';
 import SearchForm from './SearchForm';
 
 const Wrapper = styled.nav`
-  display: flex;
+  display: none;
   flex-direction: column;
   gap: 20px;
   position: fixed;
@@ -28,6 +28,10 @@ const Wrapper = styled.nav`
 
   a:first-child {
     margin-left: 12px;
+  }
+
+  @media (min-width: 961px) {
+    display: flex; // 961px 이상에서만 표시
   }
 `;
 
