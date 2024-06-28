@@ -1,18 +1,18 @@
 import { useSelector } from 'react-redux';
-import { useMatch, useNavigate } from 'react-router-dom';
+import { Route, useMatch, useNavigate } from 'react-router-dom';
 import { RootState } from '../../store';
-import { ReactNode, useEffect } from 'react';
+import { ComponentType, useEffect } from 'react';
 
-function PrivateRoute({ children }: { children: ReactNode }) {
+function PrivateRoute({ component: Component }: { component: ComponentType }) {
   const authMatch = useMatch('/auth');
   const { isLoggedIn } = useSelector((state: RootState) => state.init);
   const navigate = useNavigate();
- 
+
   useEffect(() => {
     if (authMatch && isLoggedIn) {
       navigate('/home');
-      return
-    } 
+      return;
+    }
 
     if (authMatch && !isLoggedIn) {
       return;
@@ -28,7 +28,7 @@ function PrivateRoute({ children }: { children: ReactNode }) {
     return null;
   }
 
-  return <>{children}</>;
+  return <Component />;
 }
 
 export default PrivateRoute;
