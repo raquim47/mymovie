@@ -26,13 +26,7 @@ function App() {
   return (
     <>
       <Header />
-      {initFirebase ? (
-        <main className="main">
-          <MainRoute />
-        </main>
-      ) : (
-        <Loader />
-      )}
+      <MainRoute />
     </>
   );
 }
