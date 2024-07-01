@@ -1,9 +1,24 @@
+import { IMovie } from '../services/movieApi';
 import { IFavoriteMovie, IRatedMovie } from '../store';
 
-// 이미지 가져오기
-export const makeImagePath = (id: string, format?: string) => {
-  return `https://image.tmdb.org/t/p/${format ? format : 'original'}/${id}`;
+export const makeImagePath = (id: string, format: string = 'original') => {
+  return `https://image.tmdb.org/t/p/${format}/${id}`;
 };
+
+// 이미지 가져오기
+export const getMovieImagePath = (
+  movieData: IMovie,
+  mode: 'backdrop' | 'poster',
+  format: 'w500' | 'w1280' = 'w500'
+) => {
+  const imageKey = `${mode}_path`;
+  const imageId = movieData[imageKey as keyof IMovie];
+
+  return imageId
+    ? `https://image.tmdb.org/t/p/${format}/${imageId}`
+    : require('../assets/no-image-icon-6.png');
+};
+
 // 평점 메세지
 interface IRateMassage {
   [key: number]: string;
