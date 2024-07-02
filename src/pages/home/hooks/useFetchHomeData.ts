@@ -39,7 +39,6 @@ const useFetchHomeData = () => {
   ]);
 
   const allQueries = [...baseQueryResults, ...dependentQueryResults];
-
   const isLoading = allQueries.some((query) => query.isLoading);
   const error = allQueries.find((query) => query.error)?.error;
 

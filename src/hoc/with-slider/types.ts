@@ -1,20 +1,22 @@
 import { ReactNode } from 'react';
-import { IMovieDetails } from 'services/movies/types';
 
 export type Direction = 'next' | 'prev';
 
-export interface ISliderContext {
+export interface ISliderContext<T> {
   index: number;
   direction: Direction;
   title: string;
   rowSize: number;
-  slicedData: IMovieDetails[];
+  slicedData: T[];
   onClickSlideBtn: (direction: Direction) => void;
 }
 
-export interface ISliderProviderProps {
-  children: ReactNode;
+export interface ISliderProps<T> {
   rowSize: number;
-  data: IMovieDetails[];
+  data: T[];
   title: string;
+}
+
+export interface ISliderProviderProps<T> extends ISliderProps<T> {
+  children: ReactNode;
 }

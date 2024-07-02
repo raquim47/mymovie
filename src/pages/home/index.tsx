@@ -1,7 +1,6 @@
 import useFetchHomeData from './hooks/useFetchHomeData';
 import withSlider from 'hoc/with-slider';
 import List from 'components/movie-list';
-import { IMovieDetails } from 'services/movies/types';
 
 const HomePage = () => {
   const {
@@ -13,6 +12,7 @@ const HomePage = () => {
     isLoading,
     error,
   } = useFetchHomeData();
+  
   const MovieListSlider = withSlider(List);
 
   if (isLoading) return <p>Loading...</p>;
@@ -21,22 +21,20 @@ const HomePage = () => {
   return (
     <>
       <MovieListSlider
-        data={latestData?.results as IMovieDetails[]}
+        data={latestData?.results ?? []}
         rowSize={5}
         title="최신 개봉"
       />
       <MovieListSlider
-        data={trendingData?.results as IMovieDetails[]}
+        data={trendingData?.results ?? []}
         rowSize={5}
         title="요즘 인기"
       />
-      {topRatedData && (
-        <MovieListSlider
-          data={topRatedData?.results}
-          rowSize={5}
-          title="Top 평점"
-        />
-      )}
+      <MovieListSlider
+        data={topRatedData?.results ?? []}
+        rowSize={5}
+        title="Top 평점"
+      />
     </>
   );
 };

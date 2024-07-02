@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { Direction, ISliderContext, ISliderProviderProps } from './types';
 
-const SliderContext = createContext<ISliderContext>({
+const SliderContext = createContext<ISliderContext<unknown>>({
   index: 0,
   rowSize: 1,
   direction: 'next',
@@ -10,12 +10,12 @@ const SliderContext = createContext<ISliderContext>({
   slicedData: [],
 });
 
-export const SliderProvider = ({
+export const SliderProvider = <T,>({
   children,
   data,
   rowSize,
   title,
-}: ISliderProviderProps) => {
+}: ISliderProviderProps<T>) => {
   const [index, setIndex] = useState(0);
   const [direction, setDirection] = useState<Direction>('next');
   const [isAnimating, setIsAnimating] = useState(false);
@@ -59,4 +59,4 @@ export const SliderProvider = ({
   );
 };
 
-export const useSliderContext = () => useContext(SliderContext);
+export const useSliderContext = <T,>() => useContext(SliderContext) as ISliderContext<T>;

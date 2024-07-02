@@ -2,11 +2,15 @@ import { ComponentType } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { useSliderContext } from './context';
 import { Content, ContentInner, Row } from './styles';
-import { Direction } from './types';
-import { IMovieListProps } from 'components/movie-list/types';
+import { Direction, ISliderProps } from './types';
 
-const Slide = ({ Component }: { Component: ComponentType<IMovieListProps> }) => {
-  const { index, direction, slicedData, rowSize, title } = useSliderContext();
+const Slide = <T,>({
+  Component,
+}: {
+  Component: ComponentType<ISliderProps<T>>;
+}) => {
+  const { index, direction, slicedData, rowSize, title } =
+    useSliderContext<T>();
 
   const rowVariants = {
     hidden: ({ direction }: { direction: Direction }) => ({
@@ -26,7 +30,6 @@ const Slide = ({ Component }: { Component: ComponentType<IMovieListProps> }) => 
         <AnimatePresence
           initial={false}
           custom={{ direction }}
-          onExitComplete={() => console.log(index)}
         >
           <Row
             variants={rowVariants}

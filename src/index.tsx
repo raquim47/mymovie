@@ -7,6 +7,7 @@ import { theme } from './styles/theme';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
