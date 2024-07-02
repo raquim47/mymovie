@@ -1,4 +1,4 @@
-import { IMovie } from "../../services/movieApi";
+import { IMovie } from "@/services/movieApi";
 
 export interface IMovieListProps {
   data: IMovie[];

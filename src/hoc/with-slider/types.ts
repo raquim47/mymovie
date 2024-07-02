@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { IMovie } from '../../services/movieApi';
+import { IMovie } from '@/services/movieApi';
 
 export type Direction = 'next' | 'prev';
 

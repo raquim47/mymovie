@@ -1,4 +1,4 @@
-import { genres, getMovieImagePath } from '../../utils/utils';
+import { genres, getMovieImagePath } from '@/utils/utils';
 import { memo } from 'react';
 import { hoverItemMotion } from './variants';
 import { IMovieItem } from './types';
