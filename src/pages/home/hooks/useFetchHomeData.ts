@@ -1,79 +1,56 @@
-import { useQuery } from 'react-query';
+import { useQueries } from 'react-query';
 import {
   getMovieDetail,
   getMoviesLatest,
   getMoviesTopRated,
   getMoviesTrending,
   getMoviesUpcoming,
-  IGetMovieResult,
-  IMovie,
-} from '@/services/movieApi';
+} from 'services/movies';
 
 const useFetchHomeData = () => {
-  const {
-    data: latestData,
-    isLoading: latestLoading,
-    error: latestError,
-  } = useQuery<IGetMovieResult>(['movies', 'latest'], getMoviesLatest);
+  const baseQueryResults = useQueries([
+    { queryKey: ['movies', 'latest'], queryFn: getMoviesLatest },
+    { queryKey: ['movies', 'upcoming'], queryFn: getMoviesUpcoming },
+    { queryKey: ['movies', 'trending'], queryFn: getMoviesTrending },
+    { queryKey: ['movies', 'topRated'], queryFn: getMoviesTopRated },
+  ]);
 
-  const { data: upcomingData } = useQuery<IGetMovieResult>(
-    ['movies', 'upcoming'],
-    getMoviesUpcoming
-  );
+  const [latestData, upcomingData, trendingData, topRatedData] =
+    baseQueryResults.map((query) => query.data);
 
-  const {
-    data: trendingData,
-    isLoading: trendingLoading,
-    error: trendingError,
-  } = useQuery<IGetMovieResult>(['movies', 'trending'], getMoviesTrending);
+  const firstLastestMovieId = latestData?.results[0]?.id;
+  const firstUpcomingMovieId = upcomingData?.results[0]?.id;
 
-  const {
-    data: topRatedData,
-    isLoading: topRatedLoading,
-    error: topRatedError,
-  } = useQuery<IGetMovieResult>(['movies', 'topRated'], getMoviesTopRated);
+  const dependentQueryResults = useQueries([
+    {
+      queryKey: ['bannerLeftData', firstLastestMovieId],
+      queryFn: () =>
+        typeof firstLastestMovieId === 'number' &&
+        getMovieDetail(firstLastestMovieId),
+      enabled: !!firstLastestMovieId,
+    },
+    {
+      queryKey: ['bannerRightData', firstUpcomingMovieId],
+      queryFn: () =>
+        typeof firstUpcomingMovieId === 'number' &&
+        getMovieDetail(firstUpcomingMovieId),
+      enabled: !!firstUpcomingMovieId,
+    },
+  ]);
 
-  const {
-    data: bannerLeftData,
-    isLoading: bannerLeftLoading,
-    error: bannerLeftError,
-  } = useQuery<IMovie>(
-    ['bannerLeftData', latestData?.results[1].id],
-    () => getMovieDetail(latestData?.results[1].id),
-    { enabled: !!latestData?.results[1].id }
-  );
+  const allQueries = [...baseQueryResults, ...dependentQueryResults];
 
-  const {
-    data: bannerRightData,
-    isLoading: bannerRightLoading,
-    error: bannerRightError,
-  } = useQuery<IMovie>(
-    ['bannerRightData', upcomingData?.results[2].id],
-    () => getMovieDetail(upcomingData?.results[2].id),
-    { enabled: !!upcomingData?.results[2].id }
-  );
-
-  const loading =
-    latestLoading ||
-    trendingLoading ||
-    topRatedLoading ||
-    bannerLeftLoading ||
-    bannerRightLoading;
-
-  const error =
-    latestError ||
-    trendingError ||
-    topRatedError ||
-    bannerLeftError ||
-    bannerRightError;
+  const isLoading = allQueries.some((query) => query.isLoading);
+  const error = allQueries.find((query) => query.error)?.error;
 
   return {
     latestData,
+    upcomingData,
     trendingData,
     topRatedData,
-    bannerLeftData,
-    bannerRightData,
-    loading,
+    bannerLeftData: dependentQueryResults[0].data,
+    bannerRightData: dependentQueryResults[1].data,
+    isLoading,
     error,
   };
 };

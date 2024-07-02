@@ -3,7 +3,7 @@ import { AnimatePresence } from 'framer-motion';
 import { useSliderContext } from './context';
 import { Content, ContentInner, Row } from './styles';
 import { Direction } from './types';
-import { IMovieListProps } from '@/components/movie-list/types';
+import { IMovieListProps } from 'components/movie-list/types';
 
 const Slide = ({ Component }: { Component: ComponentType<IMovieListProps> }) => {
   const { index, direction, slicedData, rowSize, title } = useSliderContext();

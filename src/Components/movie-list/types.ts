@@ -1,13 +1,13 @@
-import { IMovie } from "@/services/movieApi";
+import { IMovieDetails } from "services/movies/types";
 
 export interface IMovieListProps {
-  data: IMovie[];
+  data: IMovieDetails[];
   rowSize: number;
   title: string;
 }
 
 export interface IMovieItem {
-  movieData: IMovie;
+  movieData: IMovieDetails;
   listType: string;
   index: number;
   hoveredIndex: number;

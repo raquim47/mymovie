@@ -1,5 +1,5 @@
 import { ComponentType } from 'react';
-import { IMovieListProps } from '@/components/movie-list/types';
+import { IMovieListProps } from 'components/movie-list/types';
 import { SliderProvider } from './context';
 import Slide from './Slide';
 import SlideBtns from './SlideBtns';

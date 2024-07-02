@@ -1,13 +1,13 @@
-import { IMovie } from '@/services/movieApi';
+import { IMovieDetails } from 'services/movies/types';
 
 // 이미지 가져오기
 export const getMovieImagePath = (
-  movieData: IMovie,
+  movieData: IMovieDetails,
   mode: 'backdrop' | 'poster',
   format: 'w500' | 'w1280' = 'w500'
 ) => {
   const imageKey = `${mode}_path`;
-  const imageId = movieData[imageKey as keyof IMovie];
+  const imageId = movieData[imageKey as keyof IMovieDetails];
 
   return imageId
     ? `https://image.tmdb.org/t/p/${format}/${imageId}`

@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { IMovie } from '@/services/movieApi';
+import { IMovieDetails } from 'services/movies/types';
 
 export type Direction = 'next' | 'prev';
 
@@ -8,13 +8,13 @@ export interface ISliderContext {
   direction: Direction;
   title: string;
   rowSize: number;
-  slicedData: IMovie[];
+  slicedData: IMovieDetails[];
   onClickSlideBtn: (direction: Direction) => void;
 }
 
 export interface ISliderProviderProps {
   children: ReactNode;
   rowSize: number;
-  data: IMovie[];
+  data: IMovieDetails[];
   title: string;
 }
