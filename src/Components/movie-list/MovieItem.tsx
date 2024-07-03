@@ -1,9 +1,10 @@
-import { genres, getMovieImagePath } from 'utils/utils';
+import { getMovieImagePath } from 'utils/utils';
 import { memo } from 'react';
 import { hoverItemMotion } from './variants';
 import { IMovieItem } from './types';
-import { Bg, Info, InitialDetailBox, LI } from './styles';
+import { Bg, Info, InitialDetailBox, LI } from './styled';
 import useHoverItem from './hooks/useHoverItem';
+import { GENRES } from './constants';
 
 const MovieItem = memo((props: IMovieItem) => {
   const {
@@ -14,7 +15,7 @@ const MovieItem = memo((props: IMovieItem) => {
     listSize,
     displayMode,
   } = props;
-  
+
   const { getHoverStyles } = useHoverItem();
   const { isHovered, isPushed, xMove } = getHoverStyles(
     index,
@@ -37,7 +38,7 @@ const MovieItem = memo((props: IMovieItem) => {
         <small>평점 : {movieData.vote_average?.toFixed(1)}</small>
         <article>
           {movieData.genre_ids?.slice(0, 3).map((id) => (
-            <span key={id}>{genres[String(id)]}</span>
+            <span key={id}>{GENRES[String(id)]}</span>
           ))}
         </article>
       </Info>

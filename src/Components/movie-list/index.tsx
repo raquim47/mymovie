@@ -1,6 +1,6 @@
 import useHoverItem from './hooks/useHoverItem';
 import MovieItem from './MovieItem';
-import { UL } from './styles';
+import { UL } from './styled';
 import { IMovieListProps } from './types';
 
 const MovieList = ({ data, listSize, title }: IMovieListProps) => {

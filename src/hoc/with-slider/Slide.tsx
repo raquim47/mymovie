@@ -1,7 +1,7 @@
 import { ComponentType } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { useSliderContext } from './context';
-import { Content, ContentInner, Row } from './styles';
+import { SlideContent, RatioBox, SlideRow } from './styled';
 import { Direction, ISliderProps } from './types';
 
 const Slide = <T,>({
@@ -25,13 +25,13 @@ const Slide = <T,>({
   };
 
   return (
-    <Content>
-      <ContentInner>
+    <SlideContent>
+      <RatioBox>
         <AnimatePresence
           initial={false}
           custom={{ direction }}
         >
-          <Row
+          <SlideRow
             variants={rowVariants}
             initial="hidden"
             animate="visible"
@@ -41,10 +41,10 @@ const Slide = <T,>({
             custom={{ direction }}
           >
             <Component listSize={listSize} data={slicedData} title={title} />
-          </Row>
+          </SlideRow>
         </AnimatePresence>
-      </ContentInner>
-    </Content>
+      </RatioBox>
+    </SlideContent>
   );
 };
 

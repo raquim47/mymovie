@@ -2,14 +2,14 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 
 export const ListTitle = styled.h3`
-  font-size: ${(props) => props.theme.fontSizePx.l};
-  font-weight: 500;
+  font-size: ${(props) => props.theme.fontSizeVw['3xl']};
 
-  @media (max-width: 960px) {
+  @media (min-width: 769px) {
     font-size: ${(props) => props.theme.fontSizeVw.l};
   }
-  @media (max-width: 768px) {
-    font-size: ${(props) => props.theme.fontSizeVw['3xl']};
+
+  @media (min-width: 961px) {
+    font-size: ${(props) => props.theme.fontSizePx.l};
   }
 `;
 
@@ -21,13 +21,13 @@ export const SlideWrapper = styled.div`
   }
 `;
 
-export const Content = styled.div`
+export const SlideContent = styled.div`
   overflow: hidden;
   padding-top: 20px;
   padding-bottom: 20px;
 `;
 
-export const ContentInner = styled.div`
+export const RatioBox = styled.div`
   position: relative;
   padding-top: 16%;
 
@@ -39,7 +39,7 @@ export const ContentInner = styled.div`
   }
 `;
 
-export const Row = styled(motion.div)`
+export const SlideRow = styled(motion.div)`
   position: absolute;
   top: 0;
   bottom: 0;

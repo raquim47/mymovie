@@ -1,5 +1,5 @@
 import { useSliderContext } from './context';
-import { NextBtn, PrevBtn } from './styles';
+import { NextBtn, PrevBtn } from './styled';
 
 const SlideBtns = () => {
   const { onClickSlideBtn } = useSliderContext();

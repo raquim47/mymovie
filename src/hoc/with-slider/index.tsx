@@ -2,7 +2,7 @@ import { ComponentType } from 'react';
 import { SliderProvider } from './context';
 import Slide from './Slide';
 import SlideBtns from './SlideBtns';
-import { SlideWrapper, ListTitle } from './styles';
+import { SlideWrapper, ListTitle } from './styled';
 import { ISliderProps } from './types';
 
 const withSlider = <T,>(Component: ComponentType<ISliderProps<T>>) => {
