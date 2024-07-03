@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 
 export const SlideWrapper = styled.div`
   position: relative;
+  padding-bottom: 10px;
   :hover button {
     opacity: 1;
   }
