@@ -1,10 +1,10 @@
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
 
-export const UL = styled.ul<{ rowSize: number }>`
+export const UL = styled.ul<{ listSize: number }>`
   height: 100%;
   display: grid;
-  grid-template-columns: ${({ rowSize }) => `repeat(${rowSize}, 1fr)`};
+  grid-template-columns: ${({ listSize }) => `repeat(${listSize}, 1fr)`};
   gap: 1%;
 `;
 
@@ -67,7 +67,7 @@ export const Info = styled.div`
   }
 `;
 
-export const LI = styled(motion.li)<{ display: string }>`
+export const LI = styled(motion.li)`
   position: relative;
   border-radius: 4px;
   overflow: hidden;

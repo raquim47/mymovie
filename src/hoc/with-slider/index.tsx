@@ -6,9 +6,9 @@ import { SlideWrapper, ListTitle } from './styles';
 import { ISliderProps } from './types';
 
 const withSlider = <T,>(Component: ComponentType<ISliderProps<T>>) => {
-  return ({ data, rowSize, title }: ISliderProps<T>) => {
+  return ({ data, listSize, title }: ISliderProps<T>) => {
     return (
-      <SliderProvider<T> data={data} rowSize={rowSize} title={title}>
+      <SliderProvider<T> data={data} listSize={listSize} title={title}>
         <ListTitle>{title}</ListTitle>
         <SlideWrapper>
           <Slide Component={Component} />

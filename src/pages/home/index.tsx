@@ -1,6 +1,7 @@
 import useFetchHomeData from './hooks/useFetchHomeData';
 import withSlider from 'hoc/with-slider';
 import List from 'components/movie-list';
+import useSetListSize from 'hooks/useSetListSize';
 
 const HomePage = () => {
   const {
@@ -12,7 +13,13 @@ const HomePage = () => {
     isLoading,
     error,
   } = useFetchHomeData();
-  
+
+  const listSize = useSetListSize({
+    768: 3,
+    1200: 4,
+    default: 5,
+  });
+
   const MovieListSlider = withSlider(List);
 
   if (isLoading) return <p>Loading...</p>;
@@ -22,17 +29,17 @@ const HomePage = () => {
     <>
       <MovieListSlider
         data={latestData?.results ?? []}
-        rowSize={5}
+        listSize={listSize}
         title="최신 개봉"
       />
       <MovieListSlider
         data={trendingData?.results ?? []}
-        rowSize={5}
+        listSize={listSize}
         title="요즘 인기"
       />
       <MovieListSlider
         data={topRatedData?.results ?? []}
-        rowSize={5}
+        listSize={listSize}
         title="Top 평점"
       />
     </>

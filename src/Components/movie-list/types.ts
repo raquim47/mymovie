@@ -2,7 +2,7 @@ import { IMovieDetails } from "services/movies/types";
 
 export interface IMovieListProps {
   data: IMovieDetails[];
-  rowSize: number;
+  listSize: number;
   title: string;
 }
 
@@ -12,7 +12,7 @@ export interface IMovieItem {
   index: number;
   hoveredIndex: number;
   onHoverChange: (index: number) => void;
-  rowSize: number;
+  listSize: number;
   displayMode: 'portrait' | 'landscape';
   keyword?: string;
 }

@@ -11,14 +11,14 @@ const MovieItem = memo((props: IMovieItem) => {
     index,
     hoveredIndex,
     onHoverChange,
-    rowSize,
+    listSize,
     displayMode,
   } = props;
   
   const { getHoverStyles } = useHoverItem();
   const { isHovered, isPushed, xMove } = getHoverStyles(
     index,
-    rowSize,
+    listSize,
     hoveredIndex
   );
 
@@ -30,7 +30,6 @@ const MovieItem = memo((props: IMovieItem) => {
       onHoverStart={() => onHoverChange(index)}
       onHoverEnd={() => onHoverChange(-1)}
       custom={{ xMove }}
-      display={displayMode}
     >
       <Bg src={getMovieImagePath(movieData, 'backdrop', 'w500')} />
       <Info>

@@ -3,7 +3,9 @@ import MainRoute from './router';
 function App() {
   return (
     <>
-      <MainRoute />
+      <main className="main">
+        <MainRoute />
+      </main>
     </>
   );
 }

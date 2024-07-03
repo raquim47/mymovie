@@ -3,7 +3,7 @@ import { Direction, ISliderContext, ISliderProviderProps } from './types';
 
 const SliderContext = createContext<ISliderContext<unknown>>({
   index: 0,
-  rowSize: 1,
+  listSize: 1,
   direction: 'next',
   title: '',
   onClickSlideBtn: () => {},
@@ -13,14 +13,14 @@ const SliderContext = createContext<ISliderContext<unknown>>({
 export const SliderProvider = <T,>({
   children,
   data,
-  rowSize,
+  listSize,
   title,
 }: ISliderProviderProps<T>) => {
   const [index, setIndex] = useState(0);
   const [direction, setDirection] = useState<Direction>('next');
   const [isAnimating, setIsAnimating] = useState(false);
-  const maxIndex = Math.floor((data.length - 1) / rowSize);
-  const slicedData = data.slice(rowSize * index, rowSize * index + rowSize);
+  const maxIndex = Math.floor((data.length - 1) / listSize);
+  const slicedData = data.slice(listSize * index, listSize * index + listSize);
   const ANIMATION_DURATION = 1000;
 
   const onClickSlideBtn = (direction: Direction) => {
@@ -52,7 +52,7 @@ export const SliderProvider = <T,>({
 
   return (
     <SliderContext.Provider
-      value={{ index, rowSize, title, direction, onClickSlideBtn, slicedData }}
+      value={{ index, listSize, title, direction, onClickSlideBtn, slicedData }}
     >
       {children}
     </SliderContext.Provider>

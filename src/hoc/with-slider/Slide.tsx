@@ -9,7 +9,7 @@ const Slide = <T,>({
 }: {
   Component: ComponentType<ISliderProps<T>>;
 }) => {
-  const { index, direction, slicedData, rowSize, title } =
+  const { index, direction, slicedData, listSize, title } =
     useSliderContext<T>();
 
   const rowVariants = {
@@ -40,7 +40,7 @@ const Slide = <T,>({
             key={index}
             custom={{ direction }}
           >
-            <Component rowSize={rowSize} data={slicedData} title={title} />
+            <Component listSize={listSize} data={slicedData} title={title} />
           </Row>
         </AnimatePresence>
       </ContentInner>

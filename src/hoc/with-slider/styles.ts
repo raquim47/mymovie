@@ -4,10 +4,11 @@ import { motion } from 'framer-motion';
 export const ListTitle = styled.h3`
   font-size: ${(props) => props.theme.fontSizePx.l};
   font-weight: 500;
-  @media only screen and (max-width: 960px) {
+
+  @media (max-width: 960px) {
     font-size: ${(props) => props.theme.fontSizeVw.l};
   }
-  @media only screen and (max-width: 768px) {
+  @media (max-width: 768px) {
     font-size: ${(props) => props.theme.fontSizeVw['3xl']};
   }
 `;
@@ -28,7 +29,14 @@ export const Content = styled.div`
 
 export const ContentInner = styled.div`
   position: relative;
-  padding-top: 10%;
+  padding-top: 16%;
+
+  @media (min-width: 769px) {
+    padding-top: 12%;
+  }
+  @media (min-width: 1201px) {
+    padding-top: 10%;
+  }
 `;
 
 export const Row = styled(motion.div)`
@@ -37,12 +45,6 @@ export const Row = styled(motion.div)`
   bottom: 0;
   left: 0;
   right: 0;
-  /* @media (max-width: 1200px) {
-    grid-template-columns: repeat(4, 1fr); // 1200px 이하일 때 4개 행
-  }
-  @media (max-width: 1024px) {
-    grid-template-columns: repeat(3, 1fr); // 1024px 이하일 때 3개 행
-  } */
 `;
 
 export const NextBtn = styled(motion.button)`

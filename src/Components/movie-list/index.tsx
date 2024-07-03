@@ -3,16 +3,16 @@ import MovieItem from './MovieItem';
 import { UL } from './styles';
 import { IMovieListProps } from './types';
 
-const MovieList = ({ data, rowSize, title }: IMovieListProps) => {
+const MovieList = ({ data, listSize, title }: IMovieListProps) => {
   const { hoveredIndex, handleHoverChange } = useHoverItem();
   return (
-    <UL rowSize={rowSize}>
+    <UL listSize={listSize}>
       {data.map((movie, index) => (
         <MovieItem
           key={movie.id}
           movieData={movie}
           index={index}
-          rowSize={rowSize}
+          listSize={listSize}
           hoveredIndex={hoveredIndex}
           onHoverChange={handleHoverChange}
           listType={title}

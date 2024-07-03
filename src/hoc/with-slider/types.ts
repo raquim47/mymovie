@@ -6,13 +6,13 @@ export interface ISliderContext<T> {
   index: number;
   direction: Direction;
   title: string;
-  rowSize: number;
+  listSize: number;
   slicedData: T[];
   onClickSlideBtn: (direction: Direction) => void;
 }
 
 export interface ISliderProps<T> {
-  rowSize: number;
+  listSize: number;
   data: T[];
   title: string;
 }
