@@ -2,8 +2,12 @@ import styled from 'styled-components';
 
 export const BannersContainer = styled.section`
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 12px;
+
+  @media (min-width: 769px) {
+    grid-template-columns: 1fr 1fr;
+  }
 `;
 
 export const SlidersContainer = styled.section`
