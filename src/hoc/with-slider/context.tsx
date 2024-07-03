@@ -5,7 +5,6 @@ const SliderContext = createContext<ISliderContext<unknown>>({
   index: 0,
   listSize: 1,
   direction: 'next',
-  title: '',
   onClickSlideBtn: () => {},
   slicedData: [],
 });
@@ -14,7 +13,6 @@ export const SliderProvider = <T,>({
   children,
   data,
   listSize,
-  title,
 }: ISliderProviderProps<T>) => {
   const [index, setIndex] = useState(0);
   const [direction, setDirection] = useState<Direction>('next');
@@ -52,11 +50,12 @@ export const SliderProvider = <T,>({
 
   return (
     <SliderContext.Provider
-      value={{ index, listSize, title, direction, onClickSlideBtn, slicedData }}
+      value={{ index, listSize, direction, onClickSlideBtn, slicedData }}
     >
       {children}
     </SliderContext.Provider>
   );
 };
 
-export const useSliderContext = <T,>() => useContext(SliderContext) as ISliderContext<T>;
+export const useSliderContext = <T,>() =>
+  useContext(SliderContext) as ISliderContext<T>;

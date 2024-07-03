@@ -1,12 +1,5 @@
-import { motion } from 'framer-motion';
-import styled from 'styled-components';
-
-export const UL = styled.ul<{ listSize: number }>`
-  height: 100%;
-  display: grid;
-  grid-template-columns: ${({ listSize }) => `repeat(${listSize}, 1fr)`};
-  gap: 1%;
-`;
+import { motion } from "framer-motion";
+import styled from "styled-components";
 
 export const Bg = styled.img`
   position: absolute;
@@ -103,11 +96,4 @@ export const RateStar = styled.div`
   .icon span {
     font-size: 1.5vw !important;
   }
-`;
-
-export const InitialDetailBox = styled(motion.div)`
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  z-index: ${(props) => props.theme.zIndex.initialDetailBox};
 `;

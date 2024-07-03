@@ -15,8 +15,9 @@ const useFetchHomeData = () => {
     { queryKey: ['movies', 'topRated'], queryFn: getMoviesTopRated },
   ]);
 
-  const [latestData, upcomingData, trendingData, topRatedData] =
-    baseQueryResults.map((query) => query.data);
+  const [latestData, upcomingData, trendingData, topRatedData] = baseQueryResults.map(
+    (query) => query.data
+  );
 
   const firstLastestMovieId = latestData?.results[0]?.id;
   const firstUpcomingMovieId = upcomingData?.results[0]?.id;
@@ -25,15 +26,17 @@ const useFetchHomeData = () => {
     {
       queryKey: ['bannerLeftData', firstLastestMovieId],
       queryFn: () =>
-        typeof firstLastestMovieId === 'number' &&
-        getMovieDetail(firstLastestMovieId),
+        typeof firstLastestMovieId === 'number'
+          ? getMovieDetail(firstLastestMovieId)
+          : undefined,
       enabled: !!firstLastestMovieId,
     },
     {
       queryKey: ['bannerRightData', firstUpcomingMovieId],
       queryFn: () =>
-        typeof firstUpcomingMovieId === 'number' &&
-        getMovieDetail(firstUpcomingMovieId),
+        typeof firstUpcomingMovieId === 'number'
+          ? getMovieDetail(firstUpcomingMovieId)
+          : undefined,
       enabled: !!firstUpcomingMovieId,
     },
   ]);
@@ -43,10 +46,9 @@ const useFetchHomeData = () => {
   const error = allQueries.find((query) => query.error)?.error;
 
   return {
-    latestData,
-    upcomingData,
-    trendingData,
-    topRatedData,
+    latestData: latestData?.results,
+    trendingData: trendingData?.results,
+    topRatedData: topRatedData?.results,
     bannerLeftData: dependentQueryResults[0].data,
     bannerRightData: dependentQueryResults[1].data,
     isLoading,

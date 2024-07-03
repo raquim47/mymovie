@@ -1,12 +1,12 @@
-import { getMovieImagePath } from 'utils/utils';
 import { memo } from 'react';
 import { hoverItemMotion } from './variants';
-import { IMovieItem } from './types';
-import { Bg, Info, InitialDetailBox, LI } from './styled';
-import useHoverItem from './hooks/useHoverItem';
+import { Bg, Info, LI } from './styled';
 import { GENRES } from './constants';
+import { getHoverStyles } from './utils';
+import { IMovieListItemProps } from 'components/movies/types';
+import { getMovieImagePath } from '../utils';
 
-const MovieItem = memo((props: IMovieItem) => {
+const MovieListItem = memo((props: IMovieListItemProps) => {
   const {
     movieData,
     index,
@@ -16,7 +16,6 @@ const MovieItem = memo((props: IMovieItem) => {
     displayMode,
   } = props;
 
-  const { getHoverStyles } = useHoverItem();
   const { isHovered, isPushed, xMove } = getHoverStyles(
     index,
     listSize,
@@ -32,7 +31,10 @@ const MovieItem = memo((props: IMovieItem) => {
       onHoverEnd={() => onHoverChange(-1)}
       custom={{ xMove }}
     >
-      <Bg src={getMovieImagePath(movieData, 'backdrop', 'w500')} />
+      <Bg
+        src={getMovieImagePath(movieData, 'backdrop', 'w500')}
+        alt={movieData.title}
+      />
       <Info>
         <h4>{movieData.title}</h4>
         <small>평점 : {movieData.vote_average?.toFixed(1)}</small>
@@ -46,7 +48,7 @@ const MovieItem = memo((props: IMovieItem) => {
   );
 });
 
-export default MovieItem;
+export default MovieListItem;
 
 {
   /* <AnimatePresence>

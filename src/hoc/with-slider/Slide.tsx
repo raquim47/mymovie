@@ -9,8 +9,7 @@ const Slide = <T,>({
 }: {
   Component: ComponentType<ISliderProps<T>>;
 }) => {
-  const { index, direction, slicedData, listSize, title } =
-    useSliderContext<T>();
+  const { index, direction, slicedData, listSize } = useSliderContext<T>();
 
   const rowVariants = {
     hidden: ({ direction }: { direction: Direction }) => ({
@@ -27,10 +26,7 @@ const Slide = <T,>({
   return (
     <SlideContent>
       <RatioBox>
-        <AnimatePresence
-          initial={false}
-          custom={{ direction }}
-        >
+        <AnimatePresence initial={false} custom={{ direction }}>
           <SlideRow
             variants={rowVariants}
             initial="hidden"
@@ -40,7 +36,7 @@ const Slide = <T,>({
             key={index}
             custom={{ direction }}
           >
-            <Component listSize={listSize} data={slicedData} title={title} />
+            <Component listSize={listSize} data={slicedData} />
           </SlideRow>
         </AnimatePresence>
       </RatioBox>

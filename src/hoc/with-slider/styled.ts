@@ -1,21 +1,8 @@
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 
-export const ListTitle = styled.h3`
-  font-size: ${(props) => props.theme.fontSizeVw['3xl']};
-
-  @media (min-width: 769px) {
-    font-size: ${(props) => props.theme.fontSizeVw.l};
-  }
-
-  @media (min-width: 961px) {
-    font-size: ${(props) => props.theme.fontSizePx.l};
-  }
-`;
-
 export const SlideWrapper = styled.div`
   position: relative;
-  padding-bottom: 15px;
   :hover button {
     opacity: 1;
   }

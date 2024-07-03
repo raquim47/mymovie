@@ -3,10 +3,9 @@ import { IMovieDetails } from "services/movies/types";
 export interface IMovieListProps {
   data: IMovieDetails[];
   listSize: number;
-  title: string;
 }
 
-export interface IMovieItem {
+export interface IMovieListItemProps {
   movieData: IMovieDetails;
   listType: string;
   index: number;

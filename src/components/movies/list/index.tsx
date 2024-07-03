@@ -1,23 +1,26 @@
-import useHoverItem from './hooks/useHoverItem';
-import MovieItem from './MovieItem';
 import { UL } from './styled';
-import { IMovieListProps } from './types';
+import useHoverItem from '../hooks/useHoverItem';
+import MovieListItem from '../list-item';
+import { IMovieListProps } from '../types';
 
-const MovieList = ({ data, listSize, title }: IMovieListProps) => {
+const MovieList = ({
+  data,
+  listSize,
+}: IMovieListProps) => {
   const { hoveredIndex, handleHoverChange } = useHoverItem();
   return (
     <UL listSize={listSize}>
       {data.map((movie, index) => (
-        <MovieItem
+        <MovieListItem
           key={movie.id}
           movieData={movie}
           index={index}
           listSize={listSize}
           hoveredIndex={hoveredIndex}
           onHoverChange={handleHoverChange}
-          listType={title}
+          listType={'title'}
           displayMode="landscape"
-          keyword={title}
+          keyword={'title'}
         />
       ))}
     </UL>
