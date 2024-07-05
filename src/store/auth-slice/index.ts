@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { signUpUser, loginUser } from './thunk';
+import { signUpAction, loginAction, initAuthAction } from './thunk';
 import { IAuthState } from './types';
 
 const initialState: IAuthState = {
@@ -19,31 +19,22 @@ const authSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder
-      .addCase(loginUser.pending, (state) => {
+    const actionMap = [loginAction, signUpAction, initAuthAction];
+
+    actionMap.forEach(action => {
+      builder.addCase(action.pending, (state) => {
         state.status = 'loading';
         state.error = null;
-      })
-      .addCase(loginUser.fulfilled, (state, action) => {
-        state.status = 'succeeded';
-        state.user = action.payload;
-      })
-      .addCase(loginUser.rejected, (state, action) => {
-        state.status = 'failed';
-        state.error = action.payload?.message || null;
-      })
-      .addCase(signUpUser.pending, (state) => {
-        state.status = 'loading';
-        state.error = null;
-      })
-      .addCase(signUpUser.fulfilled, (state, action) => {
-        state.status = 'succeeded';
-        state.user = action.payload;
-      })
-      .addCase(signUpUser.rejected, (state, action) => {
-        state.status = 'failed';
-        state.error = action.payload?.message || null;
       });
+      builder.addCase(action.fulfilled, (state, actionData) => {
+        state.status = 'succeeded';
+        state.user = actionData.payload;
+      });
+      builder.addCase(action.rejected, (state, actionData) => {
+        state.status = 'failed';
+        state.error = actionData.payload?.message || '서버 처리 중 오류가 발생했습니다.';
+      });
+    });
   },
 });
 

@@ -1,27 +1,28 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { User } from 'firebase/auth';
-import { login, signUp } from 'services/auth';
-import { ICredentials } from 'services/auth/types';
+import { initAuth, login, signUp } from 'services/auth';
 
-const authAsyncThunk = (
+export const authAsyncThunk = <T, P = void>(
   name: string,
-  authFunction: (params: ICredentials) => Promise<User>
+  authFunction: (params: P) => Promise<T>
 ) => {
-  return createAsyncThunk<User, ICredentials, { rejectValue: { message: string } }>(
+  return createAsyncThunk<T, P, { rejectValue: { message: string } }>(
     `auth/${name}`,
-    async ({ email, password }, { rejectWithValue }) => {
+    async (params, { rejectWithValue }) => {
       try {
-        return await authFunction({ email, password });
+        return await authFunction(params);
       } catch (error) {
         if (error instanceof Error) {
           return rejectWithValue({ message: error.message });
         } else {
-          return rejectWithValue({ message: 'Unknown error occurred' });
+          return rejectWithValue({ message: '알 수 없는 오류가 발생했습니다.' });
         }
       }
     }
   );
 };
 
-export const loginUser = authAsyncThunk('loginUser', login);
-export const signUpUser = authAsyncThunk('signUpUser', signUp);
+
+
+export const loginAction = authAsyncThunk('loginUser', login);
+export const signUpAction = authAsyncThunk('signUpUser', signUp);
+export const initAuthAction = authAsyncThunk('checkAuthState', initAuth);

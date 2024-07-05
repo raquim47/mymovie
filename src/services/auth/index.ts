@@ -2,7 +2,9 @@ import { FirebaseError } from 'firebase/app';
 import { auth } from '../firebase';
 import {
   createUserWithEmailAndPassword,
+  onAuthStateChanged,
   signInWithEmailAndPassword,
+  User,
 } from 'firebase/auth';
 import { ICredentials } from './types';
 
@@ -43,4 +45,22 @@ export const login = async ({ email, password }: ICredentials) => {
     }
     throw error;
   }
+};
+
+export const initAuth = () => {
+  return new Promise<User | null>((resolve, reject) => {
+    onAuthStateChanged(
+      auth,
+      (user) => {
+        if (user) {
+          resolve(user);
+        } else {
+          resolve(null);
+        }
+      },
+      (error) => {
+        reject(new Error('인증 상태 확인 중 오류가 발생했습니다. :' + error.message));
+      }
+    );
+  });
 };
