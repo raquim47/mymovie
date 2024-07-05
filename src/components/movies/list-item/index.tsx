@@ -28,7 +28,7 @@ const MovieListItem = memo((props: IMovieListItemProps) => {
       initial="initial"
       animate={isHovered ? 'hovered' : isPushed ? 'pushed' : 'initial'}
       onHoverStart={() => onHoverChange(index)}
-      onHoverEnd={() => onHoverChange(-1)}
+      onHoverEnd={() => onHoverChange()}
       custom={{ xMove }}
     >
       <Bg

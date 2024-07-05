@@ -1,4 +1,4 @@
-import { IMovieDetails } from "services/movies/types";
+import { IMovieDetails } from 'services/movies/types';
 
 export interface IMovieListProps {
   data: IMovieDetails[];
@@ -10,9 +10,8 @@ export interface IMovieListItemProps {
   listType: string;
   index: number;
   hoveredIndex: number;
-  onHoverChange: (index: number) => void;
+  onHoverChange: (index?: number) => void;
   listSize: number;
   displayMode: 'portrait' | 'landscape';
   keyword?: string;
 }
-
