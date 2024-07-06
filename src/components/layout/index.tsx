@@ -1,21 +1,14 @@
 import MainNav from 'components/main-nav';
-import { useAppDispatch } from 'hooks/useAppDispatch';
-import { useAppSelector } from 'hooks/useAppSelector';
-import { ReactNode, useEffect } from 'react';
-import { initAuthAction } from 'store/auth-slice/thunk';
+import { useInitAuth } from 'hooks/useAuth';
+import { ReactNode } from 'react';
 import { Container, Main } from './styled';
 
 const Layout = ({ children }: { children: ReactNode }) => {
-  const dispatch = useAppDispatch();
-  useEffect(() => {
-    dispatch(initAuthAction());
-  }, [dispatch]);
-
-  const authState = useAppSelector((state) => state.auth.status);
+  const { isLoading, error } = useInitAuth();
   return (
     <Container>
-      {authState === 'loading' && <p>Loading...</p>}
-      {authState === 'succeeded' && (
+      {isLoading && <p>Loading...</p>}
+      {!isLoading && !error && (
         <>
           <MainNav />
           <Main>{children}</Main>
