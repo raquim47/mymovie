@@ -40,7 +40,7 @@ const NavLeft = () => {
             </StyledNavLink>
           </li>
           <li>
-            <StyledNavLink to="/auth">
+            <StyledNavLink to="/login">
               <FontAwesomeIcon icon={faRightToBracket} />
               로그인
             </StyledNavLink>

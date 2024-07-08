@@ -1,5 +1,5 @@
 import MainNav from 'components/main-nav';
-import { useInitAuth } from 'hooks/useAuth';
+import { useInitAuth } from 'hooks/useInitAuth';
 import { ReactNode } from 'react';
 import { Container, Main } from './styled';
 

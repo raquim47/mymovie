@@ -4,44 +4,58 @@ import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
   signInWithEmailAndPassword,
+  updateProfile,
   User,
 } from 'firebase/auth';
-import { ICredentials } from './types';
+import { IAuthErrors, ILoginCredentials, ISignUpCredentials } from './types';
 
-export const signUp = async ({ email, password }: ICredentials) => {
+
+
+const AUTH_REQUEST_ERRORS: IAuthErrors = {
+  'auth/user-not-found': {
+    message: '이메일 또는 패스워드가 잘못되었습니다.',
+    name: 'global',
+  },
+  'auth/wrong-password': {
+    message: '이메일 또는 패스워드가 잘못되었습니다.',
+    name: 'global',
+  },
+  'auth/invalid-email': { message: '유효하지 않은 이메일 주소입니다.', name: 'email' },
+  'auth/email-already-in-use': { message: '이미 사용중인 이메일입니다.', name: 'email' },
+  'auth/invalid-display-name': {
+    message: '유효하지 않은 닉네임입니다.',
+    name: 'displayName',
+  },
+  default: {
+    message: '서버 오류가 발생했습니다. 다시 시도해주세요.',
+    name: 'global',
+  },
+};
+
+export const login = async ({ email, password }: ILoginCredentials) => {
   try {
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    return userCredential.user;
+    await signInWithEmailAndPassword(auth, email, password);
   } catch (error) {
     if (error instanceof FirebaseError) {
-      switch (error.code) {
-        case 'auth/email-already-in-use':
-          throw new Error('이미 사용중인 이메일입니다.');
-        case 'auth/invalid-email':
-          throw new Error('유효하지 않은 이메일 주소입니다.');
-        case 'auth/weak-password':
-          throw new Error('비밀번호는 6글자 이상이어야 합니다.');
-        default:
-          throw new Error('회원가입 중 오류가 발생했습니다.');
-      }
+      const standardError =
+        AUTH_REQUEST_ERRORS[error.code] || AUTH_REQUEST_ERRORS['default'];
+      throw new Error(JSON.stringify(standardError));
     }
     throw error;
   }
 };
 
-export const login = async ({ email, password }: ICredentials) => {
+export const signUp = async ({ email, password, displayName }: ISignUpCredentials) => {
   try {
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    return userCredential.user;
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
+
+    await updateProfile(user, { displayName });
   } catch (error) {
     if (error instanceof FirebaseError) {
-      switch (error.code) {
-        case 'auth/user-not-found':
-        case 'auth/wrong-password':
-          throw new Error('이메일 또는 패스워드가 잘못되었습니다.');
-        default:
-          throw new Error('로그인 중 오류가 발생했습니다.');
-      }
+      const standardError =
+        AUTH_REQUEST_ERRORS[error.code] || AUTH_REQUEST_ERRORS['default'];
+      throw new Error(JSON.stringify(standardError));
     }
     throw error;
   }
