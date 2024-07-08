@@ -8,5 +8,4 @@ export interface IFormData {
 export interface IFormState {
   formData: IFormData;
   errors: { [K in keyof IFormData]: string };
-  isLoading: boolean;
 }

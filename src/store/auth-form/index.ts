@@ -16,7 +16,6 @@ const initialState: IFormState = {
     confirmPassword: '',
   },
   errors: initialErrors,
-  isLoading: false,
 };
 
 export const authFormSlice = createSlice({
@@ -36,13 +35,9 @@ export const authFormSlice = createSlice({
     resetErrors: (state) => {
       state.errors = initialErrors;
     },
-    setLoading: (state, action: PayloadAction<boolean>) => {
-      state.isLoading = action.payload;
-    },
     resetForm: () => initialState,
   },
 });
 
-export const { updateField, setErrors, resetErrors, resetForm, setLoading } =
-  authFormSlice.actions;
+export const { updateField, setErrors, resetErrors, resetForm } = authFormSlice.actions;
 export default authFormSlice.reducer;
