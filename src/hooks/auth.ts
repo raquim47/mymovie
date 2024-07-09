@@ -1,6 +1,6 @@
 import { useDispatch } from 'react-redux';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { initAuth, login, signUp } from 'services/auth';
+import { useMutation, useQuery } from 'react-query';
+import { initAuth, login, logout, signUp } from 'services/auth';
 import { setUserState } from 'store/user';
 import { ILoginCredentials, ISignUpCredentials } from 'services/auth/types';
 import { useNavigate } from 'react-router-dom';
@@ -55,21 +55,26 @@ export const useLogin = () => {
   });
 };
 
+// 로그아웃
+export const useLogout = () => {
+  const handleSuccess = useAuthSuccessHandler();
+  return useMutation(logout, {
+    onSuccess: handleSuccess,
+  });
+};
+
 // 인증 상태 확인
 export const useInitAuth = () => {
   const dispatch = useDispatch();
 
   return useQuery('initAuth', initAuth, {
     onSuccess: (user) => {
-      if (user) {
-        const userData = {
-          email: user.email,
-          displayName: user.displayName,
-          uid: user.uid,
-          photoURL: user.photoURL,
-        };
-        dispatch(setUserState(userData));
-      }
+      dispatch(setUserState(user ? {
+        email: user.email,
+        displayName: user.displayName,
+        uid: user.uid,
+        photoURL: user.photoURL
+      } : null));
     },
   });
 };

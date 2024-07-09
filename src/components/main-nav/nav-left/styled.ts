@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const Aside = styled.aside`
   position: sticky;
@@ -23,19 +23,19 @@ export const StyledNavLink = styled(NavLink)`
   padding: 8px 12px;
   border-radius: 8px;
   font-size: ${(props) => props.theme.fontSizePx.s};
-  font-weight: 400;
 
   &:hover {
     color: ${(props) => props.theme.color.white.normal};
-  }
-
-  &.active {
-    color: ${(props) => props.theme.color.white.normal};
-    background-color: ${(props) => props.theme.color.gray};
   }
 
   svg {
     width: 20px;
     height: 20px;
   }
+
+  &.active {
+    color: ${(props) => props.theme.color.white.normal};
+    background-color: ${(props) => props.theme.color.gray};
+  }
 `;
+

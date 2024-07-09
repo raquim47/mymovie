@@ -76,6 +76,8 @@ body {
 
 button {
   font-family: 'Source Sans Pro', sans-serif;
+  color:${(props) => props.theme.color.white.dark};
+  cursor: pointer;
 }
 
 body.scrollHidden {

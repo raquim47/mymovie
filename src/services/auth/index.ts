@@ -4,6 +4,7 @@ import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
   signInWithEmailAndPassword,
+  signOut,
   updateProfile,
   User,
 } from 'firebase/auth';
@@ -59,6 +60,14 @@ export const signUp = async ({ email, password, displayName }: ISignUpCredential
         AUTH_REQUEST_ERRORS[error.code] || AUTH_REQUEST_ERRORS['default'];
       throw new Error(JSON.stringify(standardError));
     }
+    throw error;
+  }
+};
+
+export const logout = async () => {
+  try {
+    await signOut(auth);
+  } catch (error) {
     throw error;
   }
 };
