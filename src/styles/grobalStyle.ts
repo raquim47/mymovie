@@ -67,11 +67,15 @@ table {
   box-sizing: border-box;
 }
 body {
-  font-weight: 300;
+  font-weight: 400;
   font-family: 'Source Sans Pro', sans-serif;
   color:${(props) => props.theme.color.white.dark};
   line-height: 1.2;
   background-color: black;
+}
+
+button {
+  font-family: 'Source Sans Pro', sans-serif;
 }
 
 body.scrollHidden {

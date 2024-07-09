@@ -9,8 +9,6 @@ import {
 } from 'firebase/auth';
 import { IAuthErrors, ILoginCredentials, ISignUpCredentials } from './types';
 
-
-
 const AUTH_REQUEST_ERRORS: IAuthErrors = {
   'auth/user-not-found': {
     message: '이메일 또는 패스워드가 잘못되었습니다.',
@@ -19,6 +17,10 @@ const AUTH_REQUEST_ERRORS: IAuthErrors = {
   'auth/wrong-password': {
     message: '이메일 또는 패스워드가 잘못되었습니다.',
     name: 'global',
+  },
+  'auth/invalid-password': {
+    message: '비밀번호를 6글자 이상 입력해주세요.',
+    name: 'email',
   },
   'auth/invalid-email': { message: '유효하지 않은 이메일 주소입니다.', name: 'email' },
   'auth/email-already-in-use': { message: '이미 사용중인 이메일입니다.', name: 'email' },

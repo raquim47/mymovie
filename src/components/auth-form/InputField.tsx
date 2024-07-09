@@ -1,24 +1,25 @@
-import { useAuthForm } from 'hooks/auth-form';
+import { useAuthField } from 'hooks/auth-form';
 import { memo } from 'react';
+import { ErrorMassage, Field } from './styled';
 import { IInputFieldProps } from './types';
 
 const InputField = memo(
-  ({ name, placeholder, type = 'text', required = true }: IInputFieldProps) => {
-    const { handleInputChange, extractInputState } = useAuthForm();
-    const { value, error } = extractInputState(name);
+  ({ name, placeholder, type = 'text', required = true, label }: IInputFieldProps) => {
+    const { onChange, value, error } = useAuthField(name);
     return (
-      <div>
+      <Field>
+        {label && <label htmlFor={name}>{label}</label>}
         <input
           name={name}
           placeholder={placeholder}
           type={type}
           value={value}
-          onChange={handleInputChange(name)}
+          onChange={onChange}
           autoComplete={name === 'password' ? 'off' : name}
-          required={required}
+          // required={required}
         />
-        {error && <p>{error}</p>}
-      </div>
+        {error && <ErrorMassage>{error}</ErrorMassage>}
+      </Field>
     );
   }
 );

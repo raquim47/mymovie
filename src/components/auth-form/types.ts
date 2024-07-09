@@ -14,7 +14,8 @@ export interface IAuthFormProps {
 
 export interface IInputFieldProps {
   name: keyof IFormData;
-  type: 'text' | 'password' | 'email';
+  type?: 'text' | 'password' | 'email';
+  label?: string;
   placeholder?: string;
   required?: boolean;
 }

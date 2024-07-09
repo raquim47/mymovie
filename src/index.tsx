@@ -11,13 +11,13 @@ import App from './App';
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
-const client = new QueryClient();
+
+export const queryClient = new QueryClient();
 
 root.render(
   // <React.StrictMode>
-
   <Provider store={store}>
-    <QueryClientProvider client={client}>
+    <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={theme}>
         <GlobalStyle />
         <BrowserRouter basename=''>

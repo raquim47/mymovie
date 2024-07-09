@@ -5,6 +5,7 @@ export interface ILoginCredentials {
 
 export interface ISignUpCredentials extends ILoginCredentials {
   displayName: string;
+  confirmPassword: string;
 }
 
 export interface IAuthErrors {
