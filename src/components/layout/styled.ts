@@ -10,9 +10,5 @@ export const Container = styled.div`
 export const Main = styled.main`
   flex: 1;
   padding-top: 40px;
-  /* padding: 50px 30px 0px 270px;
-
-  @media only screen and (max-width: 960px) {
-    padding: 25px 20px 0px;
-  } */
+  padding-right: 40px;
 `;
