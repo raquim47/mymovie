@@ -5,7 +5,6 @@ export const LogoLink = styled(Link)`
   display: flex;
   align-items: flex-end;
   gap: 10px;
-  cursor: pointer;
 `;
 
 export const LogoSvg = styled.svg`

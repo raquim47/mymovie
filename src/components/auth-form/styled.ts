@@ -57,11 +57,9 @@ const btnStyles = css`
   background-color: ${(props) => props.theme.color.gray};
   color: ${(props) => props.theme.color.white.normal};
   font-size: ${(props) => props.theme.fontSizePx.m};
-  border: none;
   padding: 12px 0;
   border-radius: 4px;
   text-align: center;
-  cursor: pointer;
 
   :hover {
     background-color: ${(props) => props.theme.color.purple.dark};
@@ -84,8 +82,4 @@ export const SubmitBtn = styled(Btn)`
 export const LinkBtn = styled(Link)`
   ${btnStyles}
   display: inline-block;
-
-  &.disabled {
-    pointer-events: none;
-  }
 `;

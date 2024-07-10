@@ -43,9 +43,8 @@ export const NextBtn = styled(motion.button)`
   background-color: rgba(0, 0, 0, 0);
   color: white;
   right: auto;
-  border: none;
   opacity: 0;
-  cursor: pointer;
+  
   :hover {
     filter: brightness(1.5);
   }

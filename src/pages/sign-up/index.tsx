@@ -13,7 +13,9 @@ const SignUpPage = () => {
       <InputField name="password" type="password" label="비밀번호" />
       <InputField name="confirmPassword" type="password" label="비밀번호 확인" />
       <SubmitBtn disabled={isLoading}>가입하기</SubmitBtn>
-      <LinkBtn to="/login">로그인</LinkBtn>
+      <LinkBtn to="/login" className={isLoading ? 'disabled' : ''}>
+        로그인
+      </LinkBtn>
     </AuthForm>
   );
 };

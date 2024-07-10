@@ -1,6 +1,10 @@
 import { createGlobalStyle } from 'styled-components';
 
 export const GlobalStyle = createGlobalStyle`
+* {
+  box-sizing: border-box;
+}
+
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -26,6 +30,7 @@ article, aside, details, figcaption, figure,
 footer, header, hgroup, main, menu, nav, section {
   display: block;
 }
+
 html::-webkit-scrollbar {
     width: 6px;
     height: 6px;
@@ -40,52 +45,37 @@ html::-webkit-scrollbar-track {
   background-clip: padding-box;
   border: 3px solid transparent;
 }
-/* HTML5 hidden-attribute fix for newer browsers */
-*[hidden] {
-    display: none;
-}
+
 body {
-  overflow-x: hidden;
-  line-height: 1;
-}
-menu, ol, ul {
-  list-style: none;
-}
-blockquote, q {
-  quotes: none;
-}
-blockquote:before, blockquote:after,
-q:before, q:after {
-  content: '';
-  content: none;
-}
-table {
-  border-collapse: collapse;
-  border-spacing: 0;
-}
-* {
-  box-sizing: border-box;
-}
-body {
+  background-color: black;
   font-weight: 400;
   font-family: 'Source Sans Pro', sans-serif;
   color:${(props) => props.theme.color.white.dark};
   line-height: 1.2;
-  background-color: black;
+  overflow-x: hidden;
+  
+  &.scrollHidden {
+  overflow-y: hidden;
+  }
+}
+
+menu, ol, ul {
+  list-style: none;
 }
 
 button {
   font-family: 'Source Sans Pro', sans-serif;
   color:${(props) => props.theme.color.white.dark};
+  border: none;
   cursor: pointer;
-}
-
-body.scrollHidden {
-  overflow-y: hidden;
 }
 
 a {
   text-decoration:none;
   color:inherit;
+
+  &.disabled {
+    pointer-events: none;
+  }
 }
 `;

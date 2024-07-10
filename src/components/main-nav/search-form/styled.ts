@@ -28,9 +28,8 @@ export const Input = styled.input`
 export const Button = styled.button`
   color: ${(props) => props.theme.color.white.dark};
   background-color: transparent;
-  border: none;
   padding: 0;
-  cursor: pointer;
+  
   &:hover {
     color: ${(props) => props.theme.color.white.normal};
   }
