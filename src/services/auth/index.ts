@@ -2,8 +2,10 @@ import { FirebaseError } from 'firebase/app';
 import { auth } from '../firebase';
 import {
   createUserWithEmailAndPassword,
+  GoogleAuthProvider,
   onAuthStateChanged,
   signInWithEmailAndPassword,
+  signInWithPopup,
   signOut,
   updateProfile,
   User,
@@ -29,6 +31,11 @@ const AUTH_REQUEST_ERRORS: IAuthErrors = {
     message: '유효하지 않은 닉네임입니다.',
     name: 'displayName',
   },
+
+  'auth/popup-closed-by-user': {
+    message: '구글 로그인 팝업 닫힘.',
+    name: 'popup-close',
+  },
   default: {
     message: '서버 오류가 발생했습니다. 다시 시도해주세요.',
     name: 'global',
@@ -38,6 +45,20 @@ const AUTH_REQUEST_ERRORS: IAuthErrors = {
 export const login = async ({ email, password }: ILoginCredentials) => {
   try {
     await signInWithEmailAndPassword(auth, email, password);
+  } catch (error) {
+    if (error instanceof FirebaseError) {
+      const standardError =
+        AUTH_REQUEST_ERRORS[error.code] || AUTH_REQUEST_ERRORS['default'];
+      throw new Error(JSON.stringify(standardError));
+    }
+    throw error;
+  }
+};
+
+export const googleLogin = async () => {
+  const provider = new GoogleAuthProvider();
+  try {
+    await signInWithPopup(auth, provider);
   } catch (error) {
     if (error instanceof FirebaseError) {
       const standardError =

@@ -8,9 +8,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
 export const queryClient = new QueryClient();
 
@@ -20,7 +18,7 @@ root.render(
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={theme}>
         <GlobalStyle />
-        <BrowserRouter basename=''>
+        <BrowserRouter basename="">
           <App />
         </BrowserRouter>
       </ThemeProvider>

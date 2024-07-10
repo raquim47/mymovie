@@ -66,6 +66,11 @@ const btnStyles = css`
   :hover {
     background-color: ${(props) => props.theme.color.purple.dark};
   }
+
+  :disabled {
+    background-color: ${(props) => props.theme.color.gray};
+    pointer-events: none;
+  }
 `;
 
 export const Btn = styled.button`
@@ -79,4 +84,8 @@ export const SubmitBtn = styled(Btn)`
 export const LinkBtn = styled(Link)`
   ${btnStyles}
   display: inline-block;
+
+  &.disabled {
+    pointer-events: none;
+  }
 `;

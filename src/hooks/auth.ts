@@ -1,6 +1,6 @@
 import { useDispatch } from 'react-redux';
 import { useMutation, useQuery } from 'react-query';
-import { initAuth, login, logout, signUp } from 'services/auth';
+import { googleLogin, initAuth, login, logout, signUp } from 'services/auth';
 import { setUserState } from 'store/user';
 import { ILoginCredentials, ISignUpCredentials } from 'services/auth/types';
 import { useNavigate } from 'react-router-dom';
@@ -22,6 +22,10 @@ export const useAuthErrorHandler = () => {
   return (error: unknown) => {
     if (error instanceof Error) {
       const parsedError = JSON.parse(error.message);
+      if (parsedError.name === 'popup-close') {
+        return;
+      }
+
       if (parsedError.name === 'global') {
         alert(parsedError.message);
       } else {
@@ -55,6 +59,16 @@ export const useLogin = () => {
   });
 };
 
+export const useGoogleLogin = () => {
+  const handleSuccess = useAuthSuccessHandler();
+  const handleError = useAuthErrorHandler();
+
+  return useMutation(googleLogin, {
+    onSuccess: handleSuccess,
+    onError: handleError,
+  });
+};
+
 // 로그아웃
 export const useLogout = () => {
   const handleSuccess = useAuthSuccessHandler();
@@ -69,12 +83,18 @@ export const useInitAuth = () => {
 
   return useQuery('initAuth', initAuth, {
     onSuccess: (user) => {
-      dispatch(setUserState(user ? {
-        email: user.email,
-        displayName: user.displayName,
-        uid: user.uid,
-        photoURL: user.photoURL
-      } : null));
+      dispatch(
+        setUserState(
+          user
+            ? {
+                email: user.email,
+                displayName: user.displayName,
+                uid: user.uid,
+                photoURL: user.photoURL,
+              }
+            : null
+        )
+      );
     },
   });
 };
