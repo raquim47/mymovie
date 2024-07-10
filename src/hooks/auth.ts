@@ -1,10 +1,16 @@
 import { useDispatch } from 'react-redux';
 import { MutationFunction, useMutation, useQuery } from 'react-query';
-import { googleLogin, initAuth, login, logout, signUp } from 'services/auth';
 import { setUserState } from 'store/user';
 import { useNavigate } from 'react-router-dom';
 import { setErrors } from 'store/auth-form';
 import { queryClient } from 'index';
+import {
+  requestAuthState,
+  requestGoogleLogin,
+  requestLogin,
+  requestLogout,
+  requestSignUp,
+} from 'services/auth';
 
 const useAuthMutation = <T = void>(mutationFn: MutationFunction<void, T>) => {
   const navigate = useNavigate();
@@ -35,22 +41,22 @@ const useAuthMutation = <T = void>(mutationFn: MutationFunction<void, T>) => {
 };
 
 // 로그인
-export const useLogin = () => useAuthMutation(login);
+export const useLogin = () => useAuthMutation(requestLogin);
 
 // 구글 로그인
-export const useGoogleLogin = () => useAuthMutation(googleLogin);
+export const useGoogleLogin = () => useAuthMutation(requestGoogleLogin);
 
 // 회원가입
-export const useSignUp = () => useAuthMutation(signUp);
+export const useSignUp = () => useAuthMutation(requestSignUp);
 
 // 로그아웃
-export const useLogout = () => useAuthMutation(logout);
+export const useLogout = () => useAuthMutation(requestLogout);
 
 // 인증 상태 확인
 export const useInitAuth = () => {
   const dispatch = useDispatch();
 
-  return useQuery('initAuth', initAuth, {
+  return useQuery('initAuth', requestAuthState, {
     onSuccess: (user) => {
       dispatch(
         setUserState(

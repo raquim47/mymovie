@@ -42,7 +42,7 @@ const AUTH_REQUEST_ERRORS: IAuthErrors = {
   },
 };
 
-export const login = async ({ email, password }: ILoginCredentials) => {
+export const requestLogin = async ({ email, password }: ILoginCredentials) => {
   try {
     await signInWithEmailAndPassword(auth, email, password);
   } catch (error) {
@@ -55,7 +55,7 @@ export const login = async ({ email, password }: ILoginCredentials) => {
   }
 };
 
-export const googleLogin = async () => {
+export const requestGoogleLogin = async () => {
   const provider = new GoogleAuthProvider();
   try {
     await signInWithPopup(auth, provider);
@@ -69,7 +69,7 @@ export const googleLogin = async () => {
   }
 };
 
-export const signUp = async ({ email, password, displayName }: ISignUpCredentials) => {
+export const requestSignUp = async ({ email, password, displayName }: ISignUpCredentials) => {
   try {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
@@ -85,7 +85,7 @@ export const signUp = async ({ email, password, displayName }: ISignUpCredential
   }
 };
 
-export const logout = async () => {
+export const requestLogout = async () => {
   try {
     await signOut(auth);
   } catch (error) {
@@ -93,7 +93,7 @@ export const logout = async () => {
   }
 };
 
-export const initAuth = () => {
+export const requestAuthState = () => {
   return new Promise<User | null>((resolve, reject) => {
     onAuthStateChanged(
       auth,
