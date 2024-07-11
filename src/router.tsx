@@ -8,7 +8,7 @@ const MainRoute = () => {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
-      <Route path="/:listType/:movieId" element={<HomePage />} />
+      <Route path="/movies/:movieId" element={<HomePage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignUpPage />} />
       <Route path="/*" element={<NotFound />} />

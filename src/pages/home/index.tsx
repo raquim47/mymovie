@@ -1,6 +1,7 @@
 import useFetchHomeData from './hooks/useFetchHomeData';
 import BannerLayout from './BannerLayout';
 import SliderLayout from './SliderLayout';
+import MovieDetail from 'components/movie-detail';
 
 const HomePage = () => {
   const {
@@ -24,6 +25,7 @@ const HomePage = () => {
         trendingData={trendingData}
         topRatedData={topRatedData}
       />
+      <MovieDetail />
     </>
   );
 };

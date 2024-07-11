@@ -11,14 +11,18 @@ const BannerLayout = ({
 }) => {
   return (
     <BannersContainer>
-      <div>
-        <H3>이번 주 신작</H3>
-        {leftData && <Banner data={leftData} />}
-      </div>
-      <div>
-        <H3>이번 주 신작</H3>
-        {rightData && <Banner data={rightData} />}
-      </div>
+      {leftData && (
+        <div>
+          <H3>이번 주 신작</H3>
+          <Banner data={leftData} />
+        </div>
+      )}
+      {rightData && (
+        <div>
+          <H3>개봉 예정</H3>
+          <Banner data={rightData} />
+        </div>
+      )}
     </BannersContainer>
   );
 };
