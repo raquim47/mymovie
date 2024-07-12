@@ -1,6 +1,7 @@
+import { motion } from "framer-motion";
 import styled from "styled-components";
 
-export const Figure = styled.figure`
+export const Figure = styled(motion.figure)`
   position: relative;
   margin-top: 12px;
   border-radius: 4px;

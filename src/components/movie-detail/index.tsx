@@ -81,39 +81,4 @@ const MovieDetail = () => {
   );
 };
 
-<article>
-  {/* 헤더에 배경으로 큰 영화 이미지 */}
-  <header>
-    {/* backdrop */}
-    <div></div>
-    {/* 작은 포스터이미지 */}
-    <img />
-    {/* 영화 설명 */}
-    <div>
-      <h2>나쁜 녀석들: 라이드 오어 다이</h2>
-      <h3>Bad Boys: Ride or Die</h3>
-      <ul>
-        <li>개봉년도</li>
-        <li>상영시간</li>
-        <li>장르</li>
-      </ul>
-    </div>
-  </header>
-  <div>
-    <section>
-      {/* 별점, 보고싶어요, 코멘트 남기기 */}
-      <h3 className="sr-only">옵션</h3>
-      <ul>
-        <li>평가하기</li>
-        <li>보고싶어요</li>
-        <li>코멘트 남기기</li>
-      </ul>
-    </section>
-    <section>
-      <h3 className="sr-only">줄거리 소개</h3>
-      <h4>인트로</h4>
-      <p>줄거리...</p>
-    </section>
-  </div>
-</article>;
 export default MovieDetail;

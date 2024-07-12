@@ -1,4 +1,3 @@
-import { motion } from 'framer-motion';
 import styled from 'styled-components';
 
 export const Overay = styled.div`
@@ -14,22 +13,37 @@ export const Overay = styled.div`
   z-index: ${(props) => props.theme.zIndex.popup};
 `;
 
-export const Inner = styled(motion.div)`
+export const Inner = styled.div`
   width: 100%;
   height: 100%;
+  overflow-y: auto;
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: #4e4e4e;
+    border-radius: 100px;
+  }
+  ::-webkit-scrollbar-track {
+    background-color: #4e4e4e;
+    border-radius: 100px;
+    background-clip: padding-box;
+    border: 3px solid transparent;
+  }
 
   @media (min-width: 769px) {
     width: 80%;
-    height: 80%;
+    height: auto;
+    min-height: 300px;
+    max-height: 80%;
     border-radius: 10px;
-    overflow: hidden;
   }
 
   @media (min-width: 961px) {
     width: 70%;
-    height: 70%;
     max-width: 800px;
     border-radius: 10px;
-    overflow: hidden;
   }
 `;

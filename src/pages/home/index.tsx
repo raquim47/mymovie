@@ -1,7 +1,7 @@
 import useFetchHomeData from './hooks/useFetchHomeData';
 import BannerLayout from './BannerLayout';
 import SliderLayout from './SliderLayout';
-import MovieDetail from 'components/movie-detail';
+import { Outlet } from 'react-router-dom';
 
 const HomePage = () => {
   const {
@@ -25,7 +25,7 @@ const HomePage = () => {
         trendingData={trendingData}
         topRatedData={topRatedData}
       />
-      <MovieDetail />
+      <Outlet />
     </>
   );
 };

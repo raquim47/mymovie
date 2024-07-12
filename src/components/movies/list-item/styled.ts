@@ -1,13 +1,6 @@
-import { motion } from "framer-motion";
-import styled from "styled-components";
-
-export const Bg = styled.img`
-  position: absolute;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-`;
+import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 
 export const Info = styled.div`
   position: absolute;
@@ -61,11 +54,6 @@ export const Info = styled.div`
 `;
 
 export const LI = styled(motion.li)`
-  position: relative;
-  border-radius: 4px;
-  overflow: hidden;
-  cursor: pointer;
-
   &:last-of-type {
     transform-origin: center right;
   }
@@ -73,17 +61,25 @@ export const LI = styled(motion.li)`
     transform-origin: center left;
   }
 
-  img {
-    position: absolute;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
   &:hover ${Info} {
     opacity: 1;
   }
+`;
+
+export const StyledLink = styled(Link)`
+  display: block;
+  position: relative;
+  height: 100%;
+  border-radius: 4px;
+  overflow: hidden;
+`;
+
+export const Bg = styled.img`
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 `;
 
 export const RateStar = styled.div`

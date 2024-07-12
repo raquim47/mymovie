@@ -3,23 +3,7 @@ import styled, { css } from 'styled-components';
 const Content = styled.article`
   height: 100%;
   padding-bottom: 10px;
-  overflow: auto;
   background-color: ${(props) => props.theme.color.gray};
-
-  ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-  }
-  ::-webkit-scrollbar-thumb {
-    background-color: #4e4e4e;
-    border-radius: 100px;
-  }
-  ::-webkit-scrollbar-track {
-    background-color: #4e4e4e;
-    border-radius: 100px;
-    background-clip: padding-box;
-    border: 3px solid transparent;
-  }
 `;
 
 const Top = styled.div`
@@ -47,7 +31,7 @@ const Header = styled.div`
   width: 100%;
   padding: 0 30px;
   gap: 20px;
-  
+
   .poster {
     flex-shrink: 0;
     position: relative;
@@ -180,7 +164,7 @@ const Summary = styled.section`
     :before {
       content: '';
       position: absolute;
-      width: 2px;
+      width: 3px;
       height: 70%;
       left: 0;
       top: 50%;
