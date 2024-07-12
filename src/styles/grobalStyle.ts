@@ -54,8 +54,9 @@ body {
   line-height: 1.2;
   overflow-x: hidden;
   
-  &.scrollHidden {
+  &.no-scroll {
   overflow-y: hidden;
+  padding-right: 6px;
   }
 }
 
