@@ -1,7 +1,6 @@
 import { IMovieDetails } from 'services/movies/types';
 import { Figure, Caption } from './styled';
 import { getMovieImagePath } from '../utils';
-import { useId } from 'react';
 import { Link } from 'react-router-dom';
 
 const Banner = ({ data }: { data: IMovieDetails }) => {

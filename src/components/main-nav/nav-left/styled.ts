@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 export const Aside = styled.aside`
   position: sticky;
@@ -38,4 +38,3 @@ export const StyledNavLink = styled(NavLink)`
     background-color: ${(props) => props.theme.color.gray};
   }
 `;
-
