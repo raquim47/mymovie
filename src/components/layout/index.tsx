@@ -1,4 +1,4 @@
-import MainNav from 'components/main-nav';
+import Header from 'components/header';
 import { useInitAuth } from 'hooks/auth';
 import { ReactNode } from 'react';
 import { Container, Main } from './styled';
@@ -10,7 +10,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
       {isLoading && <p>Loading...</p>}
       {!isLoading && !error && (
         <>
-          <MainNav />
+          <Header />
           <Main>{children}</Main>
         </>
       )}

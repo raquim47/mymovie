@@ -1,14 +1,14 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  display: flex;
-  max-width: 1536px;
-  margin: 0 auto;
-  gap: 30px;
+  @media (min-width: 961px) {
+    display: flex;
+    max-width: 1536px;
+    margin: 0 auto;
+  }
 `;
 
 export const Main = styled.main`
   flex: 1;
-  padding-top: 40px;
-  padding-right: 40px;
+  padding: 40px 30px 0;
 `;

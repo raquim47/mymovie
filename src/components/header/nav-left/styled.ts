@@ -1,14 +1,19 @@
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 
-export const Aside = styled.aside`
-  position: sticky;
-  top: 0;
-  flex-shrink: 0;
-  width: 240px;
-  height: 100vh;
-  padding: 24px 16px;
-  background-color: ${(props) => props.theme.color.black.dark};
+export const Header = styled.header`
+  display: none;
+
+  @media (min-width: 961px) {
+    display: block;
+    position: sticky;
+    top: 0;
+    flex-shrink: 0;
+    width: 240px;
+    height: 100vh;
+    padding: 24px 16px;
+    background-color: ${(props) => props.theme.color.black.dark};
+  }
 `;
 
 export const Nav = styled.nav`

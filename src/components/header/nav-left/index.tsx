@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Logo from '../logo';
 import { faFilm, faRightToBracket } from '@fortawesome/free-solid-svg-icons';
 import { faStar, faHeart } from '@fortawesome/free-regular-svg-icons';
-import { Aside, Nav, StyledNavLink } from './styled';
+import { Header, Nav, StyledNavLink } from './styled';
 import SearchForm from '../search-form';
 import { useAppSelector } from 'hooks/useAppSelector';
 import LogoutBtn from '../logout-btn';
@@ -16,7 +16,7 @@ const NAV_LINKS = [
 const NavLeft = () => {
   const user = useAppSelector((state) => state.user.userData);
   return (
-    <Aside>
+    <Header>
       <Logo />
       <Nav>
         <ul>
@@ -32,7 +32,7 @@ const NavLeft = () => {
             {user ? (
               <LogoutBtn />
             ) : (
-              <StyledNavLink to='/login'>
+              <StyledNavLink to="/login">
                 <FontAwesomeIcon icon={faRightToBracket} />
                 로그인
               </StyledNavLink>
@@ -43,7 +43,7 @@ const NavLeft = () => {
           </li>
         </ul>
       </Nav>
-    </Aside>
+    </Header>
   );
 };
 
