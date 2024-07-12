@@ -50,7 +50,7 @@ body {
   background-color: black;
   font-weight: 400;
   font-family: 'Source Sans Pro', sans-serif;
-  color:${(props) => props.theme.color.white.dark};
+  color:${(props) => props.theme.color.white.normal};
   line-height: 1.2;
   overflow-x: hidden;
   
@@ -64,8 +64,9 @@ menu, ol, ul {
 }
 
 button {
+  background-color: transparent;
   font-family: 'Source Sans Pro', sans-serif;
-  color:${(props) => props.theme.color.white.dark};
+  color:${(props) => props.theme.color.white.normal};
   border: none;
   cursor: pointer;
 }
@@ -77,5 +78,22 @@ a {
   &.disabled {
     pointer-events: none;
   }
+}
+
+img {
+  display: block;
+  width: 100%;
+  object-fit: cover;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
 }
 `;
