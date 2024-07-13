@@ -60,7 +60,7 @@ body {
   }
 }
 
-menu, ol, ul {
+menu, ol, ul, li {
   list-style: none;
 }
 

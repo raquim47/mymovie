@@ -35,7 +35,6 @@ export const requestGoogleLogin = async () => {
       await setDoc(doc(db, 'users', user.uid), {
         email: user.email,
         nickName: Math.random().toString(36).slice(2, 9),
-        createdAt: new Date(),
       });
     }
   } catch (error) {
@@ -56,7 +55,6 @@ export const requestSignUp = async ({
     await setDoc(doc(db, 'users', user.uid), {
       email,
       nickName,
-      createdAt: new Date(),
     });
   } catch (error) {
     handleAuthError(error);

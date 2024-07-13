@@ -5,7 +5,9 @@ export const Header = styled.header`
   display: none;
 
   @media (min-width: 961px) {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
     position: sticky;
     top: 0;
     flex-shrink: 0;
@@ -17,7 +19,6 @@ export const Header = styled.header`
 `;
 
 export const Nav = styled.nav`
-  padding-top: 20px;
 `;
 
 export const StyledNavLink = styled(NavLink)`

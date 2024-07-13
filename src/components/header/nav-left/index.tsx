@@ -6,6 +6,7 @@ import { Header, Nav, StyledNavLink } from './styled';
 import SearchForm from '../search-form';
 import { useAppSelector } from 'hooks/useAppSelector';
 import LogoutBtn from '../logout-btn';
+import UserBrief from '../user-brief';
 
 const NAV_LINKS = [
   { to: '/', icon: faFilm, label: '홈' },
@@ -18,6 +19,7 @@ const NavLeft = () => {
   return (
     <Header>
       <Logo />
+      {user && <UserBrief />}
       <Nav>
         <ul>
           {NAV_LINKS.map((link) => (
