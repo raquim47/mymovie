@@ -3,7 +3,7 @@ import { IFormData, IFormState } from './types';
 
 const initialErrors = {
   email: '',
-  displayName: '',
+  nickName: '',
   password: '',
   confirmPassword: '',
 };
@@ -11,7 +11,7 @@ const initialErrors = {
 const initialState: IFormState = {
   formData: {
     email: '',
-    displayName: '',
+    nickName: '',
     password: '',
     confirmPassword: '',
   },

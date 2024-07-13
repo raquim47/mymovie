@@ -2,7 +2,7 @@ import { ISignUpCredentials } from 'services/auth/types';
 
 export const validateSignUp = ({
   email,
-  displayName,
+  nickName,
   password,
   confirmPassword,
 }: ISignUpCredentials) => {
@@ -12,8 +12,8 @@ export const validateSignUp = ({
     errors.email = '유효한 이메일 주소를 입력해주세요.';
   }
 
-  if (displayName.length < 2) {
-    errors.displayName = '닉네임을 두 글자 이상 입력해주세요.';
+  if (nickName.length < 2) {
+    errors.nickName = '닉네임을 두 글자 이상 입력해주세요.';
   }
 
   if (password.length < 6) {

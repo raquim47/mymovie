@@ -4,7 +4,7 @@ export interface ILoginCredentials {
 }
 
 export interface ISignUpCredentials extends ILoginCredentials {
-  displayName: string;
+  nickName: string;
   confirmPassword: string;
 }
 

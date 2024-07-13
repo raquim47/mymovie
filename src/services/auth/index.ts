@@ -1,5 +1,5 @@
-import { FirebaseError } from 'firebase/app';
-import { auth } from '../firebase';
+import { auth, db } from '../firebase';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 import {
   createUserWithEmailAndPassword,
   GoogleAuthProvider,
@@ -7,99 +7,81 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
-  updateProfile,
-  User,
 } from 'firebase/auth';
-import { IAuthErrors, ILoginCredentials, ISignUpCredentials } from './types';
+import { ILoginCredentials, ISignUpCredentials } from './types';
+import { handleAuthError } from './errors';
+import { IUser } from 'store/user/types';
 
-const AUTH_REQUEST_ERRORS: IAuthErrors = {
-  'auth/user-not-found': {
-    message: '이메일 또는 패스워드가 잘못되었습니다.',
-    name: 'global',
-  },
-  'auth/wrong-password': {
-    message: '이메일 또는 패스워드가 잘못되었습니다.',
-    name: 'global',
-  },
-  'auth/invalid-password': {
-    message: '비밀번호를 6글자 이상 입력해주세요.',
-    name: 'email',
-  },
-  'auth/invalid-email': { message: '유효하지 않은 이메일 주소입니다.', name: 'email' },
-  'auth/email-already-in-use': { message: '이미 사용중인 이메일입니다.', name: 'email' },
-  'auth/invalid-display-name': {
-    message: '유효하지 않은 닉네임입니다.',
-    name: 'displayName',
-  },
-
-  'auth/popup-closed-by-user': {
-    message: '구글 로그인 팝업 닫힘.',
-    name: 'popup-close',
-  },
-  default: {
-    message: '서버 오류가 발생했습니다. 다시 시도해주세요.',
-    name: 'global',
-  },
-};
-
+// 로그인
 export const requestLogin = async ({ email, password }: ILoginCredentials) => {
   try {
     await signInWithEmailAndPassword(auth, email, password);
   } catch (error) {
-    if (error instanceof FirebaseError) {
-      const standardError =
-        AUTH_REQUEST_ERRORS[error.code] || AUTH_REQUEST_ERRORS['default'];
-      throw new Error(JSON.stringify(standardError));
-    }
-    throw error;
+    handleAuthError(error);
   }
 };
 
+// 구글 가입, 로그인
 export const requestGoogleLogin = async () => {
   const provider = new GoogleAuthProvider();
   try {
-    await signInWithPopup(auth, provider);
-  } catch (error) {
-    if (error instanceof FirebaseError) {
-      const standardError =
-        AUTH_REQUEST_ERRORS[error.code] || AUTH_REQUEST_ERRORS['default'];
-      throw new Error(JSON.stringify(standardError));
+    const userCredential = await signInWithPopup(auth, provider);
+    const user = userCredential.user;
+
+    const userRef = doc(db, 'users', user.uid);
+    const docSnap = await getDoc(userRef);
+
+    if (!docSnap.exists()) {
+      await setDoc(doc(db, 'users', user.uid), {
+        email: user.email,
+        nickName: Math.random().toString(36).slice(2, 9),
+        createdAt: new Date(),
+      });
     }
-    throw error;
+  } catch (error) {
+    handleAuthError(error);
   }
 };
 
-export const requestSignUp = async ({ email, password, displayName }: ISignUpCredentials) => {
+// 회원가입
+export const requestSignUp = async ({
+  email,
+  password,
+  nickName,
+}: ISignUpCredentials) => {
   try {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
 
-    await updateProfile(user, { displayName });
+    await setDoc(doc(db, 'users', user.uid), {
+      email,
+      nickName,
+      createdAt: new Date(),
+    });
   } catch (error) {
-    if (error instanceof FirebaseError) {
-      const standardError =
-        AUTH_REQUEST_ERRORS[error.code] || AUTH_REQUEST_ERRORS['default'];
-      throw new Error(JSON.stringify(standardError));
-    }
-    throw error;
+    handleAuthError(error);
   }
 };
 
+// 로그아웃
 export const requestLogout = async () => {
   try {
     await signOut(auth);
   } catch (error) {
-    throw error;
+    handleAuthError(error);
   }
 };
 
-export const requestAuthState = () => {
-  return new Promise<User | null>((resolve, reject) => {
+// 초기 user 인증 및 패치
+export const requestUserState = async (): Promise<IUser | null> => {
+  return new Promise(async (resolve, reject) => {
     onAuthStateChanged(
       auth,
-      (user) => {
+      async (user) => {
         if (user) {
-          resolve(user);
+          const userRef = doc(db, 'users', user.uid);
+          const docSnap = await getDoc(userRef);
+          resolve(docSnap.data() as IUser);
         } else {
           resolve(null);
         }

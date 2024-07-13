@@ -5,11 +5,11 @@ import { useNavigate } from 'react-router-dom';
 import { setErrors } from 'store/auth-form';
 import { queryClient } from 'index';
 import {
-  requestAuthState,
   requestGoogleLogin,
   requestLogin,
   requestLogout,
   requestSignUp,
+  requestUserState,
 } from 'services/auth';
 
 const useAuthMutation = <T = void>(mutationFn: MutationFunction<void, T>) => {
@@ -56,20 +56,9 @@ export const useLogout = () => useAuthMutation(requestLogout);
 export const useInitAuth = () => {
   const dispatch = useDispatch();
 
-  return useQuery('initAuth', requestAuthState, {
+  return useQuery('initAuth', requestUserState, {
     onSuccess: (user) => {
-      dispatch(
-        setUserState(
-          user
-            ? {
-                email: user.email,
-                displayName: user.displayName,
-                uid: user.uid,
-                photoURL: user.photoURL,
-              }
-            : null
-        )
-      );
+      dispatch(setUserState(user));
     },
   });
 };
