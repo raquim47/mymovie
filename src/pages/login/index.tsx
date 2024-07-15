@@ -1,6 +1,8 @@
 import AuthForm from 'components/auth-form/AuthForm';
 import InputField from 'components/auth-form/InputField';
-import { Btn, LinkBtn, SubmitBtn } from 'components/auth-form/styled';
+import Button from 'components/buttons/Button';
+import LinkButton from 'components/buttons/LinkButton';
+
 import { useGoogleLogin, useLogin } from 'hooks/auth';
 import { validateLogin } from './validate';
 
@@ -14,15 +16,15 @@ const LoginPage = () => {
     <AuthForm title="로그인" submitAction={login} validate={validateLogin}>
       <InputField name="email" type="email" label="이메일" />
       <InputField name="password" type="password" label="비밀번호" />
-      <SubmitBtn type="submit" disabled={authLoading}>
+      <Button accent type="submit" disabled={authLoading}>
         로그인
-      </SubmitBtn>
-      <Btn type="button" onClick={() => googleLogin()} disabled={authLoading}>
+      </Button>
+      <Button type="button" onClick={() => googleLogin()} disabled={authLoading}>
         Google 로그인
-      </Btn>
-      <LinkBtn to="/signup" className={authLoading ? 'disabled' : ''}>
+      </Button>
+      <LinkButton to="/signup" className={authLoading ? 'disabled' : ''}>
         회원가입
-      </LinkBtn>
+      </LinkButton>
     </AuthForm>
   );
 };

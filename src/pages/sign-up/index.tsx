@@ -1,6 +1,7 @@
 import AuthForm from 'components/auth-form/AuthForm';
 import InputField from 'components/auth-form/InputField';
-import { LinkBtn, SubmitBtn } from 'components/auth-form/styled';
+import Button from 'components/buttons/Button';
+import LinkButton from 'components/buttons/LinkButton';
 import { useSignUp } from 'hooks/auth';
 import { validateSignUp } from './validate';
 
@@ -12,10 +13,12 @@ const SignUpPage = () => {
       <InputField name="nickName" label="닉네임" />
       <InputField name="password" type="password" label="비밀번호" />
       <InputField name="confirmPassword" type="password" label="비밀번호 확인" />
-      <SubmitBtn disabled={isLoading}>가입하기</SubmitBtn>
-      <LinkBtn to="/login" className={isLoading ? 'disabled' : ''}>
+      <Button accent disabled={isLoading}>
+        가입하기
+      </Button>
+      <LinkButton to="/login" className={isLoading ? 'disabled' : ''}>
         로그인
-      </LinkBtn>
+      </LinkButton>
     </AuthForm>
   );
 };

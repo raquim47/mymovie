@@ -1,5 +1,4 @@
-import { Link } from 'react-router-dom';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 export const Form = styled.form`
   margin: 0 auto;
@@ -49,37 +48,4 @@ export const ErrorMassage = styled.p`
   font-size: ${(props) => props.theme.fontSizePx.xs};
   font-weight: 500;
   white-space: nowrap;
-`;
-
-const btnStyles = css`
-  width: 100%;
-  margin-bottom: 12px;
-  background-color: ${(props) => props.theme.color.gray};
-  color: ${(props) => props.theme.color.white.normal};
-  font-size: ${(props) => props.theme.fontSizePx.m};
-  padding: 12px 0;
-  border-radius: 4px;
-  text-align: center;
-
-  :hover {
-    background-color: ${(props) => props.theme.color.purple.dark};
-  }
-
-  :disabled {
-    background-color: ${(props) => props.theme.color.gray};
-    pointer-events: none;
-  }
-`;
-
-export const Btn = styled.button`
-  ${btnStyles}
-`;
-
-export const SubmitBtn = styled(Btn)`
-  background-color: ${(props) => props.theme.color.purple.normal};
-`;
-
-export const LinkBtn = styled(Link)`
-  ${btnStyles}
-  display: inline-block;
 `;
