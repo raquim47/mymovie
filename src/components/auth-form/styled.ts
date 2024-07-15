@@ -11,6 +11,10 @@ export const Form = styled.form`
     text-align: center;
     margin-bottom: 20px;
   }
+
+  button {
+    margin-bottom: 12px;
+  }
 `;
 
 export const Field = styled.div`
