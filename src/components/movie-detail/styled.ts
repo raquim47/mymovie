@@ -38,7 +38,7 @@ const Header = styled.div`
     transform: translateX(0);
     width: 160px;
     height: 240px;
-    background-color: red;
+    border-radius: 4px;
   }
 
   @media (max-width: 768px) {
@@ -84,6 +84,11 @@ const Info = styled.div`
     position: relative;
     font-size: 14px;
     font-weight: 300;
+
+    &.genres {
+      display: flex;
+      gap: 6px;
+    }
   }
 
   li ~ li {
@@ -143,12 +148,11 @@ const Options = styled.section`
     }
   }
 
-  .detailOptionIcon {
+  .option-btn {
     margin: 0 auto;
     white-space: nowrap;
     height: 40px;
     font-size: 24px;
-    cursor: pointer;
   }
 `;
 
