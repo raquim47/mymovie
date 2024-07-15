@@ -10,7 +10,7 @@ import UserBrief from '../user-brief';
 
 const NAV_LINKS = [
   { to: '/', icon: faFilm, label: '홈' },
-  { to: '/rate', icon: faStar, label: '평가한 영화' },
+  { to: '/rated', icon: faStar, label: '평가한 영화' },
   { to: '/favorite', icon: faHeart, label: '찜한 영화' },
 ];
 

@@ -7,7 +7,6 @@ import { faHeart } from '@fortawesome/free-regular-svg-icons';
 import { faPenToSquare } from '@fortawesome/free-regular-svg-icons';
 import { useGetMovieDetail } from 'hooks/useGetMovieDetail';
 import { getMovieImagePath } from 'components/movies/utils';
-import { IMovieDetails } from 'services/movies/types';
 
 const MovieDetail = () => {
   const { movieId } = useParams();

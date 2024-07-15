@@ -9,7 +9,6 @@ import { getMovieImagePath } from '../utils';
 const MovieListItem = memo((props: IMovieListItemProps) => {
   const { movieData, index, hoveredIndex, onHoverChange, listSize, displayMode } = props;
   const { isHovered, isPushed, xMove } = getHoverStyles(index, listSize, hoveredIndex);
-
   return (
     <LI
       variants={hoverItemMotion}
@@ -19,7 +18,7 @@ const MovieListItem = memo((props: IMovieListItemProps) => {
       onHoverEnd={() => onHoverChange()}
       custom={{ xMove }}
     >
-      <StyledLink to={`/movies/${movieData.id}`}>
+      <StyledLink to={`/movies/${movieData.id}`} state={{ from: '/' }}>
         <Bg
           src={getMovieImagePath(movieData, 'backdrop', 'w500')}
           alt={movieData.title}

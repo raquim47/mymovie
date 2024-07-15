@@ -29,7 +29,7 @@ const NavTop = () => {
             <Styled.CustomNavLink to="/">홈</Styled.CustomNavLink>
           </li>
           <li>
-            <Styled.CustomNavLink to="/rate">평가한 영화</Styled.CustomNavLink>
+            <Styled.CustomNavLink to="/rated">평가한 영화</Styled.CustomNavLink>
           </li>
           <li>
             <Styled.CustomNavLink to="/favorite">찜한 영화</Styled.CustomNavLink>

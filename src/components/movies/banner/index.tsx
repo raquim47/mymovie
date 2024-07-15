@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 const Banner = ({ data }: { data: IMovieDetails }) => {
   return (
-    <Link to={`movies/${data.id}`}>
+    <Link to={`/movies/${data.id}`} state={{ from: '/' }}>
       {/* div로 수정 */}
       <Figure>
         <img src={getMovieImagePath(data, 'backdrop', 'w1280')} alt={data.title} />
