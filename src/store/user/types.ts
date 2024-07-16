@@ -1,6 +1,6 @@
 export interface IUser {
-  email: string | null;
-  nickName: string | null;
+  email: string;
+  nickName: string;
   uid: string;
   photoUrl: string | null;
   likedMovies: string[] | null;

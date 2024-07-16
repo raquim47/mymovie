@@ -35,6 +35,10 @@ const Label = styled.label`
   ${buttonStyles}
   display: block;
   cursor: pointer;
+
+  &.disabled {
+    pointer-events: none;
+  }
 `;
 
 const Buttons = { Base, Link, Label };

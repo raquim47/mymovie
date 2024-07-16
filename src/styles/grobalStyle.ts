@@ -70,6 +70,10 @@ button {
   color:${(props) => props.theme.color.white.normal};
   border: none;
   cursor: pointer;
+
+  &:disabled {
+    pointer-events: none;
+  }
 }
 
 a {
