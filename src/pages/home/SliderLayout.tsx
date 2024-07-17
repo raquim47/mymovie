@@ -1,7 +1,7 @@
 import MovieList from 'components/movie-list';
 import withSlider from 'hoc/with-slider';
 import useSetListSize from 'hooks/ui/list-size';
-import { IMovieDetails } from 'services/movies/types';
+import { IMovie } from 'services/movies/types';
 import ST from './styles';
 
 const SliderLayout = ({
@@ -9,16 +9,16 @@ const SliderLayout = ({
   latestData,
   topRatedData,
 }: {
-  trendingData?: IMovieDetails[];
-  latestData?: IMovieDetails[];
-  topRatedData?: IMovieDetails[];
+  trendingData?: IMovie[];
+  latestData?: IMovie[];
+  topRatedData?: IMovie[];
 }) => {
   const listSize = useSetListSize({
-    768: 3,
-    1200: 4,
-    default: 5,
+    default: 2,
+    576: 3,
+    768: 4,
+    1200: 5,
   });
-
   const MovieListSlider = withSlider(MovieList);
   return (
     <ST.SlidersContainer>

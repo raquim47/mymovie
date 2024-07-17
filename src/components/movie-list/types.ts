@@ -1,6 +1,7 @@
-import { IMovieDetails } from 'services/movies/types';
+import { IMovie } from 'services/movies/types';
 
 export interface IMovieListProps {
-  data: IMovieDetails[];
+  data: IMovie[];
   listSize: number;
+  imageType?: 'poster' | 'backdrop';
 }

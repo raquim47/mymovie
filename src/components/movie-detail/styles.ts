@@ -12,7 +12,7 @@ const Top = styled.div`
 
   .backdrop {
     height: 330px;
-    filter: brightness(0.6);
+    filter: brightness(0.7);
   }
 `;
 
@@ -66,6 +66,8 @@ const Header = styled.div`
 `;
 
 const Info = styled.div`
+  color: ${(state) => state.theme.color.white.normal};
+
   h2 {
     font-size: 36px;
     font-weight: 700;
@@ -143,5 +145,5 @@ const Summary = styled.section`
   }
 `;
 
-const ST = { Content, Top, Header, Info, Bottom, Summary }
+const ST = { Content, Top, Header, Info, Bottom, Summary };
 export default ST;

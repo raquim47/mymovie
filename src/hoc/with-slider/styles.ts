@@ -17,9 +17,12 @@ const Content = styled.div`
 
 const RatioBox = styled.div`
   position: relative;
-  padding-top: 16%;
+  padding-top: 24%;
 
-  @media (min-width: 769px) {
+  @media (min-width: 576px) {
+    padding-top: 18%;
+  }
+  @media (min-width: 768px) {
     padding-top: 12%;
   }
   @media (min-width: 1201px) {

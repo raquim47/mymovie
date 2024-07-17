@@ -8,28 +8,25 @@ interface IBreakpoints {
 const calculateListSize = (width: number, breakpoints: IBreakpoints) => {
   const sortedBreakpoints = Object.keys(breakpoints)
     .map(Number)
-    .sort((a, b) => a - b);
-  const matchedBreakpoint = sortedBreakpoints.find(
-    (breakpoint) => width <= breakpoint
-  );
+    .filter((key) => key)
+    .sort((a, b) => b - a);
 
-  return matchedBreakpoint
+  const matchedBreakpoint = sortedBreakpoints.find((breakpoint) => width >= breakpoint);
+
+  return matchedBreakpoint !== undefined
     ? breakpoints[matchedBreakpoint]
     : breakpoints.default;
 };
 
-const useSetListSize = (breakpoints: {
-  [key: number]: number;
-  default: number;
-}) => {
+const useSetListSize = (breakpoints: { [key: number]: number; default: number }) => {
   const [listSize, setListSize] = useState(
     calculateListSize(window.innerWidth, breakpoints)
   );
 
   useEffect(() => {
-    function handleResize() {
+    const handleResize = () => {
       setListSize(calculateListSize(window.innerWidth, breakpoints));
-    }
+    };
 
     window.addEventListener('resize', handleResize);
     return () => {

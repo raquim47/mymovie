@@ -1,13 +1,13 @@
 import Banner from 'components/banner';
-import { IMovieDetails } from 'services/movies/types';
+import { IMovie } from 'services/movies/types';
 import ST from './styles';
 
 const BannerLayout = ({
   leftData,
   rightData,
 }: {
-  leftData?: IMovieDetails;
-  rightData?: IMovieDetails;
+  leftData?: IMovie;
+  rightData?: IMovie;
 }) => {
   return (
     <ST.BannersContainer>

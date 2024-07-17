@@ -1,8 +1,8 @@
-import { IMovieDetails } from 'services/movies/types';
+import { IMovie } from 'services/movies/types';
 import ST from './styles';
 import { getMovieImagePath } from 'utils/movie-image-path';
 
-const Banner = ({ data }: { data: IMovieDetails }) => {
+const Banner = ({ data }: { data: IMovie }) => {
   return (
     <ST.Link
       to={`/movies/${data.id}`}

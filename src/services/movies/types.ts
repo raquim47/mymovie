@@ -1,10 +1,10 @@
 export interface IMovieList {
-  results: IMovieDetails[];
+  results: IMovie[];
   page: number;
   total_pages: number;
 }
 
-export interface IMovieDetails {
+export interface IMovie {
   id: number;
   title: string;
   poster_path: string;

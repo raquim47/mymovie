@@ -7,6 +7,7 @@ import MovieDetail from 'components/movie-detail';
 import Layout from 'components/layout';
 import RatedPage from 'pages/rated';
 import ProfilePage from 'pages/profile';
+import SearchPage from 'pages/search';
 
 const MainRoute = () => {
   return (
@@ -14,6 +15,7 @@ const MainRoute = () => {
       <Route path="/" element={<Layout />}>
         <Route index element={<HomePage />} />
         <Route path="rated" element={<RatedPage />} />
+        <Route path="search" element={<SearchPage />} />
         <Route path="movies/:movieId" element={<MovieDetail />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/login" element={<LoginPage />} />

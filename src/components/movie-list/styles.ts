@@ -24,25 +24,13 @@ const ItemInfo = styled.div`
 
   h4 {
     margin-bottom: 0.4vw;
-    font-size: 2.5vw;
     font-weight: 500;
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
-
-    @media (min-width: 769px) {
-      font-size: 1.8vw;
-    }
-
-    @media (min-width: 961px) {
-      font-size: 1.3vw;
-    }
-
-    @media (min-width: 1201px) {
-      font-size: 16px;
-    }
+    font-size: 16px;
   }
 
   .genres {
@@ -53,15 +41,12 @@ const ItemInfo = styled.div`
 
   small,
   .genres li {
+    display: none;
     font-weight: 300;
-    font-size: 1.6vw;
+    font-size: 12px;
 
-    @media (min-width: 961px) {
-      font-size: 1.1vw;
-    }
-
-    @media (min-width: 1201px) {
-      font-size: 0.9vw;
+    @media (min-width: 576px) {
+      display: block;
     }
   }
 `;

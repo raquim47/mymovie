@@ -29,9 +29,9 @@ const Link = styled(RouterLink)<{ bg: string }>`
 
 const Caption = styled.div`
   position: absolute;
+  width: 100%;
   bottom: 8%;
   padding: 0 6% 0 4%;
-
   h4 {
     margin-bottom: 8px;
     font-size: 6vw;
@@ -47,10 +47,10 @@ const Caption = styled.div`
   }
 
   p {
-    white-space: nowrap;
     font-size: 32px;
-    overflow: hidden;
+    white-space: nowrap;
     text-overflow: ellipsis;
+    overflow: hidden;
 
     @media (min-width: 769px) {
       font-size: 2vw;
