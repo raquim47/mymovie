@@ -14,6 +14,7 @@ const Overay = styled.div`
 `;
 
 const Inner = styled.div`
+  position: relative;
   width: 100%;
   height: 100%;
   overflow-y: auto;
@@ -48,4 +49,24 @@ const Inner = styled.div`
   }
 `;
 
-export default { Overay, Inner };
+const CloseBtn = styled.button`
+  position: absolute;
+  top: 16px;
+  right: 14px;
+  transition: transform 0.3s ease-in-out;
+  color: ${(props) => props.theme.color.white.dark};
+  z-index: 100;
+
+  &:hover {
+    transform: scale(1.2);
+    color: ${(props) => props.theme.color.white.normal};
+  }
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+`;
+
+const ST = { Overay, Inner, CloseBtn };
+export default ST;
