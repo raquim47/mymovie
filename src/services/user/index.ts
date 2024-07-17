@@ -2,6 +2,29 @@ import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { deleteObject, getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { auth, db, storage } from 'services/firebase';
 import { uuidv4 } from '@firebase/util';
+import { IUser } from 'store/user/types';
+import { onAuthStateChanged } from 'firebase/auth';
+
+// 초기 user 인증 및 패치
+export const requestUserState = async (): Promise<IUser | null> => {
+  return new Promise(async (resolve, reject) => {
+    onAuthStateChanged(
+      auth,
+      async (user) => {
+        if (user) {
+          const userRef = doc(db, 'users', user.uid);
+          const docSnap = await getDoc(userRef);
+          resolve(docSnap.data() as IUser);
+        } else {
+          resolve(null);
+        }
+      },
+      (error) => {
+        reject(new Error('인증 상태 확인 중 오류가 발생했습니다. :' + error.message));
+      }
+    );
+  });
+};
 
 const getUserRefAndId = async () => {
   const userId = auth.currentUser?.uid;
@@ -32,12 +55,8 @@ export const updateUserImage = async (file: File | null) => {
 
 export const updateNickName = async (nickName: string) => {
   const user = auth.currentUser;
-  try {
-    if (user) {
-      const userRef = doc(db, 'users', user.uid);
-      await updateDoc(userRef, { nickName });
-    }
-  } catch (error) {
-    alert('요청이 실패했습니다.');
+  if (user) {
+    const userRef = doc(db, 'users', user.uid);
+    await updateDoc(userRef, { nickName });
   }
 };

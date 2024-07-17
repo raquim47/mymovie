@@ -1,21 +1,9 @@
-import { useEffect, useState } from 'react';
+import useHeaderResponsive from 'hooks/ui/header-responsive';
 import NavLeft from './nav-left';
 import NavTop from './nav-top';
 
 const Header = () => {
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 960);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 960);
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-  
+  const { isMobile } = useHeaderResponsive();
   return <>{isMobile ? <NavTop /> : <NavLeft />}</>;
 };
 

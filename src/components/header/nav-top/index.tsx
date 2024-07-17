@@ -1,14 +1,14 @@
 import { useAppSelector } from 'hooks/useAppSelector';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import Logo from '../logo';
 import SearchForm from '../search-form';
-import Styled from './styled';
+import ST from './styles';
 
 const NavTop = () => {
   const user = useAppSelector((state) => state.user.userData);
   return (
     <>
-      <Styled.Header>
+      <ST.Header>
         <Logo />
         <SearchForm />
         {user ? (
@@ -20,22 +20,24 @@ const NavTop = () => {
             />
           </Link>
         ) : (
-          <Link to="/login" className='login-link'>로그인</Link>
+          <Link to="/login" className="login-link">
+            로그인
+          </Link>
         )}
-      </Styled.Header>
-      <Styled.Nav>
+      </ST.Header>
+      <ST.Nav>
         <ul>
           <li>
-            <Styled.CustomNavLink to="/">홈</Styled.CustomNavLink>
+            <NavLink to="/">홈</NavLink>
           </li>
           <li>
-            <Styled.CustomNavLink to="/rated">평가한 영화</Styled.CustomNavLink>
+            <NavLink to="/rated">평가한 영화</NavLink>
           </li>
           <li>
-            <Styled.CustomNavLink to="/favorite">찜한 영화</Styled.CustomNavLink>
+            <NavLink to="/favorite">찜한 영화</NavLink>
           </li>
         </ul>
-      </Styled.Nav>
+      </ST.Nav>
     </>
   );
 };

@@ -2,7 +2,7 @@ import { useAppSelector } from 'hooks/useAppSelector';
 import { useSetUserImage } from 'hooks/user';
 import { ChangeEvent } from 'react';
 import Buttons from 'components/ui/buttons';
-import Styled from './styled';
+import ST from './styles';
 
 const EditImage = () => {
   const photoUrl = useAppSelector((state) => state.user.userData?.photoUrl);
@@ -14,7 +14,7 @@ const EditImage = () => {
   };
 
   return (
-    <Styled.EditImage>
+    <ST.EditImage>
       <img src={photoUrl || require('assets/profile.png')} alt="프로필 이미지" />
       <input id="file" type="file" accept="image/*" onChange={handleUpload} />
       <Buttons.Label htmlFor="file" className={isLoading ? 'disabled' : ''}>
@@ -23,7 +23,7 @@ const EditImage = () => {
       <Buttons.Base disabled={isLoading} onClick={() => handleImage(null)}>
         이미지 삭제
       </Buttons.Base>
-    </Styled.EditImage>
+    </ST.EditImage>
   );
 };
 

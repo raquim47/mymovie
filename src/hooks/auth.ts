@@ -1,15 +1,13 @@
 import { useDispatch } from 'react-redux';
-import { MutationFunction, useMutation, useQuery } from 'react-query';
-import { setUserState } from 'store/user';
+import { MutationFunction, useMutation } from 'react-query';
 import { useNavigate } from 'react-router-dom';
-import { setErrors } from 'store/auth-form';
+import { setFieldError } from 'store/auth-form';
 import { queryClient } from 'index';
 import {
   requestGoogleLogin,
   requestLogin,
   requestLogout,
   requestSignUp,
-  requestUserState,
 } from 'services/auth';
 
 const useAuthMutation = <T = void>(mutationFn: MutationFunction<void, T>) => {
@@ -18,20 +16,20 @@ const useAuthMutation = <T = void>(mutationFn: MutationFunction<void, T>) => {
 
   return useMutation(mutationFn, {
     onSuccess: () => {
-      queryClient.invalidateQueries('initAuth');
+      queryClient.invalidateQueries('initUser');
       navigate('/');
     },
     onError: (error: unknown) => {
       if (error instanceof Error) {
-        const parsedError = JSON.parse(error.message);
-        if (parsedError.name === 'popup-close') {
+        const { name, message } = JSON.parse(error.message);
+        if (name === 'popup-close') {
           return;
         }
 
-        if (parsedError.name === 'global') {
-          alert(parsedError.message);
+        if (name === 'global') {
+          alert(message);
         } else {
-          dispatch(setErrors({ [parsedError.name]: parsedError.message }));
+          dispatch(setFieldError({ field: name, error: message }));
         }
       } else {
         alert('요청이 실패했습니다. 다시 시도해주세요.');
@@ -51,15 +49,3 @@ export const useSignUp = () => useAuthMutation(requestSignUp);
 
 // 로그아웃
 export const useLogout = () => useAuthMutation(requestLogout);
-
-// 인증 상태 확인
-export const useInitAuth = () => {
-  const dispatch = useDispatch();
-
-  return useQuery('initAuth', requestUserState, {
-    onSuccess: (user) => {
-      dispatch(setUserState(user));
-    },
-  });
-};
-

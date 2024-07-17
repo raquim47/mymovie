@@ -11,5 +11,5 @@ export const getMovieImagePath = (
 
   return imageId
     ? `https://image.tmdb.org/t/p/${format}/${imageId}`
-    : require('../../assets/no-image-icon-6.png');
+    : require('assets/no-image-icon-6.png');
 };

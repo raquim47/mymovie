@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const Overay = styled.div`
+const Overay = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -13,7 +13,7 @@ export const Overay = styled.div`
   z-index: ${(props) => props.theme.zIndex.popup};
 `;
 
-export const Inner = styled.div`
+const Inner = styled.div`
   width: 100%;
   height: 100%;
   overflow-y: auto;
@@ -47,3 +47,5 @@ export const Inner = styled.div`
     border-radius: 10px;
   }
 `;
+
+export default { Overay, Inner };

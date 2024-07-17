@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const BannersContainer = styled.section`
+const BannersContainer = styled.section`
   display: grid;
   grid-template-columns: 1fr;
   gap: 12px;
@@ -10,11 +10,11 @@ export const BannersContainer = styled.section`
   }
 `;
 
-export const SlidersContainer = styled.section`
+const SlidersContainer = styled.section`
   padding-top: 20px;
-`
+`;
 
-export const H3 = styled.h3`
+const sectionTitle = styled.h3`
   font-size: ${(props) => props.theme.fontSizeVw['3xl']};
   font-weight: 500;
   @media (min-width: 769px) {
@@ -25,3 +25,5 @@ export const H3 = styled.h3`
     font-size: ${(props) => props.theme.fontSizePx.l};
   }
 `;
+
+export default { BannersContainer, SlidersContainer, sectionTitle };

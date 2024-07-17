@@ -50,13 +50,12 @@ body {
   background-color: black;
   font-weight: 400;
   font-family: 'Source Sans Pro', sans-serif;
-  color:${(props) => props.theme.color.white.normal};
+  color:${(props) => props.theme.color.white.dark};
   line-height: 1.2;
   overflow-x: hidden;
   
   &.no-scroll {
   overflow-y: hidden;
-  padding-right: 6px;
   }
 }
 
@@ -67,7 +66,7 @@ menu, ol, ul, li {
 button {
   background-color: transparent;
   font-family: 'Source Sans Pro', sans-serif;
-  color:${(props) => props.theme.color.white.normal};
+  color:${(props) => props.theme.color.white.dark};
   border: none;
   cursor: pointer;
 

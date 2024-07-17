@@ -2,7 +2,7 @@ import { FormEvent, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
-import { Button, Input, Wrapper, Form } from './styled';
+import ST from './styles';
 
 function SearchForm() {
   const navigate = useNavigate();
@@ -19,19 +19,17 @@ function SearchForm() {
   };
 
   return (
-    <Wrapper>
-      <Form onSubmit={handleSubmit}>
-        <Input
-          ref={inputRef}
-          placeholder="작품명을 입력해주세요..."
-          minLength={2}
-          required
-        />
-        <Button type="submit">
-          <FontAwesomeIcon icon={faMagnifyingGlass} />
-        </Button>
-      </Form>
-    </Wrapper>
+    <ST.Form onSubmit={handleSubmit}>
+      <ST.Input
+        ref={inputRef}
+        placeholder="작품명을 입력해주세요..."
+        minLength={2}
+        required
+      />
+      <ST.Button type="submit">
+        <FontAwesomeIcon icon={faMagnifyingGlass} />
+      </ST.Button>
+    </ST.Form>
   );
 }
 export default SearchForm;

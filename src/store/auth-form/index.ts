@@ -29,9 +29,14 @@ export const authFormSlice = createSlice({
       const { field, value } = action.payload;
       state.formData[field] = value;
     },
-    setErrors: (state, action: PayloadAction<{ [key: string]: string }>) => {
-      state.errors = { ...state.errors, ...action.payload };
+    setFieldError: (
+      state,
+      action: PayloadAction<{ field: keyof IFormData; error: string }>
+    ) => {
+      const { field, error } = action.payload;
+      state.errors[field] = error;
     },
+
     resetErrors: (state) => {
       state.errors = initialErrors;
     },
@@ -39,5 +44,6 @@ export const authFormSlice = createSlice({
   },
 });
 
-export const { updateField, setErrors, resetErrors, resetForm } = authFormSlice.actions;
+export const { updateField, setFieldError, resetErrors, resetForm } =
+  authFormSlice.actions;
 export default authFormSlice.reducer;

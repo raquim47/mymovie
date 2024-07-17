@@ -1,9 +1,9 @@
-import { LogoSvg, LogoText, LogoLink } from './styled';
+import ST from './styles';
 
 const Logo = () => {
   return (
-    <LogoLink to="/">
-      <LogoSvg
+    <ST.Link to="/">
+      <ST.Svg
         xmlns="http://www.w3.org/2000/svg"
         width="1024"
         height="276.742"
@@ -24,9 +24,9 @@ const Logo = () => {
           d="M75.63,164.37s-5.37-16,10.26-21.16C85.89,143.21,91.89,158.53,75.63,164.37Z"
           transform="translate(-3.68 -15.11)"
         />
-      </LogoSvg>
-      <LogoText>MYMOVIE</LogoText>
-    </LogoLink>
+      </ST.Svg>
+      <ST.Text>MYMOVIE</ST.Text>
+    </ST.Link>
   );
 };
 

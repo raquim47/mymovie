@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const Container = styled.div`
+const Container = styled.div`
   @media (min-width: 961px) {
     display: flex;
     max-width: 1536px;
@@ -8,7 +8,9 @@ export const Container = styled.div`
   }
 `;
 
-export const Main = styled.main`
+const Main = styled.main`
   flex: 1;
   padding: 40px 30px 0;
 `;
+
+export default { Container, Main };

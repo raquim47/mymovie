@@ -1,12 +1,9 @@
 import { useParams } from 'react-router-dom';
 import Modal from './modal';
-import Styled from './styled';
-import ReactStars from 'react-stars';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHeart } from '@fortawesome/free-regular-svg-icons';
-import { faPenToSquare } from '@fortawesome/free-regular-svg-icons';
+import ST from './styles';
 import { useGetMovieDetail } from 'hooks/useGetMovieDetail';
-import { getMovieImagePath } from 'components/movies/utils';
+import { getMovieImagePath } from 'utils/movie-image-path';
+import UserOptions from './user-options';
 
 const MovieDetail = () => {
   const { movieId } = useParams();
@@ -18,14 +15,14 @@ const MovieDetail = () => {
         <p>error</p>
       ) : (
         data && (
-          <Styled.Content>
-            <Styled.Top>
+          <ST.Content>
+            <ST.Top>
               <img
                 className="backdrop"
                 src={getMovieImagePath(data, 'backdrop', 'w1280')}
               />
-              <Styled.Header>
-                <Styled.Info>
+              <ST.Header>
+                <ST.Info>
                   <h2>{data?.title}</h2>
                   <h3>{data?.original_title}</h3>
                   <ul>
@@ -37,48 +34,19 @@ const MovieDetail = () => {
                       ))}
                     </li>
                   </ul>
-                </Styled.Info>
+                </ST.Info>
                 <img className="poster" src={getMovieImagePath(data, 'poster', 'w500')} />
-              </Styled.Header>
-            </Styled.Top>
-            <Styled.Bottom>
-              <Styled.Options>
-                <h3 className="sr-only">사용자 옵션</h3>
-                <ul>
-                  <li>
-                    <button className="option-btn">
-                      <ReactStars
-                        count={5}
-                        color1="#E6E6E6"
-                        color2="#FFCC33"
-                        half
-                        size={28}
-                        edit={true}
-                      />
-                    </button>
-                    평가하기
-                  </li>
-                  <li>
-                    <button className="option-btn">
-                      <FontAwesomeIcon icon={faHeart} />
-                    </button>
-                    찜하기
-                  </li>
-                  <li>
-                    <button className="option-btn">
-                      <FontAwesomeIcon icon={faPenToSquare} />
-                    </button>
-                    코멘트 남기기
-                  </li>
-                </ul>
-              </Styled.Options>
-              <Styled.Summary>
+              </ST.Header>
+            </ST.Top>
+            <ST.Bottom>
+              <UserOptions />
+              <ST.Summary>
                 <h3 className="sr-only">줄거리 소개</h3>
                 {data?.tagline && <h4>{data.tagline}</h4>}
                 <p>{data?.overview}</p>
-              </Styled.Summary>
-            </Styled.Bottom>
-          </Styled.Content>
+              </ST.Summary>
+            </ST.Bottom>
+          </ST.Content>
         )
       )}
     </Modal>

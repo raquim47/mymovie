@@ -115,47 +115,6 @@ const Bottom = styled.div`
   gap: 10px;
 `;
 
-const Options = styled.section`
-  ${boxStyles}
-
-  ul {
-    display: flex;
-    justify-content: space-between;
-    margin: 0 -16px;
-  }
-
-  li {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    font-size: 13px;
-    font-weight: 300;
-  }
-
-  li ~ li {
-    position: relative;
-
-    ::before {
-      position: absolute;
-      top: 50%;
-      right: 100%;
-      transform: translateY(-50%);
-      width: 1px;
-      height: 80%;
-      background-color: ${(props) => props.theme.color.white.dark};
-      content: '';
-    }
-  }
-
-  .option-btn {
-    margin: 0 auto;
-    white-space: nowrap;
-    height: 40px;
-    font-size: 24px;
-  }
-`;
-
 const Summary = styled.section`
   ${boxStyles}
 
@@ -184,4 +143,4 @@ const Summary = styled.section`
   }
 `;
 
-export default { Content, Top, Header, Info, Bottom, Options, Summary };
+export default { Content, Top, Header, Info, Bottom, Summary };

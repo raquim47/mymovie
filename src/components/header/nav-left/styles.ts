@@ -1,7 +1,6 @@
-import { NavLink } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
-export const Header = styled.header`
+const Header = styled.header`
   display: none;
 
   @media (min-width: 961px) {
@@ -18,29 +17,42 @@ export const Header = styled.header`
   }
 `;
 
-export const Nav = styled.nav`
-`;
-
-export const StyledNavLink = styled(NavLink)`
+const navItemStyles = css`
   display: flex;
   align-items: center;
   gap: 12px;
+  width: 100%;
   margin-bottom: 8px;
   padding: 8px 12px;
   border-radius: 8px;
-  font-size: ${(props) => props.theme.fontSizePx.s};
+  border: none;
+  background-color: transparent;
+  font-size: 14px;
 
   &:hover {
     color: ${(props) => props.theme.color.white.normal};
+  }
+
+  &:disabled {
+    pointer-events: none;
   }
 
   svg {
     width: 20px;
     height: 20px;
   }
+`;
 
-  &.active {
+const NavItem = styled.li`
+  .logout,
+  a {
+    ${navItemStyles}
+  }
+
+  a.active {
     color: ${(props) => props.theme.color.white.normal};
     background-color: ${(props) => props.theme.color.gray};
   }
 `;
+
+export default { Header, NavItem };

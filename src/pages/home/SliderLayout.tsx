@@ -1,8 +1,8 @@
-import MovieList from 'components/movies/list';
+import MovieList from 'components/movie-list';
 import withSlider from 'hoc/with-slider';
-import useSetListSize from 'hooks/useSetListSize';
-import { IMovieDetails, IMovieList } from 'services/movies/types';
-import { H3, SlidersContainer } from './styled';
+import useSetListSize from 'hooks/ui/list-size';
+import { IMovieDetails } from 'services/movies/types';
+import ST from './styles';
 
 const SliderLayout = ({
   trendingData,
@@ -21,14 +21,14 @@ const SliderLayout = ({
 
   const MovieListSlider = withSlider(MovieList);
   return (
-    <SlidersContainer>
-      <H3>요즘 인기</H3>
+    <ST.SlidersContainer>
+      <ST.sectionTitle>요즘 인기</ST.sectionTitle>
       <MovieListSlider data={trendingData ?? []} listSize={listSize} />
-      <H3>최신 개봉</H3>
+      <ST.sectionTitle>최신 개봉</ST.sectionTitle>
       <MovieListSlider data={latestData ?? []} listSize={listSize} />
-      <H3>Top 평점</H3>
+      <ST.sectionTitle>Top 평점</ST.sectionTitle>
       <MovieListSlider data={topRatedData ?? []} listSize={listSize} />
-    </SlidersContainer>
+    </ST.SlidersContainer>
   );
 };
 

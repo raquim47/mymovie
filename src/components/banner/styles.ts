@@ -1,51 +1,45 @@
-import { motion } from "framer-motion";
-import styled from "styled-components";
+import { Link as RouterLink } from 'react-router-dom';
+import styled from 'styled-components';
 
-export const Figure = styled(motion.figure)`
+const Link = styled(RouterLink)<{ bg: string }>`
+  display: block;
   position: relative;
   margin-top: 12px;
+  padding-top: 55%;
   border-radius: 4px;
+  background: url(${(props) => props.bg}) no-repeat center center;
+  background-size: cover;
   overflow: hidden;
-  cursor: pointer;
-
-  img {
-    width: 100%;
-    object-fit: cover;
-  }
 
   ::before {
     display: block;
     position: absolute;
-    height: 100%;
-    width: 100%;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
     background-image: linear-gradient(rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.8));
     content: '';
   }
 
   :hover::before {
-    background-image: linear-gradient(
-      rgba(0, 0, 0, 0.4) 50%,
-      rgba(0, 0, 0, 0.8)
-    );
+    background-image: linear-gradient(rgba(0, 0, 0, 0.4) 50%, rgba(0, 0, 0, 0.8));
   }
 `;
 
-export  const Caption = styled.figcaption`
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+const Caption = styled.div`
   position: absolute;
   bottom: 8%;
-  width: 100%;
   padding: 0 6% 0 4%;
 
   h4 {
-    font-size: ${(props) => props.theme.fontSizeVw['4xl']};
+    margin-bottom: 8px;
+    font-size: 6vw;
     font-weight: 600;
     color: ${(props) => props.theme.color.white.normal};
 
     @media (min-width: 769px) {
-      font-size: ${(props) => props.theme.fontSizeVw['xxl']};
+      font-size: 24px;
     }
     @media (min-width: 1201px) {
       font-size: ${(props) => props.theme.fontSizePx['4xl']};
@@ -53,18 +47,18 @@ export  const Caption = styled.figcaption`
   }
 
   p {
-    width: 100%;
     white-space: nowrap;
-    font-size: ${(props) => props.theme.fontSizeVw['3xl']};
-    font-weight: 400;
+    font-size: 32px;
     overflow: hidden;
     text-overflow: ellipsis;
 
     @media (min-width: 769px) {
-      font-size: ${(props) => props.theme.fontSizeVw.l};
+      font-size: 2vw;
     }
     @media (min-width: 961px) {
       font-size: 1.5vw;
     }
   }
 `;
+
+export default { Link, Caption };

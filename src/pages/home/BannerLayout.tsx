@@ -1,6 +1,6 @@
-import Banner from 'components/movies/banner';
+import Banner from 'components/banner';
 import { IMovieDetails } from 'services/movies/types';
-import { BannersContainer, H3 } from './styled';
+import ST from './styles';
 
 const BannerLayout = ({
   leftData,
@@ -10,20 +10,20 @@ const BannerLayout = ({
   rightData?: IMovieDetails;
 }) => {
   return (
-    <BannersContainer>
+    <ST.BannersContainer>
       {leftData && (
         <div>
-          <H3>이번 주 신작</H3>
+          <ST.sectionTitle>이번 주 신작</ST.sectionTitle>
           <Banner data={leftData} />
         </div>
       )}
       {rightData && (
         <div>
-          <H3>개봉 예정</H3>
+          <ST.sectionTitle>개봉 예정</ST.sectionTitle>
           <Banner data={rightData} />
         </div>
       )}
-    </BannersContainer>
+    </ST.BannersContainer>
   );
 };
 

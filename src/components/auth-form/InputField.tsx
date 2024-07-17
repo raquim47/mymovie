@@ -1,13 +1,13 @@
 import { useAuthField } from 'hooks/auth-form';
 import { memo } from 'react';
-import { ErrorMassage, Field } from './styled';
+import ST from './styles';
 import { IInputFieldProps } from './types';
 
 const InputField = memo(
   ({ name, placeholder, type = 'text', required = true, label }: IInputFieldProps) => {
     const { onChange, value, error } = useAuthField(name);
     return (
-      <Field>
+      <ST.Field>
         {label && <label htmlFor={name}>{label}</label>}
         <input
           name={name}
@@ -16,10 +16,10 @@ const InputField = memo(
           value={value}
           onChange={onChange}
           autoComplete={name === 'password' ? 'off' : name}
-          // required={required}
+          required={required}
         />
-        {error && <ErrorMassage>{error}</ErrorMassage>}
-      </Field>
+        {error && <ST.ErrorMassage>{error}</ST.ErrorMassage>}
+      </ST.Field>
     );
   }
 );

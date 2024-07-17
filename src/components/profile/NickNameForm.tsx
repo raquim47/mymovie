@@ -1,7 +1,7 @@
 import { useAppSelector } from 'hooks/useAppSelector';
 import { useSetNickName } from 'hooks/user';
 import { useRef, useState } from 'react';
-import Styled from './styled';
+import ST from './styles';
 
 const NickNameForm = () => {
   const [editNick, setEditNick] = useState(false);
@@ -30,12 +30,12 @@ const NickNameForm = () => {
   return (
     <>
       {!editNick ? (
-        <Styled.NickName>
+        <ST.NickName>
           <h2>{nickName}</h2>
           <button onClick={toggleEditNick}>닉네임 수정</button>
-        </Styled.NickName>
+        </ST.NickName>
       ) : (
-        <Styled.NickNameForm onSubmit={handleSubmit}>
+        <ST.NickNameForm onSubmit={handleSubmit}>
           <input
             name="nickName"
             ref={inputRef}
@@ -51,7 +51,7 @@ const NickNameForm = () => {
               취소
             </button>
           </div>
-        </Styled.NickNameForm>
+        </ST.NickNameForm>
       )}
     </>
   );

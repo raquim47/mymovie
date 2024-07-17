@@ -1,11 +1,24 @@
 import { queryClient } from 'index';
-import { useMutation } from 'react-query';
-import { updateUserImage, updateNickName } from 'services/user';
+import { useMutation, useQuery } from 'react-query';
+import { useDispatch } from 'react-redux';
+import { updateUserImage, updateNickName, requestUserState } from 'services/user';
+import { setUserState } from 'store/user';
+
+// 사용자 정보 초기화
+export const useInitUser = () => {
+  const dispatch = useDispatch();
+
+  return useQuery('initUser', requestUserState, {
+    onSuccess: (user) => {
+      dispatch(setUserState(user));
+    },
+  });
+};
 
 export const useSetNickName = () => {
   return useMutation((nickName: string) => updateNickName(nickName), {
     onSuccess: () => {
-      queryClient.invalidateQueries('initAuth');
+      queryClient.invalidateQueries('initUser');
     },
     onError: (error) => {
       alert('요청이 실패했습니다.' + error);
@@ -15,7 +28,8 @@ export const useSetNickName = () => {
 
 export const useSetUserImage = () => {
   return useMutation(updateUserImage, {
-    onSuccess: () => queryClient.invalidateQueries('initAuth'),
+    onSuccess: () => queryClient.invalidateQueries('initUser'),
     onError: (error) => alert('요청이 실패했습니다.' + error),
   });
 };
+

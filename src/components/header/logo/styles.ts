@@ -1,13 +1,13 @@
-import { Link } from "react-router-dom";
-import styled from "styled-components";
+import { Link as RouterLink } from 'react-router-dom';
+import styled from 'styled-components';
 
-export const LogoLink = styled(Link)`
+const Link = styled(RouterLink)`
   display: flex;
   align-items: flex-end;
   gap: 10px;
 `;
 
-export const LogoSvg = styled.svg`
+const Svg = styled.svg`
   width: 50px;
   height: 50px;
   fill: url(#grad1);
@@ -34,13 +34,15 @@ export const LogoSvg = styled.svg`
   }
 `;
 
-export const LogoText = styled.h1`
-  font-size: ${props => props.theme.fontSizePx.xxl};
+const Text = styled.h1`
+  font-size: ${(props) => props.theme.fontSizePx.xxl};
   font-weight: 800;
   @media only screen and (max-width: 960px) {
-    font-size: ${props => props.theme.fontSizePx.l};
+    font-size: ${(props) => props.theme.fontSizePx.l};
   }
   @media only screen and (max-width: 768px) {
     display: none;
   }
 `;
+
+export default { Link, Svg, Text };

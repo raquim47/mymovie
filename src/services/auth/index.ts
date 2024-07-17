@@ -69,24 +69,3 @@ export const requestLogout = async () => {
     handleAuthError(error);
   }
 };
-
-// 초기 user 인증 및 패치
-export const requestUserState = async (): Promise<IUser | null> => {
-  return new Promise(async (resolve, reject) => {
-    onAuthStateChanged(
-      auth,
-      async (user) => {
-        if (user) {
-          const userRef = doc(db, 'users', user.uid);
-          const docSnap = await getDoc(userRef);
-          resolve(docSnap.data() as IUser);
-        } else {
-          resolve(null);
-        }
-      },
-      (error) => {
-        reject(new Error('인증 상태 확인 중 오류가 발생했습니다. :' + error.message));
-      }
-    );
-  });
-};

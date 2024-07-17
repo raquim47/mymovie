@@ -46,13 +46,6 @@ const Nav = styled.nav`
 
   li {
     position: relative;
-    font-size: 24px;
-    color: ${(props) => props.theme.color.gray};
-    font-weight: 600;
-
-    &:hover {
-      color: ${(props) => props.theme.color.white.dark};
-    }
 
     &::before {
       position: absolute;
@@ -69,11 +62,17 @@ const Nav = styled.nav`
       content: none;
     }
   }
-`;
 
-const CustomNavLink = styled(NavLink)`
-  &.active {
-    color: ${(props) => props.theme.color.white.dark};
+  a {
+    font-size: 24px;
+    color: ${(props) => props.theme.color.gray};
+    font-weight: 600;
+
+    &:hover,
+    &.active {
+      color: ${(props) => props.theme.color.white.dark};
+    }
   }
 `;
-export default { Header, Nav, CustomNavLink };
+
+export default { Header, Nav };
