@@ -1,33 +1,29 @@
-import { ComponentType } from 'react';
 import { AnimatePresence } from 'framer-motion';
-import { useSliderContext } from './context';
-import { SlideContent, RatioBox, SlideRow } from './styled';
-import { Direction, ISliderProps } from './types';
+import ST from './styles';
+import { Direction, ISlideProps } from './types';
 
-const Slide = <T,>({
-  Component,
-}: {
-  Component: ComponentType<ISliderProps<T>>;
-}) => {
-  const { index, direction, slicedData, listSize } = useSliderContext<T>();
+const rowVariants = {
+  hidden: ({ direction }: { direction: Direction }) => ({
+    x: direction === 'next' ? 'calc(100% + 10px)' : 'calc(-100% - 10px)',
+  }),
+  visible: {
+    x: 0,
+  },
+  exit: ({ direction }: { direction: Direction }) => ({
+    x: direction === 'next' ? 'calc(-100% - 10px)' : 'calc(100% + 10px)',
+  }),
+};
 
-  const rowVariants = {
-    hidden: ({ direction }: { direction: Direction }) => ({
-      x: direction === 'next' ? 'calc(100% + 10px)' : 'calc(-100% - 10px)',
-    }),
-    visible: {
-      x: 0,
-    },
-    exit: ({ direction }: { direction: Direction }) => ({
-      x: direction === 'next' ? 'calc(-100% - 10px)' : 'calc(100% + 10px)',
-    }),
-  };
-
+const Slide = ({ children, index, direction, exitAnimating }: ISlideProps) => {
   return (
-    <SlideContent>
-      <RatioBox>
-        <AnimatePresence initial={false} custom={{ direction }}>
-          <SlideRow
+    <ST.Content>
+      <ST.RatioBox>
+        <AnimatePresence
+          initial={false}
+          custom={{ direction }}
+          onExitComplete={exitAnimating}
+        >
+          <ST.SlideRow
             variants={rowVariants}
             initial="hidden"
             animate="visible"
@@ -36,11 +32,11 @@ const Slide = <T,>({
             key={index}
             custom={{ direction }}
           >
-            <Component listSize={listSize} data={slicedData} />
-          </SlideRow>
+            {children}
+          </ST.SlideRow>
         </AnimatePresence>
-      </RatioBox>
-    </SlideContent>
+      </ST.RatioBox>
+    </ST.Content>
   );
 };
 

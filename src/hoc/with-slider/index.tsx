@@ -1,19 +1,21 @@
+import { useSlider } from 'hooks/ui/slider';
 import { ComponentType } from 'react';
-import { SliderProvider } from './context';
 import Slide from './Slide';
 import SlideBtns from './SlideBtns';
-import { SlideWrapper } from './styled';
-import { ISliderProps } from './types';
+import ST from './styles';
+import { IListProps } from './types';
 
-const withSlider = <T,>(Component: ComponentType<ISliderProps<T>>) => {
-  return ({ data, listSize }: ISliderProps<T>) => {
+const withSlider = <T,>(ListComponent: ComponentType<IListProps<T>>) => {
+  return ({ data, listSize }: IListProps<T>) => {
+    const { index, slicedData, handleClickSlideBtn, direction, exitAnimating } =
+      useSlider(data, listSize);
     return (
-      <SliderProvider<T> data={data} listSize={listSize}>
-        <SlideWrapper>
-          <Slide Component={Component} />
-          <SlideBtns />
-        </SlideWrapper>
-      </SliderProvider>
+      <ST.Container>
+        <Slide index={index} direction={direction} exitAnimating={exitAnimating}>
+          <ListComponent data={slicedData} listSize={listSize} />
+        </Slide>
+        <SlideBtns onClickSlideBtn={handleClickSlideBtn} />
+      </ST.Container>
     );
   };
 };

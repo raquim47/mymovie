@@ -1,11 +1,10 @@
-import { useSliderContext } from './context';
-import { NextBtn, PrevBtn } from './styled';
+import ST from './styles';
+import { ISlideBtnsProps } from './types';
 
-const SlideBtns = () => {
-  const { onClickSlideBtn } = useSliderContext();
+const SlideBtns = ({ onClickSlideBtn }: ISlideBtnsProps) => {
   return (
     <>
-      <NextBtn onClick={() => onClickSlideBtn('next')}>
+      <ST.NextBtn onClick={() => onClickSlideBtn('next')}>
         <svg
           width="8"
           height="40"
@@ -20,8 +19,8 @@ const SlideBtns = () => {
             fill="currentColor"
           />
         </svg>
-      </NextBtn>
-      <PrevBtn onClick={() => onClickSlideBtn('prev')}>
+      </ST.NextBtn>
+      <ST.PrevBtn onClick={() => onClickSlideBtn('prev')}>
         <svg
           width="8"
           height="40"
@@ -36,7 +35,7 @@ const SlideBtns = () => {
             fill="currentColor"
           />
         </svg>
-      </PrevBtn>
+      </ST.PrevBtn>
     </>
   );
 };

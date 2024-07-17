@@ -2,19 +2,18 @@ import { ReactNode } from 'react';
 
 export type Direction = 'next' | 'prev';
 
-export interface ISliderContext<T> {
-  index: number;
-  direction: Direction;
-  listSize: number;
-  slicedData: T[];
-  onClickSlideBtn: (direction: Direction) => void;
-}
-
-export interface ISliderProps<T> {
+export interface IListProps<T> {
   listSize: number;
   data: T[];
 }
 
-export interface ISliderProviderProps<T> extends ISliderProps<T> {
+export interface ISlideProps {
   children: ReactNode;
+  index: number;
+  direction: Direction;
+  exitAnimating: () => void;
+}
+
+export interface ISlideBtnsProps {
+  onClickSlideBtn: (direction: Direction) => void;
 }
