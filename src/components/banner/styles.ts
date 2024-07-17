@@ -42,7 +42,7 @@ const Caption = styled.div`
       font-size: 24px;
     }
     @media (min-width: 1201px) {
-      font-size: ${(props) => props.theme.fontSizePx['4xl']};
+      font-size: 36px;
     }
   }
 
@@ -61,4 +61,5 @@ const Caption = styled.div`
   }
 `;
 
-export default { Link, Caption };
+const ST = { Link, Caption };
+export default ST;

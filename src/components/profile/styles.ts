@@ -62,8 +62,9 @@ const NickNameForm = styled.form`
   }
 `;
 
-export default {
+const ST = {
   EditImage,
   NickName,
   NickNameForm,
 };
+export default ST;

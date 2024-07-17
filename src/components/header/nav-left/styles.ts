@@ -55,4 +55,5 @@ const NavItem = styled.li`
   }
 `;
 
-export default { Header, NavItem };
+const ST = { Header, NavItem }
+export default ST;

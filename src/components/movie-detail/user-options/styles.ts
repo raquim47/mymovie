@@ -42,4 +42,5 @@ const Options = styled.section`
   }
 `;
 
-export default { Options };
+const ST = { Options };
+export default ST;

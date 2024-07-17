@@ -54,4 +54,5 @@ const ErrorMassage = styled.p`
   white-space: nowrap;
 `;
 
-export default { Form, Field, ErrorMassage };
+const ST = { Form, Field, ErrorMassage };
+export default ST;

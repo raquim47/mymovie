@@ -28,4 +28,5 @@ const Button = styled.button`
   }
 `;
 
-export default { Form, Input, Button };
+const ST = { Form, Input, Button }
+export default ST;

@@ -75,4 +75,5 @@ const Nav = styled.nav`
   }
 `;
 
-export default { Header, Nav };
+const ST = { Header, Nav }
+export default ST;

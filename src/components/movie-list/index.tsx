@@ -6,7 +6,6 @@ import useHoverListItem from 'hooks/ui/hover-list-item';
 
 const MovieList = ({ data, listSize }: IMovieListProps) => {
   const { handleHoverChange, getClasses } = useHoverListItem();
-  console.log(listSize)
   return (
     <ST.List listSize={listSize}>
       {data.map((movie, index) => (

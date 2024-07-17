@@ -20,12 +20,6 @@ declare module 'styled-components' {
       };
     };
 
-    fontSizeVw: {
-      [key: string]: string;
-    };
-    fontSizePx: {
-      [key: string]: string;
-    };
     zIndex: {
       initialDetailBox: number;
       topMenu: number;

@@ -13,4 +13,5 @@ const Main = styled.main`
   padding: 40px 30px 0;
 `;
 
-export default { Container, Main };
+const ST = { Container, Main }
+export default ST;

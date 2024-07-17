@@ -15,15 +15,13 @@ const SlidersContainer = styled.section`
 `;
 
 const sectionTitle = styled.h3`
-  font-size: ${(props) => props.theme.fontSizeVw['3xl']};
+  font-size: 32px;
   font-weight: 500;
-  @media (min-width: 769px) {
-    font-size: ${(props) => props.theme.fontSizeVw.l};
-  }
 
-  @media (min-width: 961px) {
-    font-size: ${(props) => props.theme.fontSizePx.l};
+  @media (min-width: 769px) {
+    font-size: 20px;
   }
 `;
 
-export default { BannersContainer, SlidersContainer, sectionTitle };
+const ST = { BannersContainer, SlidersContainer, sectionTitle }
+export default ST;

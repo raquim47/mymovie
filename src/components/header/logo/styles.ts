@@ -35,14 +35,15 @@ const Svg = styled.svg`
 `;
 
 const Text = styled.h1`
-  font-size: ${(props) => props.theme.fontSizePx.xxl};
+  font-size: 28px;
   font-weight: 800;
   @media only screen and (max-width: 960px) {
-    font-size: ${(props) => props.theme.fontSizePx.l};
+    font-size: 20px;
   }
   @media only screen and (max-width: 768px) {
     display: none;
   }
 `;
 
-export default { Link, Svg, Text };
+const ST = { Link, Svg, Text }
+export default ST;

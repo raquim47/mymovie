@@ -143,4 +143,5 @@ const Summary = styled.section`
   }
 `;
 
-export default { Content, Top, Header, Info, Bottom, Summary };
+const ST = { Content, Top, Header, Info, Bottom, Summary }
+export default ST;

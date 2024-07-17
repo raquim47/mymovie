@@ -43,4 +43,5 @@ const UserMovieBrief = styled.div`
   }
 `;
 
-export default { UserBrief, UserInfo, UserMovieBrief };
+const ST = { UserBrief, UserInfo, UserMovieBrief }
+export default ST;

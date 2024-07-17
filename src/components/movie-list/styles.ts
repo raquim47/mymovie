@@ -55,11 +55,11 @@ const ItemInfo = styled.div`
   .genres li {
     font-weight: 300;
     font-size: 1.6vw;
-    
+
     @media (min-width: 961px) {
       font-size: 1.1vw;
     }
-    
+
     @media (min-width: 1201px) {
       font-size: 0.9vw;
     }
@@ -111,4 +111,5 @@ const Link = styled(RouterLink)<{ bg: string }>`
   background-size: cover;
 `;
 
-export default { List, ListItem, ItemInfo, Link };
+const ST = { List, ListItem, ItemInfo, Link };
+export default ST;
