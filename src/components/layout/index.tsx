@@ -1,15 +1,10 @@
 import Header from 'components/header';
-import useSetModalBackdrop from 'hooks/ui/modal-backdrop';
-import { useAppSelector } from 'hooks/useAppSelector';
 import { useInitUser } from 'hooks/user';
-import { Outlet } from 'react-router-dom';
-import ModalBackdrop from './ModalBackdrop';
+import { ReactNode } from 'react';
 import ST from './styles';
 
-const Layout = () => {
+const Layout = ({ children }: { children: ReactNode }) => {
   const { isLoading, error } = useInitUser();
-  const backdropPath = useAppSelector((state) => state.modalBackdrop.backdropPath);
-  useSetModalBackdrop();
 
   return (
     <ST.Container>
@@ -17,10 +12,7 @@ const Layout = () => {
       {!isLoading && !error && (
         <>
           <Header />
-          <ST.Main>
-            <Outlet />
-            <ModalBackdrop path={backdropPath} />
-          </ST.Main>
+          <ST.Main>{children}</ST.Main>
         </>
       )}
     </ST.Container>

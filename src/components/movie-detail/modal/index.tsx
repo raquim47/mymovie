@@ -1,24 +1,26 @@
 import { ReactNode } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import ST from './styles';
 import useLockBodyScroll from 'hooks/ui/body-scroll';
-import { useAppSelector } from 'hooks/useAppSelector';
+import { AnimatePresence } from 'framer-motion';
 
 const Modal = ({ children }: { children: ReactNode }) => {
   useLockBodyScroll();
   const navigate = useNavigate();
-  const backdropPath = useAppSelector((state) => state.modalBackdrop.backdropPath);
-  const closeModal = () => navigate(backdropPath || '/');
+  const { search } = useLocation();
+  const closeModal = () => navigate('..' + (search || ''));
   return (
     <ST.Overay onClick={closeModal}>
-      <ST.Inner onClick={(e) => e.stopPropagation()}>
-        <ST.CloseBtn onClick={closeModal}>
-          <FontAwesomeIcon icon={faXmark} />
-        </ST.CloseBtn>
-        {children}
-      </ST.Inner>
+      <AnimatePresence>
+        <ST.Inner onClick={(e) => e.stopPropagation()}>
+          <ST.CloseBtn onClick={closeModal}>
+            <FontAwesomeIcon icon={faXmark} />
+          </ST.CloseBtn>
+          {children}
+        </ST.Inner>
+      </AnimatePresence>
     </ST.Overay>
   );
 };

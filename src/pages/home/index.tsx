@@ -1,4 +1,5 @@
 import useFetchHomeData from 'hooks/useFetchHomeData';
+import { Outlet } from 'react-router-dom';
 import BannerLayout from './BannerLayout';
 import SliderLayout from './SliderLayout';
 
@@ -23,6 +24,7 @@ const HomePage = () => {
         trendingData={trendingData}
         topRatedData={topRatedData}
       />
+      <Outlet/>
     </>
   );
 };

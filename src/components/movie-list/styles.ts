@@ -52,6 +52,7 @@ const ItemInfo = styled.div`
 `;
 
 const ListItem = styled.li`
+  position: relative;
   transition: transform 0.3s ease, margin 0.3s ease;
 
   &:last-of-type {

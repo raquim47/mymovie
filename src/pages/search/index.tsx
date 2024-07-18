@@ -2,7 +2,7 @@ import MovieList from 'components/movie-list';
 import useSetListSize from 'hooks/ui/list-size';
 import { useEffect, useRef, useState } from 'react';
 import { useInfiniteQuery } from 'react-query';
-import { useLocation } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import { getSearchedMovies } from 'services/movies';
 import { IMovie } from 'services/movies/types';
 import ST from './styles';
@@ -18,10 +18,10 @@ const useSearchMovies = (keyword: string) => {
   );
 };
 
-const SearchPage = ({ presetKeyword }: { presetKeyword?: string }) => {
+const SearchPage = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const keyword = presetKeyword || queryParams.get('keyword') || '';
+  const keyword = queryParams.get('keyword') || '';
   const [movies, setMovies] = useState<IMovie[][]>([]);
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useSearchMovies(keyword);
@@ -77,6 +77,7 @@ const SearchPage = ({ presetKeyword }: { presetKeyword?: string }) => {
         {isFetchingNextPage && <div>로딩 중...</div>}
         <div ref={observerElem} style={{ height: '1px' }}></div>
       </ST.SearchResults>
+      <Outlet />
     </>
   );
 };
