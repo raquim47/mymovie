@@ -4,13 +4,14 @@ import ST from './styles';
 import { useGetMovieDetail } from 'hooks/useGetMovieDetail';
 import { getMovieImagePath } from 'utils/movie-image-path';
 import UserOptions from './user-options';
+import Loader from 'components/ui/Loader';
 
 const MovieDetail = () => {
   const { movieId } = useParams();
   const { data, isLoading, error } = useGetMovieDetail(Number(movieId!));
   return (
     <Modal>
-      {isLoading && <p>Loading...</p>}
+      {isLoading && <Loader />}
       {!isLoading && error ? (
         <p>error</p>
       ) : (

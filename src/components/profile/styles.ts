@@ -5,11 +5,16 @@ const EditImage = styled.div`
   flex-direction: column;
   gap: 10px;
 
-  img {
+  .profile-image {
     width: 100px;
     height: 100px;
-    object-fit: cover;
     margin: 0 auto 10px;
+  }
+  
+  .profile-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
     border-radius: 50%;
   }
 

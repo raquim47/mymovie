@@ -3,12 +3,14 @@ import { useMutation, useQuery } from 'react-query';
 import { useDispatch } from 'react-redux';
 import { updateUserImage, updateNickName, requestUserState } from 'services/user';
 import { setUserState } from 'store/user';
+import { IUser } from 'store/user/types';
+import { IError } from 'utils/error';
 
 // 사용자 정보 초기화
 export const useInitUser = () => {
   const dispatch = useDispatch();
 
-  return useQuery('initUser', requestUserState, {
+  return useQuery<IUser | null, IError>('initUser', requestUserState, {
     onSuccess: (user) => {
       dispatch(setUserState(user));
     },
@@ -32,4 +34,3 @@ export const useSetUserImage = () => {
     onError: (error) => alert('요청이 실패했습니다.' + error),
   });
 };
-

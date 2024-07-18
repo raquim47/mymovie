@@ -4,6 +4,7 @@ import { auth, db, storage } from 'services/firebase';
 import { uuidv4 } from '@firebase/util';
 import { IUser } from 'store/user/types';
 import { onAuthStateChanged } from 'firebase/auth';
+import { createError } from 'utils/error';
 
 // 초기 user 인증 및 패치
 export const requestUserState = async (): Promise<IUser | null> => {
@@ -20,7 +21,9 @@ export const requestUserState = async (): Promise<IUser | null> => {
         }
       },
       (error) => {
-        reject(new Error('인증 상태 확인 중 오류가 발생했습니다. :' + error.message));
+        reject(
+          createError('인증 상태 확인 중 오류가 발생했습니다. :' + error.message, 500)
+        );
       }
     );
   });

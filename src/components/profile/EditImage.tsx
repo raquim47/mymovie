@@ -3,6 +3,7 @@ import { useSetUserImage } from 'hooks/user';
 import { ChangeEvent } from 'react';
 import Buttons from 'components/ui/buttons';
 import ST from './styles';
+import Loader from 'components/ui/Loader';
 
 const EditImage = () => {
   const photoUrl = useAppSelector((state) => state.user.userData?.photoUrl);
@@ -15,7 +16,13 @@ const EditImage = () => {
 
   return (
     <ST.EditImage>
-      <img src={photoUrl || require('assets/profile.png')} alt="프로필 이미지" />
+      <div className='profile-image'>
+        {isLoading ? (
+          <Loader />
+        ) : (
+          <img src={photoUrl || require('assets/profile.png')} alt="프로필 이미지" />
+        )}
+      </div>
       <input id="file" type="file" accept="image/*" onChange={handleUpload} />
       <Buttons.Label htmlFor="file" className={isLoading ? 'disabled' : ''}>
         이미지 업로드

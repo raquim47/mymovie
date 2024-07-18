@@ -1,3 +1,4 @@
+import Loader from 'components/ui/Loader';
 import useFetchHomeData from 'hooks/useFetchHomeData';
 import { Outlet } from 'react-router-dom';
 import BannerLayout from './BannerLayout';
@@ -14,7 +15,7 @@ const HomePage = () => {
     error,
   } = useFetchHomeData();
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <Loader />;
   if (error) return <p>Error: {(error as Error).message}</p>;
   return (
     <>
@@ -24,7 +25,7 @@ const HomePage = () => {
         trendingData={trendingData}
         topRatedData={topRatedData}
       />
-      <Outlet/>
+      <Outlet />
     </>
   );
 };

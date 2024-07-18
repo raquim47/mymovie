@@ -18,7 +18,8 @@ const Inner = styled.div`
   width: 100%;
   height: 100%;
   overflow-y: auto;
-
+  background-color: ${props => props.theme.color.gray};
+  
   ::-webkit-scrollbar {
     width: 6px;
     height: 6px;

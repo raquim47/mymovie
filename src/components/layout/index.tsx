@@ -1,4 +1,5 @@
 import Header from 'components/header';
+import Loader from 'components/ui/Loader';
 import { useInitUser } from 'hooks/user';
 import { ReactNode } from 'react';
 import ST from './styles';
@@ -8,7 +9,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
 
   return (
     <ST.Container>
-      {isLoading && <p>Loading...</p>}
+      {isLoading && <Loader />}
       {!isLoading && !error && (
         <>
           <Header />
