@@ -5,7 +5,6 @@ import ST from './styles';
 const UserBrief = () => {
   const user = useAppSelector((state) => state.user.userData);
   if (!user) return null;
-
   return (
     <ST.UserBrief>
       <img
@@ -22,7 +21,7 @@ const UserBrief = () => {
             평가 : <Link to="/rated">{user?.ratedMovies?.length || 0}</Link>
           </h5>
           <h5>
-            찜 : <Link to="/favorite">{user?.likedMovies?.length || 0}</Link>
+            찜 : <Link to="/watchlist">{user?.watchList?.length || 0}</Link>
           </h5>
         </ST.UserMovieBrief>
       </ST.UserInfo>

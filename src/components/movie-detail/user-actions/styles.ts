@@ -1,20 +1,32 @@
 import styled from 'styled-components';
 
-const Options = styled.section`
+const Actions = styled.section`
   padding: 16px;
   background-color: ${(state) => state.theme.color.black.dark};
 
   ul {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     margin: 0 -16px;
   }
 
   li {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
     text-align: center;
+  }
+
+  li button {
+    margin: 0 auto;
+    white-space: nowrap;
+    height: 40px;
+    font-size: 24px;
+  }
+
+  li button.heart {
+    color: ${(props) => props.theme.color.purple.normal};
+  }
+
+  li span {
+    display: block;
     font-size: 13px;
     font-weight: 300;
   }
@@ -33,14 +45,7 @@ const Options = styled.section`
       content: '';
     }
   }
-
-  .option-btn {
-    margin: 0 auto;
-    white-space: nowrap;
-    height: 40px;
-    font-size: 24px;
-  }
 `;
 
-const ST = { Options };
+const ST = { Actions };
 export default ST;

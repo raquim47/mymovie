@@ -1,8 +1,10 @@
+import { IMovie } from 'services/movies/types';
+
 export interface IUser {
   email: string;
   nickName: string;
   uid: string;
   photoUrl: string | null;
-  likedMovies: string[] | null;
-  ratedMovies: string[] | null;
+  watchList: { [key: string]: IMovie } | null;
+  ratedMovies: { [key: string]: IMovie } | null;
 }

@@ -1,7 +1,13 @@
 import { queryClient } from 'index';
 import { useMutation, useQuery } from 'react-query';
 import { useDispatch } from 'react-redux';
-import { updateUserImage, updateNickName, requestUserState } from 'services/user';
+import {
+  updateUserImage,
+  updateNickName,
+  requestUserState,
+  updateWatchList,
+  updateMovieRating,
+} from 'services/user';
 import { setUserState } from 'store/user';
 import { IUser } from 'store/user/types';
 import { IError } from 'utils/error';
@@ -19,12 +25,8 @@ export const useInitUser = () => {
 
 export const useSetNickName = () => {
   return useMutation((nickName: string) => updateNickName(nickName), {
-    onSuccess: () => {
-      queryClient.invalidateQueries('initUser');
-    },
-    onError: (error) => {
-      alert('요청이 실패했습니다.' + error);
-    },
+    onSuccess: () => queryClient.invalidateQueries('initUser'),
+    onError: (error) => alert('요청이 실패했습니다.' + error),
   });
 };
 
@@ -34,3 +36,18 @@ export const useSetUserImage = () => {
     onError: (error) => alert('요청이 실패했습니다.' + error),
   });
 };
+
+export const useSetWatchList = () => {
+  return useMutation(updateWatchList, {
+    onSuccess: () => queryClient.invalidateQueries('initUser'),
+    onError: (error) => alert('요청이 실패했습니다.' + error),
+  });
+};
+
+export const useSetMovieRating = () => {
+  return useMutation(updateMovieRating, {
+    onSuccess: () => queryClient.invalidateQueries('initUser'),
+    onError: (error) => alert('요청이 실패했습니다.' + error),
+  });
+};
+
