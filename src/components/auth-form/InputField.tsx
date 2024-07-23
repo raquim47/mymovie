@@ -10,6 +10,7 @@ const InputField = memo(
       <ST.Field>
         {label && <label htmlFor={name}>{label}</label>}
         <input
+          id={name}
           name={name}
           placeholder={placeholder}
           type={type}

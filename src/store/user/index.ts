@@ -1,10 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IUser } from './types';
+import { IUser, IUserState } from './types';
 
-const initialState: {
-  userData: IUser | null;
-} = {
-  userData: null,
+const initialState: IUserState = {
+  userData: undefined,
 };
 
 const userSlice = createSlice({

@@ -1,4 +1,3 @@
-import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 
 const Header = styled.header`
@@ -31,6 +30,22 @@ const Header = styled.header`
 
   @media (min-width: 961px) {
     display: none;
+  }
+`;
+
+const AuthLink = styled.div`
+  font-size: 14px;
+  width: 40px;
+
+  &:hover {
+    color: ${(props) => props.theme.color.white.normal};
+  }
+
+  img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid ${(props) => props.theme.color.gray};
   }
 `;
 
@@ -75,5 +90,4 @@ const Nav = styled.nav`
   }
 `;
 
-const ST = { Header, Nav }
-export default ST;
+export default { Header, AuthLink, Nav };

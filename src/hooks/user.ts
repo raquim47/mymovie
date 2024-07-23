@@ -1,5 +1,5 @@
-import { queryClient } from 'index';
-import { useMutation, useQuery } from 'react-query';
+import { queryClient } from 'config';
+import { MutationFunction, useMutation, useQuery } from 'react-query';
 import { useDispatch } from 'react-redux';
 import {
   updateUserImage,
@@ -8,46 +8,40 @@ import {
   updateWatchList,
   updateMovieRating,
 } from 'services/user';
+import { addToast } from 'store/toast';
 import { setUserState } from 'store/user';
 import { IUser } from 'store/user/types';
-import { IError } from 'utils/error';
 
 // 사용자 정보 초기화
 export const useInitUser = () => {
   const dispatch = useDispatch();
 
-  return useQuery<IUser | null, IError>('initUser', requestUserState, {
+  return useQuery<IUser | null, Error>('initUser', requestUserState, {
     onSuccess: (user) => {
       dispatch(setUserState(user));
+    },
+    onError: (error) => {
+      dispatch(addToast(error.message));
+      dispatch(setUserState(null));
     },
   });
 };
 
-export const useSetNickName = () => {
-  return useMutation((nickName: string) => updateNickName(nickName), {
+const useUserMutation = <T = unknown>(mutationFn: MutationFunction<void, T>) => {
+  const dispatch = useDispatch();
+
+  return useMutation(mutationFn, {
     onSuccess: () => queryClient.invalidateQueries('initUser'),
-    onError: (error) => alert('요청이 실패했습니다.' + error),
+    onError: (error: Error) => {
+      dispatch(addToast(error.message));
+    },
   });
 };
 
-export const useSetUserImage = () => {
-  return useMutation(updateUserImage, {
-    onSuccess: () => queryClient.invalidateQueries('initUser'),
-    onError: (error) => alert('요청이 실패했습니다.' + error),
-  });
-};
+export const useSetNickName = () => useUserMutation(updateNickName);
 
-export const useSetWatchList = () => {
-  return useMutation(updateWatchList, {
-    onSuccess: () => queryClient.invalidateQueries('initUser'),
-    onError: (error) => alert('요청이 실패했습니다.' + error),
-  });
-};
+export const useSetUserImage = () => useUserMutation(updateUserImage);
 
-export const useSetMovieRating = () => {
-  return useMutation(updateMovieRating, {
-    onSuccess: () => queryClient.invalidateQueries('initUser'),
-    onError: (error) => alert('요청이 실패했습니다.' + error),
-  });
-};
+export const useSetWatchList = () => useUserMutation(updateWatchList);
 
+export const useSetMovieRating = () => useUserMutation(updateMovieRating);

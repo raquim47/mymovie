@@ -1,3 +1,4 @@
+import LogoutButton from 'components/logout';
 import styled, { css } from 'styled-components';
 
 const Header = styled.header`
@@ -55,5 +56,9 @@ const NavItem = styled.li`
   }
 `;
 
-const ST = { Header, NavItem }
+const LogoutBtn = styled(LogoutButton)`
+  ${navItemStyles}
+`;
+
+const ST = { Header, NavItem, LogoutBtn };
 export default ST;

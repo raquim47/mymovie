@@ -8,3 +8,7 @@ export interface IUser {
   watchList: { [key: string]: IMovie } | null;
   ratedMovies: { [key: string]: IMovie } | null;
 }
+
+export interface IUserState {
+  userData: IUser | null | undefined;
+}

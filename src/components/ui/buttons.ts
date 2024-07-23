@@ -1,7 +1,7 @@
 import { Link as RouterLink } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
-const buttonStyles = css`
+export const buttonStyles = css`
   width: 100%;
   padding: 12px 0;
   border-radius: 4px;

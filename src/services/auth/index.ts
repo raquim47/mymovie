@@ -3,28 +3,23 @@ import { doc, getDoc, setDoc } from 'firebase/firestore';
 import {
   createUserWithEmailAndPassword,
   GoogleAuthProvider,
-  onAuthStateChanged,
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
 } from 'firebase/auth';
 import { ILoginCredentials, ISignUpCredentials } from './types';
-import { handleAuthError } from './errors';
-import { IUser } from 'store/user/types';
+import { handleAsyncError } from 'utils/error';
 
 // 로그인
-export const requestLogin = async ({ email, password }: ILoginCredentials) => {
-  try {
+export const requestLogin = ({ email, password }: ILoginCredentials) =>
+  handleAsyncError(async () => {
     await signInWithEmailAndPassword(auth, email, password);
-  } catch (error) {
-    handleAuthError(error);
-  }
-};
+  });
 
 // 구글 가입, 로그인
-export const requestGoogleLogin = async () => {
-  const provider = new GoogleAuthProvider();
-  try {
+export const requestGoogleLogin = () =>
+  handleAsyncError(async () => {
+    const provider = new GoogleAuthProvider();
     const userCredential = await signInWithPopup(auth, provider);
     const user = userCredential.user;
 
@@ -37,18 +32,11 @@ export const requestGoogleLogin = async () => {
         nickName: Math.random().toString(36).slice(2, 9),
       });
     }
-  } catch (error) {
-    handleAuthError(error);
-  }
-};
+  });
 
 // 회원가입
-export const requestSignUp = async ({
-  email,
-  password,
-  nickName,
-}: ISignUpCredentials) => {
-  try {
+export const requestSignUp = ({ email, password, nickName }: ISignUpCredentials) =>
+  handleAsyncError(async () => {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
 
@@ -56,16 +44,10 @@ export const requestSignUp = async ({
       email,
       nickName,
     });
-  } catch (error) {
-    handleAuthError(error);
-  }
-};
+  });
 
 // 로그아웃
-export const requestLogout = async () => {
-  try {
+export const requestLogout = () =>
+  handleAsyncError(async () => {
     await signOut(auth);
-  } catch (error) {
-    handleAuthError(error);
-  }
-};
+  });

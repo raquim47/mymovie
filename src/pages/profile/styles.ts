@@ -1,3 +1,5 @@
+import LogoutButton from 'components/logout';
+import { buttonStyles } from 'components/ui/buttons';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -24,8 +26,13 @@ const RightSection = styled.section`
   }
 `;
 
+const LogoutBtn = styled(LogoutButton)`
+  ${buttonStyles}
+`;
+
 export default {
   Container,
   LeftSection,
   RightSection,
+  LogoutBtn,
 };

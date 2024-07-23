@@ -1,29 +1,16 @@
-import { useAppSelector } from 'hooks/useAppSelector';
-import { Link, NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import Logo from '../logo';
 import SearchForm from '../search-form';
+import AuthLink from './AuthLink';
 import ST from './styles';
 
 const NavTop = () => {
-  const user = useAppSelector((state) => state.user.userData);
   return (
     <>
       <ST.Header>
         <Logo />
         <SearchForm />
-        {user ? (
-          <Link to="profile">
-            <img
-              className="user-image"
-              src={require('../../../assets/profile.png')}
-              alt="유저 이미지"
-            />
-          </Link>
-        ) : (
-          <Link to="/login" className="login-link">
-            로그인
-          </Link>
-        )}
+        <AuthLink />
       </ST.Header>
       <ST.Nav>
         <ul>
