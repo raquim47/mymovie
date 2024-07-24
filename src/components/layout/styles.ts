@@ -10,8 +10,7 @@ const Container = styled.div`
 
 const Main = styled.main`
   flex: 1;
-  padding: 40px 30px 0;
+  padding: 40px 30px;
 `;
 
-const ST = { Container, Main }
-export default ST;
+export default { Container, Main };

@@ -12,6 +12,7 @@ const Header = styled.header`
     top: 0;
     flex-shrink: 0;
     width: 240px;
+    min-height: 460px;
     height: 100vh;
     padding: 24px 16px;
     background-color: ${(props) => props.theme.color.black.dark};
