@@ -8,6 +8,7 @@ import RatedPage from 'pages/rated';
 import ProfilePage from 'pages/profile';
 import SearchPage from 'pages/search';
 import PrivateRoute from 'components/route-guards/PrivateRoute';
+import GuestRoute from 'components/route-guards/GuestRoute';
 
 const MainRoute = () => {
   return (
@@ -22,8 +23,10 @@ const MainRoute = () => {
         <Route path="/rated" element={<RatedPage />} />
         <Route path="/profile" element={<ProfilePage />} />
       </Route>
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/signup" element={<SignUpPage />} />
+      <Route element={<GuestRoute />}>
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignUpPage />} />
+      </Route>
       <Route path="/*" element={<NotFound />} />
     </Routes>
   );

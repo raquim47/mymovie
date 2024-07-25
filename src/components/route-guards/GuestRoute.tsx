@@ -6,15 +6,18 @@ import { addToast } from 'store/toast';
 import { ERRORS } from 'utils/error';
 
 const GuestRoute = () => {
-  const user = useAppSelector((state) => state.user.userData);
+  const { userData: user, isInitialized } = useAppSelector((state) => state.user);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!user) {
+    if (isInitialized && user) {
       dispatch(addToast(ERRORS.ALREADY_LOGGED_IN));
     }
-  }, [user, dispatch]);
-  return user ? <Outlet /> : <Navigate to="/login" />;
+  }, [user, isInitialized, dispatch]);
+
+  if (!isInitialized) return null;
+
+  return user ? <Navigate to=".." /> : <Outlet />;
 };
 
 export default GuestRoute;

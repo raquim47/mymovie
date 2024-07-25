@@ -6,14 +6,16 @@ import { addToast } from 'store/toast';
 import { ERRORS } from 'utils/error';
 
 const PrivateRoute = () => {
-  const user = useAppSelector((state) => state.user.userData);
+  const { userData: user, isInitialized } = useAppSelector((state) => state.user);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!user) {
+    if (isInitialized && !user) {
       dispatch(addToast(ERRORS.REQUIRED_LOGIN));
     }
-  }, [user, dispatch]);
+  }, [user, isInitialized, dispatch]);
+
+  if(!isInitialized) return null;
 
   return user ? <Outlet /> : <Navigate to="/login" />;
 };

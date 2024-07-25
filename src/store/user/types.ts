@@ -10,5 +10,6 @@ export interface IUser {
 }
 
 export interface IUserState {
-  userData: IUser | null | undefined;
+  userData: IUser | null;
+  isInitialized: boolean;
 }

@@ -5,17 +5,16 @@ import { faRightToBracket, faRightFromBracket } from '@fortawesome/free-solid-sv
 import ST from './styles';
 
 const AuthAction = () => {
-  const user = useAppSelector((state) => state.user.userData);
-
+  const { userData: user, isInitialized } = useAppSelector((state) => state.user);
   return (
     <ST.NavItem>
-      {user === null && (
+      {isInitialized && !user && (
         <NavLink to="/login">
           <FontAwesomeIcon icon={faRightToBracket} />
           로그인
         </NavLink>
       )}
-      {user && (
+      {isInitialized && user && (
         <ST.LogoutBtn>
           <FontAwesomeIcon icon={faRightFromBracket} />
           로그아웃
