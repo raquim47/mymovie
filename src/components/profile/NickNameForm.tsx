@@ -1,45 +1,23 @@
-import { useAppSelector } from 'hooks/useAppSelector';
-import { useSetNickName } from 'hooks/user';
-import { useRef, useState } from 'react';
+import useSetNickName from 'hooks/users/useSetNickName';
 import ST from './styles';
 
 const NickNameForm = () => {
-  const [editNick, setEditNick] = useState(false);
-  const { mutate: setNickName, isLoading } = useSetNickName();
-  const nickName = useAppSelector((state) => state.user.userData?.nickName);
-  const inputRef = useRef<HTMLInputElement>(null);
-  const toggleEditNick = () => setEditNick((prev) => !prev);
-  const handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault();
-
-    if (inputRef.current) {
-      const nickNameValue = inputRef.current.value;
-      if (nickNameValue === nickName) {
-        toggleEditNick();
-        return;
-      } else {
-        setNickName(nickNameValue, {
-          onSuccess: () => {
-            toggleEditNick();
-          },
-        });
-      }
-    }
-  };
+  const { onEdit, toggleOnEdit, nickName, inputRef, handleSubmit, isLoading } =
+    useSetNickName();
 
   return (
     <>
-      {!editNick ? (
+      {!onEdit ? (
         <ST.NickName>
           <h2>{nickName}</h2>
-          <button onClick={toggleEditNick}>닉네임 수정</button>
+          <button onClick={toggleOnEdit}>닉네임 수정</button>
         </ST.NickName>
       ) : (
         <ST.NickNameForm onSubmit={handleSubmit}>
           <input
             name="nickName"
-            ref={inputRef}
             defaultValue={nickName}
+            ref={inputRef}
             maxLength={8}
             minLength={2}
           />
@@ -47,7 +25,7 @@ const NickNameForm = () => {
             <button type="submit" disabled={isLoading}>
               저장
             </button>
-            <button type="button" onClick={toggleEditNick} disabled={isLoading}>
+            <button type="button" onClick={toggleOnEdit} disabled={isLoading}>
               취소
             </button>
           </div>

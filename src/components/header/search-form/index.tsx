@@ -14,7 +14,6 @@ function SearchForm() {
     const value = inputRef?.current?.value;
     if (value && value.length > 1) {
       navigate(`/search?keyword=${value}`);
-      inputRef.current.value = '';
     }
   };
 
@@ -32,4 +31,5 @@ function SearchForm() {
     </ST.Form>
   );
 }
+
 export default SearchForm;

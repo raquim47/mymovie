@@ -1,4 +1,4 @@
-import { useLogout } from 'hooks/auth';
+import useLogout from 'hooks/auth/useLogout';
 import { ReactNode } from 'react';
 
 const LogoutButton = ({

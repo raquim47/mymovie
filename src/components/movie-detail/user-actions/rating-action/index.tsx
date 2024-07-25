@@ -1,17 +1,11 @@
-import { useAppSelector } from 'hooks/useAppSelector';
-import { useSetMovieRating } from 'hooks/user';
+import useSetMovieRating from 'hooks/users/useSetMovieRating';
 import ReactStars from 'react-stars';
 import { IMovie } from 'services/movies/types';
 import { RATING_MESSAGE } from './rating-message';
 
 const RatingAction = ({ movie }: { movie: IMovie }) => {
-  const user = useAppSelector((state) => state.user.userData);
-  const { mutate, isLoading } = useSetMovieRating();
-  const prevRating = (user?.ratedMovies && user.ratedMovies[movie.id]?.rating) || 0;
-  const handleRatingChange = (newRating: number) => {
-    const isCancel = prevRating === newRating;
-    mutate({ rating: newRating, movie, isCancel });
-  };
+  const { prevRating, handleChange, isLoading } = useSetMovieRating(movie.id);
+
   return (
     <li>
       <button disabled={isLoading}>
@@ -23,7 +17,7 @@ const RatingAction = ({ movie }: { movie: IMovie }) => {
           size={28}
           edit={true}
           value={prevRating}
-          onChange={handleRatingChange}
+          onChange={(rating) => handleChange(rating, movie)}
         />
       </button>
       <span>{RATING_MESSAGE[prevRating]}</span>

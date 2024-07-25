@@ -1,6 +1,6 @@
 import Layout from 'components/layout';
 import Toast from 'components/toast';
-import { useInitUser } from 'hooks/user';
+import useInitUser from 'hooks/users/useInitUser';
 import MainRoute from './router';
 
 function App() {

@@ -1,7 +1,7 @@
 import AuthForm from 'components/auth-form/AuthForm';
 import InputField from 'components/auth-form/InputField';
 import Buttons from 'components/ui/buttons';
-import { useSignUp } from 'hooks/auth';
+import useSignUp from 'hooks/auth/useSignUp';
 import { validateSignUp } from './validate';
 
 const SignUpPage = () => {

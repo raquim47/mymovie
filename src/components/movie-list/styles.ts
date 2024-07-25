@@ -39,7 +39,6 @@ const ItemInfo = styled.div`
     margin-top: 0.25vw;
   }
 
-  small,
   .genres li {
     display: none;
     font-weight: 300;

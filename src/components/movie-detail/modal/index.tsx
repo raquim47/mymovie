@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import ST from './styles';
@@ -9,8 +9,7 @@ import { AnimatePresence } from 'framer-motion';
 const Modal = ({ children }: { children: ReactNode }) => {
   useLockBodyScroll();
   const navigate = useNavigate();
-  const { search } = useLocation();
-  const closeModal = () => navigate('..' + (search || ''));
+  const closeModal = () => navigate('..');
   return (
     <ST.Overay onClick={closeModal}>
       <AnimatePresence>
