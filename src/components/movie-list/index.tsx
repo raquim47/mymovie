@@ -3,9 +3,11 @@ import { IMovieListProps } from './types';
 import { getMovieImagePath } from 'utils/movie-image-path';
 import { GENRES } from './genres-constant';
 import useHoverListItem from 'hooks/ui/hover-list-item';
+import { useLocation } from 'react-router-dom';
 
 const MovieList = ({ data, listSize, imageType = 'backdrop' }: IMovieListProps) => {
   const { handleHoverChange, getClasses } = useHoverListItem();
+  const { search } = useLocation();
   return (
     <ST.List listSize={listSize}>
       {data.map((movie, index) => (
@@ -16,7 +18,7 @@ const MovieList = ({ data, listSize, imageType = 'backdrop' }: IMovieListProps) 
           onMouseLeave={() => handleHoverChange(-1)}
         >
           <ST.Link
-            to={`movies/${movie.id}`}
+            to={`movies/${movie.id}${search || ''}`}
             bg={getMovieImagePath(movie, imageType, 'w500')}
           >
             <ST.ItemInfo>
