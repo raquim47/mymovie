@@ -3,7 +3,7 @@ import { updateUserImage } from "services/user";
 import useUsersMutation from "./useUsersMutation";
 
 const useSetUserImage = () => {
-  const { mutate, isLoading } = useUsersMutation(updateUserImage);
+  const { mutate, isPending } = useUsersMutation(updateUserImage);
 
   const handleUpload = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -18,7 +18,7 @@ const useSetUserImage = () => {
     event.currentTarget.src = require('assets/profile.png');
   };
 
-  return { handleUpload, handleRemove, handleImageError, isLoading };
+  return { handleUpload, handleRemove, handleImageError, isPending };
 };
 
 export default useSetUserImage;

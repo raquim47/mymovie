@@ -1,17 +1,17 @@
 import { useEffect, useRef, useState } from 'react';
-import { useInfiniteQuery } from 'react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { getSearchedMovies } from 'services/movies';
-import { IMovie } from 'services/movies/types';
+import { IMovie, IMovieList } from 'services/movies/types';
 
 export const useSearchMovies = (keyword: string) => {
-  return useInfiniteQuery(
-    ['movies', keyword],
-    ({ pageParam = 1 }) => getSearchedMovies(keyword, pageParam),
-    {
-      getNextPageParam: (lastPage) =>
-        lastPage.page < lastPage.total_pages ? lastPage.page + 1 : undefined,
-    }
-  );
+  return useInfiniteQuery<IMovieList>({
+    queryKey: ['movies', keyword],
+    queryFn: ({ pageParam = 1 }) => getSearchedMovies(keyword, pageParam as number),
+    getNextPageParam: (lastPage) => {
+      return lastPage.page < lastPage.total_pages ? lastPage.page + 1 : undefined;
+    },
+    initialPageParam: 1,
+  });
 };
 
 export const useManagedSearchMovie = (keyword: string, listSize: number) => {

@@ -5,7 +5,7 @@ import useUsersMutation from './useUsersMutation';
 
 const useSetNickName = () => {
   const [onEdit, setOnEdit] = useState(false);
-  const { mutate, isLoading } = useUsersMutation(updateNickName);
+  const { mutate, isPending } = useUsersMutation(updateNickName);
   const nickName = useAppSelector((state) => state.user.userData?.nickName);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -23,7 +23,7 @@ const useSetNickName = () => {
     }
   };
 
-  return { onEdit, toggleOnEdit, nickName, inputRef, handleSubmit, isLoading };
+  return { onEdit, toggleOnEdit, nickName, inputRef, handleSubmit, isPending };
 };
 
 export default useSetNickName;

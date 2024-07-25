@@ -7,12 +7,12 @@ import useSetUserImage from 'hooks/users/useSetUserImage';
 const EditImage = () => {
   const photoUrl = useAppSelector((state) => state.user.userData?.photoUrl);
  
-  const { handleUpload, handleRemove, handleImageError, isLoading } = useSetUserImage();
+  const { handleUpload, handleRemove, handleImageError, isPending } = useSetUserImage();
 
   return (
     <ST.EditImage>
       <div className="profile-image">
-        {isLoading ? (
+        {isPending ? (
           <Loader />
         ) : (
           <img
@@ -23,10 +23,10 @@ const EditImage = () => {
         )}
       </div>
       <input id="file" type="file" accept="image/*" onChange={handleUpload} />
-      <Buttons.Label htmlFor="file" className={isLoading ? 'disabled' : ''}>
+      <Buttons.Label htmlFor="file" className={isPending ? 'disabled' : ''}>
         이미지 업로드
       </Buttons.Label>
-      <Buttons.Base disabled={isLoading} onClick={handleRemove}>
+      <Buttons.Base disabled={isPending} onClick={handleRemove}>
         이미지 삭제
       </Buttons.Base>
     </ST.EditImage>

@@ -7,6 +7,7 @@ import MovieDetail from 'components/movie-detail';
 import RatedPage from 'pages/rated';
 import ProfilePage from 'pages/profile';
 import SearchPage from 'pages/search';
+import PrivateRoute from 'components/route-guards/PrivateRoute';
 
 const MainRoute = () => {
   return (
@@ -17,8 +18,10 @@ const MainRoute = () => {
       <Route path="/search" element={<SearchPage />}>
         <Route path="movies/:movieId" element={<MovieDetail />} />
       </Route>
-      <Route path="/rated" element={<RatedPage />} />
-      <Route path="/profile" element={<ProfilePage />} />
+      <Route element={<PrivateRoute />}>
+        <Route path="/rated" element={<RatedPage />} />
+        <Route path="/profile" element={<ProfilePage />} />
+      </Route>
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignUpPage />} />
       <Route path="/*" element={<NotFound />} />

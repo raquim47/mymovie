@@ -1,6 +1,9 @@
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { getMovieDetail } from 'services/movies';
 
 export const useGetMovieDetail = (id: number) => {
-  return useQuery(['movies', 'movieDetail', id], () => getMovieDetail(id));
+  return useQuery({
+    queryKey: ['movies', 'movieDetail', id],
+    queryFn: () => getMovieDetail(id),
+  });
 };

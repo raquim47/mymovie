@@ -1,5 +1,5 @@
 import { queryClient } from 'config';
-import { MutationFunction, useMutation } from 'react-query';
+import { MutationFunction, useMutation } from '@tanstack/react-query';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { setFieldError } from 'store/auth-form';
@@ -10,9 +10,10 @@ const useAuthMutation = <T = void>(mutationFn: MutationFunction<void, T>) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  return useMutation(mutationFn, {
+  return useMutation({
+    mutationFn,
     onSuccess: () => {
-      queryClient.invalidateQueries('initUser');
+      queryClient.invalidateQueries({ queryKey: ['initUser'] });
       navigate('/');
     },
     onError: (error: Error) => {

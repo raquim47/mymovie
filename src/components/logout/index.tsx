@@ -8,9 +8,9 @@ const LogoutButton = ({
   children: ReactNode;
   className?: string;
 }) => {
-  const { isLoading, mutate: logout } = useLogout();
+  const { isPending, mutate: logout } = useLogout();
   return (
-    <button onClick={() => logout()} disabled={isLoading} className={className}>
+    <button onClick={() => logout()} disabled={isPending} className={className}>
       {children}
     </button>
   );

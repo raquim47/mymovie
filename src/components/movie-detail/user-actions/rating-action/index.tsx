@@ -4,11 +4,11 @@ import { IMovie } from 'services/movies/types';
 import { RATING_MESSAGE } from './rating-message';
 
 const RatingAction = ({ movie }: { movie: IMovie }) => {
-  const { prevRating, handleChange, isLoading } = useSetMovieRating(movie.id);
+  const { prevRating, handleChange, isPending } = useSetMovieRating(movie.id);
 
   return (
     <li>
-      <button disabled={isLoading}>
+      <button disabled={isPending}>
         <ReactStars
           count={5}
           color1="#E6E6E6"

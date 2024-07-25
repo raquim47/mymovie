@@ -4,7 +4,7 @@ import { updateMovieRating } from 'services/user';
 import useUsersMutation from './useUsersMutation';
 
 const useSetMovieRating = (movieId: number) => {
-  const { mutate, isLoading } = useUsersMutation(updateMovieRating);
+  const { mutate, isPending } = useUsersMutation(updateMovieRating);
   const user = useAppSelector((state) => state.user.userData);
   const prevRating = (user?.ratedMovies && user.ratedMovies[movieId]?.rating) || 0;
 
@@ -13,7 +13,7 @@ const useSetMovieRating = (movieId: number) => {
     mutate({ rating: newRating, movie, isCancel });
   };
 
-  return { prevRating, handleChange, isLoading };
+  return { prevRating, handleChange, isPending };
 };
 
 export default useSetMovieRating;

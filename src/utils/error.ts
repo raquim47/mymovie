@@ -41,4 +41,6 @@ export const ERRORS = {
   INVALID_USER: '유효하지 않은 사용자입니다.',
   INVALID_NICKNAME: '닉네임은 두 글자 이상이어야 합니다.',
   AUTH_ERROR: '인증 상태 확인 중 오류가 발생했습니다.',
+  REQUIRED_LOGIN: '로그인이 필요합니다.',
+  ALREADY_LOGGED_IN: '이미 로그인 상태입니다.',
 };

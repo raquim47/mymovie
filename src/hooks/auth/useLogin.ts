@@ -2,13 +2,13 @@ import { requestGoogleLogin, requestLogin } from 'services/auth';
 import useAuthMutation from './useAuthMutation';
 
 const useLogin = () => {
-  const { mutate: login, isLoading: isLoginLoading } = useAuthMutation(requestLogin);
-  const { mutate: googleLogin, isLoading: isGoogleLogin } =
+  const { mutate: login, isPending: isLoginPending } = useAuthMutation(requestLogin);
+  const { mutate: googleLogin, isPending: isGoogleLoginPending } =
     useAuthMutation(requestGoogleLogin);
 
-  const isLoading = isLoginLoading || isGoogleLogin;
+  const isPending = isLoginPending || isGoogleLoginPending;
 
-  return { login, googleLogin, isLoading };
+  return { login, googleLogin, isPending };
 };
 
 export default useLogin;

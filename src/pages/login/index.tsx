@@ -6,20 +6,20 @@ import useLogin from 'hooks/auth/useLogin';
 import { validateLogin } from './validate';
 
 const LoginPage = () => {
-  const { login, googleLogin, isLoading } = useLogin()
+  const { login, googleLogin, isPending } = useLogin()
 
 
   return (
     <AuthForm title="로그인" submitAction={login} validate={validateLogin}>
       <InputField name="email" type="email" label="이메일" />
       <InputField name="password" type="password" label="비밀번호" />
-      <Buttons.Base accent type="submit" disabled={isLoading}>
+      <Buttons.Base accent type="submit" disabled={isPending}>
         로그인
       </Buttons.Base>
-      <Buttons.Base type="button" onClick={() => googleLogin()} disabled={isLoading}>
+      <Buttons.Base type="button" onClick={() => googleLogin()} disabled={isPending}>
         Google 로그인
       </Buttons.Base>
-      <Buttons.Link to="/signup" className={isLoading ? 'disabled' : ''}>
+      <Buttons.Link to="/signup" className={isPending ? 'disabled' : ''}>
         회원가입
       </Buttons.Link>
     </AuthForm>

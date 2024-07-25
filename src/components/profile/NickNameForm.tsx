@@ -2,7 +2,7 @@ import useSetNickName from 'hooks/users/useSetNickName';
 import ST from './styles';
 
 const NickNameForm = () => {
-  const { onEdit, toggleOnEdit, nickName, inputRef, handleSubmit, isLoading } =
+  const { onEdit, toggleOnEdit, nickName, inputRef, handleSubmit, isPending } =
     useSetNickName();
 
   return (
@@ -22,10 +22,10 @@ const NickNameForm = () => {
             minLength={2}
           />
           <div className="buttons">
-            <button type="submit" disabled={isLoading}>
+            <button type="submit" disabled={isPending}>
               저장
             </button>
-            <button type="button" onClick={toggleOnEdit} disabled={isLoading}>
+            <button type="button" onClick={toggleOnEdit} disabled={isPending}>
               취소
             </button>
           </div>

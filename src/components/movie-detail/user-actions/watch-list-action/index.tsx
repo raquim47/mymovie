@@ -5,13 +5,13 @@ import { faHeart } from '@fortawesome/free-regular-svg-icons';
 import useSetWatchList from 'hooks/users/useSetWatchList';
 
 const WatchListAction = ({ movie }: { movie: IMovie }) => {
-  const { handleClick, isLoading, isOnWatchList } = useSetWatchList(movie.id);
+  const { handleClick, isPending, isOnWatchList } = useSetWatchList(movie.id);
   return (
     <li>
       <button
         onClick={() => handleClick(movie)}
         className={isOnWatchList ? 'heart' : ''}
-        disabled={isLoading}
+        disabled={isPending}
       >
         <FontAwesomeIcon icon={isOnWatchList ? faHeartFill : faHeart} />
       </button>
