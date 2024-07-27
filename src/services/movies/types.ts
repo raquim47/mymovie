@@ -4,6 +4,15 @@ export interface IMovieList {
   total_pages: number;
 }
 
+export interface IRatings {
+  [userId: string]: {
+    nickName: string;
+    photoUrl: string;
+    rating: number;
+    timestamp: number;
+  };
+}
+
 export interface IMovie {
   id: number;
   title: string;
@@ -16,6 +25,7 @@ export interface IMovie {
   original_title?: string;
   release_date?: string;
   runtime?: number;
+  ratings?: IRatings;
   rating?: number;
   comment?: string;
   timestamp?: number;

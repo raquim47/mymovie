@@ -7,6 +7,7 @@ import useUsersMutation from './useUsersMutation';
 const useSetMovieRating = (movieId: number) => {
   const { user, requireLogin } = useRequireLogin();
   const { mutate, isPending } = useUsersMutation(updateMovieRating);
+  // user에서 찾는 대신 movie에서 찾기
   const rating = (user?.ratedMovies && user.ratedMovies[movieId]?.rating) || 0;
   const [key, setKey] = useState(0);
 

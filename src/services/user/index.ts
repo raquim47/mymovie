@@ -1,4 +1,11 @@
-import { deleteField, doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
+import {
+  deleteField,
+  doc,
+  getDoc,
+  setDoc,
+  updateDoc,
+  writeBatch,
+} from 'firebase/firestore';
 import { deleteObject, getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { auth, db, storage } from 'services/firebase';
 import { uuidv4 } from '@firebase/util';
@@ -7,10 +14,20 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { IMovie } from 'services/movies/types';
 import { ERRORS, handleAsyncError } from 'utils/error';
 
-const getUserRefAndId = async () => {
+const getCurrentUser = async () => {
   const userId = auth.currentUser?.uid;
   if (!userId) throw new Error(ERRORS.INVALID_USER);
-  return { userRef: doc(db, 'users', userId), userId };
+
+  const userRef = doc(db, 'users', userId);
+  const userDoc = await getDoc(userRef);
+
+  if (!userDoc.exists()) {
+    throw new Error(ERRORS.INVALID_USER);
+  }
+
+  const userData = userDoc.data() as IUser;
+
+  return { userRef, userData, userId };
 };
 
 // 초기 user 인증 및 패치
@@ -39,20 +56,19 @@ export const requestUserState = (): Promise<IUser | null> =>
 // 이미지 수정, 삭제
 export const updateUserImage = (file: File | null) =>
   handleAsyncError(async () => {
-    const { userRef, userId } = await getUserRefAndId();
-    const userData = await getDoc(userRef);
-    const imageUrl = userData.data()?.photoUrl;
+    const { userRef, userId, userData } = await getCurrentUser();
+    const photoUrl = userData.photoUrl;
 
-    if (imageUrl) {
-      const imageRef = ref(storage, imageUrl);
-      await deleteObject(imageRef);
+    if (photoUrl) {
+      const photoRef = ref(storage, photoUrl);
+      await deleteObject(photoRef);
     }
 
     if (file) {
       const storageRef = ref(storage, `user/userPhoto/${userId}/${uuidv4()}`);
       const snapshot = await uploadBytes(storageRef, file);
-      const newImageUrl = await getDownloadURL(snapshot.ref);
-      await updateDoc(userRef, { photoUrl: newImageUrl });
+      const newPhotoUrl = await getDownloadURL(snapshot.ref);
+      await updateDoc(userRef, { photoUrl: newPhotoUrl });
     } else {
       await updateDoc(userRef, { photoUrl: null });
     }
@@ -63,16 +79,15 @@ export const updateNickName = (nickName: string) =>
   handleAsyncError(async () => {
     if (nickName.length < 2) throw new Error(ERRORS.INVALID_NICKNAME);
 
-    const { userRef } = await getUserRefAndId();
+    const { userRef } = await getCurrentUser();
     await updateDoc(userRef, { nickName });
   });
 
 // 찜하기
 export const updateWatchList = (movie: IMovie) =>
   handleAsyncError(async () => {
-    const { userRef } = await getUserRefAndId();
-    const docData = await getDoc(userRef);
-    const watchList = docData.exists() ? docData.data()?.watchList || {} : {};
+    const { userRef, userData } = await getCurrentUser();
+    const watchList = userData.watchList || {};
 
     if (watchList[movie.id]) {
       delete watchList[movie.id];
@@ -96,8 +111,11 @@ export const updateMovieRating = ({
   isCancel?: boolean;
 }) =>
   handleAsyncError(async () => {
-    const { userRef, userId } = await getUserRefAndId();
-    const ratingsRef = doc(db, 'ratings', movie.id.toString());
+    const { userRef, userId, userData } = await getCurrentUser();
+    const ratingsRef = doc(db, 'ratings', String(movie.id));
+    const { nickName, photoUrl } = userData;
+
+    const batch = writeBatch(db);
     const userRatingData = isCancel
       ? { [`ratedMovies.${movie.id}`]: deleteField() }
       : {
@@ -110,8 +128,11 @@ export const updateMovieRating = ({
 
     const ratingData = isCancel
       ? { [userId]: deleteField() }
-      : { [userId]: { rating, timestamp: Date.now() } };
+      : {
+          [userId]: { rating, timestamp: Date.now(), nickName, photoUrl: photoUrl || '' },
+        };
 
-    await updateDoc(userRef, userRatingData);
-    await setDoc(ratingsRef, ratingData, { merge: true });
+    batch.update(userRef, userRatingData);
+    batch.set(ratingsRef, ratingData, { merge: true });
+    await batch.commit();
   });

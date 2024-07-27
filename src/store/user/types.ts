@@ -4,9 +4,9 @@ export interface IUser {
   email: string;
   nickName: string;
   uid: string;
-  photoUrl: string | null;
-  watchList: { [key: string]: IMovie } | null;
-  ratedMovies: { [key: string]: IMovie } | null;
+  photoUrl?: string;
+  watchList?: { [key: string]: IMovie };
+  ratedMovies?: { [key: string]: IMovie };
 }
 
 export interface IUserState {

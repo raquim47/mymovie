@@ -9,6 +9,7 @@ const BannerLayout = ({
   leftData?: IMovie;
   rightData?: IMovie;
 }) => {
+  console.log('leftData', leftData);
   return (
     <ST.BannersContainer>
       {leftData && (
