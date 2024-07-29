@@ -26,7 +26,7 @@ export const FIREBASE_AUTH_ERRORS: Record<string, Error | undefined> = {
 export const ERRORS = {
   REQUEST_ERROR: '요청이 실패했습니다. 다시 시도해주세요.',
   INVALID_USER: '유효하지 않은 사용자입니다.',
-  INVALID_NICKNAME: '닉네임은 두 글자 이상이어야 합니다.',
+  INVALID_NICKNAME: '닉네임은 2자 이상, 8자 이하여야 합니다.',
   AUTH_ERROR: '인증 상태 확인 중 오류가 발생했습니다.',
   REQUIRED_LOGIN: '로그인이 필요합니다.',
   ALREADY_LOGGED_IN: '이미 로그인 상태입니다.',

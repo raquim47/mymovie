@@ -2,8 +2,7 @@ import useSetNickName from 'hooks/users/useSetNickName';
 import ST from './styles';
 
 const NickNameForm = () => {
-  const { onEdit, toggleOnEdit, nickName, inputRef, handleSubmit, isPending } =
-    useSetNickName();
+  const { onEdit, toggleOnEdit, nickName, handleSubmit, isPending } = useSetNickName();
 
   return (
     <>
@@ -17,7 +16,6 @@ const NickNameForm = () => {
           <input
             name="nickName"
             defaultValue={nickName}
-            ref={inputRef}
             maxLength={8}
             minLength={2}
           />

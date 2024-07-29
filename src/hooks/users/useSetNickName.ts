@@ -1,6 +1,6 @@
 import { updateDoc } from 'firebase/firestore';
 import { useAppSelector } from 'store';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { getCurrentUser } from 'utils/firebase';
 import { ERRORS } from 'utils/error';
 import useUsersMutation from './useUsersMutation';
@@ -16,15 +16,14 @@ const useSetNickName = () => {
   const [onEdit, setOnEdit] = useState(false);
   const { mutate, isPending } = useUsersMutation(updateNickName);
   const nickName = useAppSelector((state) => state.user.userData?.nickName);
-  const inputRef = useRef<HTMLInputElement>(null);
 
   const toggleOnEdit = () => setOnEdit((prev) => !prev);
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!inputRef.current) return;
-
-    const nickNameValue = inputRef.current.value;
+    const formData = new FormData(event.currentTarget);
+    const nickNameValue = formData.get('nickName') as string;
+    
     if (nickNameValue === nickName) {
       toggleOnEdit();
     } else {
@@ -32,7 +31,7 @@ const useSetNickName = () => {
     }
   };
 
-  return { onEdit, toggleOnEdit, nickName, inputRef, handleSubmit, isPending };
+  return { onEdit, toggleOnEdit, nickName, handleSubmit, isPending };
 };
 
 export default useSetNickName;
