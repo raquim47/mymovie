@@ -1,7 +1,7 @@
 import MovieList from 'components/movie-list';
 import withSlider from 'hoc/with-slider';
 import useSetListSize from 'hooks/ui/list-size';
-import { IMovie } from 'services/movies/types';
+import { IMovie } from 'hooks/movies/types';
 import ST from './styles';
 
 const SliderLayout = ({

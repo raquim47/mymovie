@@ -1,8 +1,8 @@
-import { useAppSelector } from 'hooks/useAppSelector';
 import { NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRightToBracket, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import ST from './styles';
+import { useAppSelector } from 'store';
 
 const AuthAction = () => {
   const { userData: user, isInitialized } = useAppSelector((state) => state.user);

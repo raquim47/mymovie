@@ -1,4 +1,4 @@
-import { ISignUpCredentials } from 'services/auth/types';
+import { ISignUpCredentials } from 'hooks/auth/types';
 
 export const validateSignUp = ({
   email,

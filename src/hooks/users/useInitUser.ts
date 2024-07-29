@@ -1,9 +1,30 @@
 import { useQuery } from '@tanstack/react-query';
+import { onAuthStateChanged } from 'firebase/auth';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { requestUserState } from 'services/user';
+import { auth, getUserDoc } from 'utils/firebase';
 import { addToast } from 'store/toast';
 import { setUserState } from 'store/user';
+import { IUser } from 'store/user/types';
+import { ERRORS } from 'utils/error';
+
+const requestUserState = (): Promise<IUser | null> =>
+  new Promise((resolve, reject) => {
+    onAuthStateChanged(
+      auth,
+      async (user) => {
+        if (user) {
+          const { userData } = await getUserDoc(user.uid);
+          resolve(userData);
+        } else {
+          resolve(null);
+        }
+      },
+      (error) => {
+        reject(new Error(ERRORS.AUTH_ERROR + ' : ' + error.message));
+      }
+    );
+  });
 
 const useInitUser = () => {
   const dispatch = useDispatch();

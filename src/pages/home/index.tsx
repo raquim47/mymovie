@@ -1,5 +1,5 @@
 import Loader from 'components/ui/Loader';
-import useFetchHomeData from 'hooks/useFetchHomeData';
+import useGetHomeMovies from 'hooks/movies/useGetHomeMovies';
 import { Outlet } from 'react-router-dom';
 import BannerLayout from './BannerLayout';
 import SliderLayout from './SliderLayout';
@@ -13,7 +13,7 @@ const HomePage = () => {
     bannerRightData,
     isLoading,
     error,
-  } = useFetchHomeData();
+  } = useGetHomeMovies();
 
   if (isLoading) return <Loader />;
   if (error) return <p>Error: {(error as Error).message}</p>;

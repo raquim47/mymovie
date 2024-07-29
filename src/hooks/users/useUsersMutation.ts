@@ -15,7 +15,7 @@ const useUsersMutation = <T = unknown>(
       if (movieId) queryClient.invalidateQueries({ queryKey: ['movies', movieId] });
       queryClient.invalidateQueries({ queryKey: ['initUser'] });
     },
-    onError: (error: Error) => {
+    onError: (error) => {
       dispatch(addToast(error.message));
     },
   });

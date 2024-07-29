@@ -1,5 +1,5 @@
 import ReactStars from 'react-stars';
-import { IReviews } from 'services/movies/types';
+import { IReviews } from 'hooks/movies/types';
 import formatDate from 'utils/date';
 import ST from './styles';
 

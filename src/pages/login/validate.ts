@@ -1,4 +1,4 @@
-import { ILoginCredentials } from "services/auth/types";
+import { ILoginCredentials } from "hooks/auth/types";
 
 export const validateLogin = ({ email, password }: ILoginCredentials) => {
   const errors: Record<string, string> = {};

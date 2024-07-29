@@ -1,6 +1,6 @@
 import MovieList from 'components/movie-list';
 import Loader from 'components/ui/Loader';
-import { useManagedSearchMovie } from 'hooks/search-movies';
+import { useManagedSearchMovie } from 'hooks/movies/search-movies';
 import useSetListSize from 'hooks/ui/list-size';
 import { Outlet, useLocation } from 'react-router-dom';
 import ST from './styles';

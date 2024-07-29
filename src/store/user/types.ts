@@ -1,4 +1,4 @@
-import { IMovieSummary, IReviewListMovie } from 'services/movies/types';
+import { IMovieSummary, IReviewListMovie } from 'hooks/movies/types';
 
 export interface IUser {
   email: string;

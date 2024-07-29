@@ -1,4 +1,4 @@
-import { IMovie } from 'services/movies/types';
+import { IMovie } from 'hooks/movies/types';
 
 // 이미지 가져오기
 export const getMovieImagePath = (

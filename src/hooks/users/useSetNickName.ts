@@ -1,7 +1,16 @@
-import { useAppSelector } from 'hooks/useAppSelector';
+import { updateDoc } from 'firebase/firestore';
+import { useAppSelector } from 'store';
 import { useRef, useState } from 'react';
-import { updateNickName } from 'services/user';
+import { getCurrentUser } from 'utils/firebase';
+import { ERRORS } from 'utils/error';
 import useUsersMutation from './useUsersMutation';
+
+const updateNickName = async (nickName: string) => {
+  if (nickName.length < 2) throw new Error(ERRORS.INVALID_NICKNAME);
+
+  const { userRef } = await getCurrentUser();
+  await updateDoc(userRef, { nickName });
+};
 
 const useSetNickName = () => {
   const [onEdit, setOnEdit] = useState(false);

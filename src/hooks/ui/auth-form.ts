@@ -8,7 +8,7 @@ import {
   updateField,
 } from 'store/auth-form';
 import { IFormData } from 'store/auth-form/types';
-import { useAppSelector } from './useAppSelector';
+import { useAppSelector } from 'store';
 
 export const useAuthForm = () => {
   const dispatch = useDispatch();

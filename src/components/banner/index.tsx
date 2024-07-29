@@ -1,4 +1,4 @@
-import { IMovie } from 'services/movies/types';
+import { IMovie } from 'hooks/movies/types';
 import ST from './styles';
 import { getMovieImagePath } from 'utils/movie-image-path';
 

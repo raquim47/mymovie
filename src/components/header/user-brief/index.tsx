@@ -1,4 +1,4 @@
-import { useAppSelector } from 'hooks/useAppSelector';
+import { useAppSelector } from 'store';
 import { Link } from 'react-router-dom';
 import ST from './styles';
 

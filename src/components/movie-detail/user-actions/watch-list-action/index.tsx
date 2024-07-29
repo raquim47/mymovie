@@ -1,4 +1,4 @@
-import { IMovieSummary } from 'services/movies/types';
+import { IMovieSummary } from 'hooks/movies/types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart as faHeartFill } from '@fortawesome/free-solid-svg-icons';
 import { faHeart } from '@fortawesome/free-regular-svg-icons';

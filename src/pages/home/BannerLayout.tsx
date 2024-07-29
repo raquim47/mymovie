@@ -1,5 +1,5 @@
 import Banner from 'components/banner';
-import { IMovie } from 'services/movies/types';
+import { IMovie } from 'hooks/movies/types';
 import ST from './styles';
 
 const BannerLayout = ({
@@ -9,7 +9,6 @@ const BannerLayout = ({
   leftData?: IMovie;
   rightData?: IMovie;
 }) => {
-  console.log('leftData', leftData);
   return (
     <ST.BannersContainer>
       {leftData && (

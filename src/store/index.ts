@@ -1,4 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
+import { useSelector, TypedUseSelectorHook } from 'react-redux';
 import userReducer from './user';
 import authFormReducer from './auth-form';
 import modalBackdropReducer from './modal-backdrop';
@@ -13,3 +14,5 @@ export const store = configureStore({
   },
 });
 
+export const useAppSelector: TypedUseSelectorHook<ReturnType<typeof store.getState>> =
+  useSelector;

@@ -1,16 +1,3 @@
-import { FirebaseError } from 'firebase/app';
-
-export const handleAsyncError = async <T>(operation: () => Promise<T>) => {
-  try {
-    return await operation();
-  } catch (error) {
-    if (error instanceof FirebaseError) {
-      throw new Error(error.code);
-    }
-    throw new Error(error instanceof Error ? error.message : ERRORS.SERVER_ERROR);
-  }
-};
-
 export const FIREBASE_AUTH_ERRORS: Record<string, Error | undefined> = {
   'auth/user-not-found': {
     message: '이메일 또는 패스워드가 유효하지 않습니다.',
@@ -37,12 +24,13 @@ export const FIREBASE_AUTH_ERRORS: Record<string, Error | undefined> = {
 };
 
 export const ERRORS = {
-  SERVER_ERROR: '서버 오류가 발생했습니다. 다시 시도해주세요.',
+  REQUEST_ERROR: '요청이 실패했습니다. 다시 시도해주세요.',
   INVALID_USER: '유효하지 않은 사용자입니다.',
   INVALID_NICKNAME: '닉네임은 두 글자 이상이어야 합니다.',
   AUTH_ERROR: '인증 상태 확인 중 오류가 발생했습니다.',
   REQUIRED_LOGIN: '로그인이 필요합니다.',
   ALREADY_LOGGED_IN: '이미 로그인 상태입니다.',
   REQUIRED_RATING: '별점을 먼저 남겨주세요.',
-  INVALID_INPUT : '유효한 입력값이 아닙니다.'
+  NOT_FOUND_REVIEWS: '평가 정보를 찾을 수 없습니다.',
+  INVALID_INPUT: '유효한 입력값이 아닙니다.',
 };

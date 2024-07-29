@@ -1,4 +1,4 @@
-import { useAppSelector } from 'hooks/useAppSelector';
+import { useAppSelector } from 'store';
 import Buttons from 'components/ui/buttons';
 import ST from './styles';
 import Loader from 'components/ui/Loader';

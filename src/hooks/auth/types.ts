@@ -7,7 +7,3 @@ export interface ISignUpCredentials extends ILoginCredentials {
   nickName: string;
   confirmPassword: string;
 }
-
-export interface IAuthErrors {
-  [key: string]: Error;
-}

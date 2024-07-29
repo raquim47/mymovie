@@ -1,4 +1,4 @@
-import { useAppSelector } from 'hooks/useAppSelector';
+import { useAppSelector } from 'store';
 import { useDispatch } from 'react-redux';
 import { addToast } from 'store/toast';
 import { ERRORS } from 'utils/error';

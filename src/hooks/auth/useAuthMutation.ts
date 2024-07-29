@@ -4,7 +4,8 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { setFieldError } from 'store/auth-form';
 import { addToast } from 'store/toast';
-import { FIREBASE_AUTH_ERRORS } from 'utils/error';
+import { ERRORS, FIREBASE_AUTH_ERRORS } from 'utils/error';
+import { FirebaseError } from 'firebase/app';
 
 const useAuthMutation = <T = void>(mutationFn: MutationFunction<void, T>) => {
   const navigate = useNavigate();
@@ -16,20 +17,24 @@ const useAuthMutation = <T = void>(mutationFn: MutationFunction<void, T>) => {
       queryClient.invalidateQueries({ queryKey: ['initUser'] });
       navigate('/');
     },
-    onError: (error: Error) => {
-      const firebaseError = FIREBASE_AUTH_ERRORS[error.message];
-      if (firebaseError?.name === 'popup-close') return;
-      if (
-        firebaseError?.name === 'email' ||
-        firebaseError?.name === 'nickName' ||
-        firebaseError?.name === 'password'
-      ) {
-        dispatch(
-          setFieldError({ field: firebaseError.name, error: firebaseError.message })
-        );
-        return;
+    onError: (error) => {
+      if (error instanceof FirebaseError) {
+        const firebaseError = FIREBASE_AUTH_ERRORS[error.code];
+        if (firebaseError?.name === 'popup-close') return;
+
+        if (
+          firebaseError?.name === 'email' ||
+          firebaseError?.name === 'nickName' ||
+          firebaseError?.name === 'password'
+        ) {
+          dispatch(
+            setFieldError({ field: firebaseError.name, error: firebaseError.message })
+          );
+          return;
+        }
       }
-      dispatch(addToast(firebaseError?.message || error.message));
+
+      dispatch(addToast(ERRORS.REQUEST_ERROR + ' : ' + error.message));
     },
   });
 };

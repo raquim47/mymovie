@@ -1,4 +1,4 @@
-import { useAuthField } from 'hooks/auth-form';
+import { useAuthField } from 'hooks/ui/auth-form';
 import { memo } from 'react';
 import ST from './styles';
 import { IInputFieldProps } from './types';

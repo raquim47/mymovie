@@ -6,6 +6,7 @@ export interface IMovieList {
 
 export interface IReviews {
   [userId: string]: {
+    email: string;
     nickName: string;
     photoUrl: string;
     rating: number;

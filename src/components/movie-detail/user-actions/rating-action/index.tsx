@@ -1,6 +1,6 @@
 import useSetMovieRating from 'hooks/users/useSetMovieRating';
 import ReactStars from 'react-stars';
-import { IMovie } from 'services/movies/types';
+import { IMovie } from 'hooks/movies/types';
 import { RATING_MESSAGE } from './rating-message';
 
 const RatingAction = ({ movie }: { movie: IMovie }) => {

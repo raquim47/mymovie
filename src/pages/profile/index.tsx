@@ -1,4 +1,4 @@
-import { useAppSelector } from 'hooks/useAppSelector';
+import { useAppSelector } from 'store';
 import EditImage from 'components/profile/EditImage';
 import NickNameForm from 'components/profile/NickNameForm';
 import ST from './styles';

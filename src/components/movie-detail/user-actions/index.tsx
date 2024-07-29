@@ -1,5 +1,5 @@
 import ST from './styles';
-import { IMovieSummary } from 'services/movies/types';
+import { IMovieSummary } from 'hooks/movies/types';
 import WatchListAction from './watch-list-action';
 import RatingAction from './rating-action';
 import CommentAction from './comment/CommentAction';

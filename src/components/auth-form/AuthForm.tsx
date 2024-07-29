@@ -1,4 +1,4 @@
-import { useAuthForm } from 'hooks/auth-form';
+import { useAuthForm } from 'hooks/ui/auth-form';
 import ST from './styles';
 import { IAuthFormProps } from './types';
 

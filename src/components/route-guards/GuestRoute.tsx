@@ -1,4 +1,4 @@
-import { useAppSelector } from 'hooks/useAppSelector';
+import { useAppSelector } from 'store';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Navigate, Outlet } from 'react-router-dom';

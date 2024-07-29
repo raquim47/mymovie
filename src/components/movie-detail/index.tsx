@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 import Modal from './modal';
 import ST from './styles';
-import { useGetMovieDetail } from 'hooks/useGetMovieDetail';
+import { useGetMovieDetail } from 'hooks/movies/useGetMovieDetail';
 import Loader from 'components/ui/Loader';
 import MDHeader from './header';
 import MDSummary from './summary';

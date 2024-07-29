@@ -1,7 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { getSearchedMovies } from 'services/movies';
-import { IMovie, IMovieList } from 'services/movies/types';
+import { IMovie, IMovieList } from 'hooks/movies/types';
+import { handleRequestTMDB } from 'utils/tmdb';
+
+const getSearchedMovies = (keyword: string, page: number) =>
+  handleRequestTMDB<IMovieList>(
+    `search/movie?query=${encodeURIComponent(keyword)}&page=${page}`
+  );
 
 export const useSearchMovies = (keyword: string) => {
   return useInfiniteQuery<IMovieList>({
