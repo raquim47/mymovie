@@ -1,4 +1,4 @@
-import { IMovie, IMovieList, IRatings } from './types';
+import { IMovie, IMovieList, IReviews } from './types';
 import { TMDB_CONFIG } from 'config';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from 'services/firebase';
@@ -32,10 +32,10 @@ export const getMovieDetail = (id: number) =>
     if (!id) throw new Error('No movie ID provided.');
 
     const movie = await fetchApi<IMovie>(`movie/${id}`);
-    const ratingsRef = doc(db, 'ratings', id.toString());
-    const ratingsDoc = await getDoc(ratingsRef);
-    const ratingsData = ratingsDoc.exists() ? (ratingsDoc.data() as IRatings) : undefined;
-    return { ...movie, ratings: ratingsData };
+    const reviewsRef = doc(db, 'reviews', String(id));
+    const reviewsDoc = await getDoc(reviewsRef);
+    const reviewsData = reviewsDoc.exists() ? (reviewsDoc.data() as IReviews) : undefined;
+    return { ...movie, reviews: reviewsData };
   });
 
 export const getSearchedMovies = (keyword: string, page: number) =>

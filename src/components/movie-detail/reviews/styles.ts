@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 
-const Ratings = styled.section`
+const Reviews = styled.section`
   padding: 16px;
   background-color: ${(state) => state.theme.color.black.dark};
 `;
 
-const Rating = styled.li`
+const Review = styled.li`
   display: flex;
   flex-wrap: wrap;
   padding: 10px 20px;
@@ -28,8 +28,17 @@ const Rating = styled.li`
   }
 
   p {
+    align-self: center;
     width: 100%;
     font-weight: 300;
+  }
+
+  time {
+    font-size: 12px;
+    white-space: nowrap;
+    font-weight: 300;
+    margin-right: 0;
+    margin-left: auto;
   }
 
   @media (min-width: 768px) {
@@ -39,7 +48,11 @@ const Rating = styled.li`
       display: block;
       margin-top: 6px;
     }
+
+    time {
+      align-self: flex-end;
+    }
   }
 `;
 
-export default { Ratings, Rating };
+export default { Reviews, Review };

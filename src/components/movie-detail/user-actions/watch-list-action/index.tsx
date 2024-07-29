@@ -1,10 +1,10 @@
-import { IMovie } from 'services/movies/types';
+import { IMovieSummary } from 'services/movies/types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart as faHeartFill } from '@fortawesome/free-solid-svg-icons';
 import { faHeart } from '@fortawesome/free-regular-svg-icons';
 import useSetWatchList from 'hooks/users/useSetWatchList';
 
-const WatchListAction = ({ movie }: { movie: IMovie }) => {
+const WatchListAction = ({ movie }: { movie: IMovieSummary }) => {
   const { handleClick, isPending, isOnWatchList } = useSetWatchList(movie.id);
   return (
     <li>

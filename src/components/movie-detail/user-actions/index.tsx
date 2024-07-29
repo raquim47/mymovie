@@ -1,25 +1,33 @@
-import ReactStars from 'react-stars';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPenToSquare } from '@fortawesome/free-regular-svg-icons';
 import ST from './styles';
-import { IMovie } from 'services/movies/types';
+import { IMovieSummary } from 'services/movies/types';
 import WatchListAction from './watch-list-action';
 import RatingAction from './rating-action';
+import CommentAction from './comment/CommentAction';
+import CommentForm from './comment/CommentForm';
+import useSetMovieComment from 'hooks/users/useSetMovieComment';
 
-const UserActions = ({ movie }: { movie: IMovie }) => {
+
+
+const UserActions = ({ movie }: { movie: IMovieSummary }) => {
+  const { onCommentForm, onComment, offComment, submitComment, isPending } =
+    useSetMovieComment(movie.id);
+
   return (
     <ST.Actions>
       <h3 className="sr-only">사용자 액션</h3>
-      <ul>
-        <WatchListAction movie={movie} />
-        <RatingAction movie={movie} />
-        <li>
-          <button className="option-btn">
-            <FontAwesomeIcon icon={faPenToSquare} />
-          </button>
-          <span>코멘트 남기기</span>
-        </li>
-      </ul>
+      {onCommentForm ? (
+        <CommentForm
+          offComment={offComment}
+          submitComment={submitComment}
+          isPending={isPending}
+        />
+      ) : (
+        <ul>
+          <WatchListAction movie={movie} />
+          <RatingAction movie={movie} />
+          <CommentAction onComment={onComment} />
+        </ul>
+      )}
     </ST.Actions>
   );
 };

@@ -1,17 +1,10 @@
-import {
-  deleteField,
-  doc,
-  getDoc,
-  setDoc,
-  updateDoc,
-  writeBatch,
-} from 'firebase/firestore';
+import { deleteField, doc, getDoc, updateDoc, writeBatch } from 'firebase/firestore';
 import { deleteObject, getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { auth, db, storage } from 'services/firebase';
 import { uuidv4 } from '@firebase/util';
 import { IUser } from 'store/user/types';
 import { onAuthStateChanged } from 'firebase/auth';
-import { IMovie } from 'services/movies/types';
+import { IMovieSummary } from 'services/movies/types';
 import { ERRORS, handleAsyncError } from 'utils/error';
 
 const getCurrentUser = async () => {
@@ -84,7 +77,7 @@ export const updateNickName = (nickName: string) =>
   });
 
 // 찜하기
-export const updateWatchList = (movie: IMovie) =>
+export const updateWatchList = (movie: IMovieSummary) =>
   handleAsyncError(async () => {
     const { userRef, userData } = await getCurrentUser();
     const watchList = userData.watchList || {};
@@ -107,32 +100,76 @@ export const updateMovieRating = ({
   isCancel = false,
 }: {
   rating: number;
-  movie: IMovie;
+  movie: IMovieSummary;
   isCancel?: boolean;
 }) =>
   handleAsyncError(async () => {
     const { userRef, userId, userData } = await getCurrentUser();
-    const ratingsRef = doc(db, 'ratings', String(movie.id));
+    const reviewsRef = doc(db, 'reviews', String(movie.id));
     const { nickName, photoUrl } = userData;
 
     const batch = writeBatch(db);
     const userRatingData = isCancel
-      ? { [`ratedMovies.${movie.id}`]: deleteField() }
+      ? { [`reviewList.${movie.id}`]: deleteField() }
       : {
-          [`ratedMovies.${movie.id}`]: {
+          [`reviewList.${movie.id}`]: {
             ...movie,
             rating,
             timestamp: Date.now(),
           },
         };
 
-    const ratingData = isCancel
+    const reviewsData = isCancel
       ? { [userId]: deleteField() }
       : {
           [userId]: { rating, timestamp: Date.now(), nickName, photoUrl: photoUrl || '' },
         };
 
     batch.update(userRef, userRatingData);
-    batch.set(ratingsRef, ratingData, { merge: true });
+    batch.set(reviewsRef, reviewsData, { merge: true });
+    await batch.commit();
+  });
+
+  // 코멘트 남기기
+export const updateMovieComment = ({
+  comment,
+  movieId,
+}: {
+  comment: string;
+  movieId: number;
+}) =>
+  handleAsyncError(async () => {
+    const { userRef, userId, userData } = await getCurrentUser();
+    const reviewsRef = doc(db, 'reviews', String(movieId));
+    const reviewsDoc = await getDoc(reviewsRef);
+
+    // 리뷰가 존재하지 않으면 에러 트리거
+    if (!reviewsDoc.exists() || !reviewsDoc.data()?.[userId]) {
+      throw new Error('No rating found for this movie. Please rate the movie first.');
+    }
+
+    const { nickName, photoUrl } = userData;
+
+    // 기존 리뷰 데이터 가져오기
+    const existingReview = reviewsDoc.data()?.[userId];
+
+    const batch = writeBatch(db);
+    const userCommentData = {
+      [`reviewList.${movieId}.comment`]: comment,
+      [`reviewList.${movieId}.timestamp`]: Date.now(),
+    };
+
+    const reviewsData = {
+      [userId]: {
+        ...existingReview,
+        comment,
+        timestamp: Date.now(),
+        nickName,
+        photoUrl: photoUrl || '',
+      },
+    };
+
+    batch.update(userRef, userCommentData);
+    batch.set(reviewsRef, reviewsData, { merge: true });
     await batch.commit();
   });

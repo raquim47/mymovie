@@ -19,7 +19,7 @@ const UserBrief = () => {
         </h4>
         <ST.UserMovieBrief>
           <h5>
-            평가 : <Link to="/rated">{Object.keys(user.ratedMovies || {}).length}</Link>
+            평가 : <Link to="/rated">{Object.keys(user.reviewList || {}).length}</Link>
           </h5>
           <h5>
             찜 : <Link to="/watchlist">{Object.keys(user.watchList || {}).length}</Link>

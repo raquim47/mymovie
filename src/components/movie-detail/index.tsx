@@ -6,7 +6,7 @@ import Loader from 'components/ui/Loader';
 import MDHeader from './header';
 import MDSummary from './summary';
 import UserActions from './user-actions';
-import Ratings from './ratings';
+import Reviews from './reviews';
 
 const MovieDetail = () => {
   const { movieId } = useParams();
@@ -30,7 +30,7 @@ const MovieDetail = () => {
               }}
             />
             <MDSummary tagline={movie.tagline} overview={movie.overview} />
-            {Object.keys(movie.ratings || {}).length && <Ratings ratings={movie.ratings || {}}/>}
+            <Reviews reviews={movie.reviews} />
           </ST.Content>
         )
       )}

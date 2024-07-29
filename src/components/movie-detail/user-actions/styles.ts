@@ -22,7 +22,7 @@ const Actions = styled.section`
   }
 
   li button.heart {
-    color: ${(props) => props.theme.color.purple.normal};
+    color: red;
   }
 
   li span {

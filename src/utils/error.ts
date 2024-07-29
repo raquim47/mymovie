@@ -43,4 +43,6 @@ export const ERRORS = {
   AUTH_ERROR: '인증 상태 확인 중 오류가 발생했습니다.',
   REQUIRED_LOGIN: '로그인이 필요합니다.',
   ALREADY_LOGGED_IN: '이미 로그인 상태입니다.',
+  REQUIRED_RATING: '별점을 먼저 남겨주세요.',
+  INVALID_INPUT : '유효한 입력값이 아닙니다.'
 };

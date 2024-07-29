@@ -4,19 +4,20 @@ export interface IMovieList {
   total_pages: number;
 }
 
-export interface IRatings {
+export interface IReviews {
   [userId: string]: {
     nickName: string;
     photoUrl: string;
     rating: number;
-    timestamp: number;
+    comment?: string;
+    timestamp: string;
   };
 }
 
 export interface IMovie {
   id: number;
   title: string;
-  poster_path: string;
+  poster_path?: string;
   backdrop_path?: string;
   genres?: IGenre[];
   genre_ids?: number[];
@@ -25,10 +26,19 @@ export interface IMovie {
   original_title?: string;
   release_date?: string;
   runtime?: number;
-  ratings?: IRatings;
-  rating?: number;
-  comment?: string;
+}
+
+export interface IMovieSummary {
+  id: number;
+  title: string;
+  poster_path?: string;
+  genres?: IGenre[];
   timestamp?: number;
+}
+
+export interface IReviewListMovie extends IMovieSummary {
+  rating: number;
+  comment?: string;
 }
 
 export interface IGenre {

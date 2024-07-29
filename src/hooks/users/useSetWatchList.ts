@@ -1,4 +1,4 @@
-import { IMovie } from 'services/movies/types';
+import { IMovieSummary } from 'services/movies/types';
 import { updateWatchList } from 'services/user';
 import useRequireLogin from './useRequireLogin';
 import useUsersMutation from './useUsersMutation';
@@ -9,9 +9,9 @@ const useSetWatchList = (movieId: number) => {
 
   const isOnWatchList = user?.watchList && user?.watchList[movieId];
 
-  const handleClick = (movie: IMovie) => {
+  const handleClick = (movie: IMovieSummary) => {
     if (!requireLogin()) return;
-    
+
     mutate(movie);
   };
   return { handleClick, isPending, isOnWatchList };
