@@ -22,11 +22,11 @@ const SliderLayout = ({
   const MovieListSlider = withSlider(MovieList);
   return (
     <ST.SlidersContainer>
-      <ST.sectionTitle>요즘 인기</ST.sectionTitle>
+      <ST.SectionTitle>요즘 인기</ST.SectionTitle>
       <MovieListSlider data={trendingData ?? []} listSize={listSize} />
-      <ST.sectionTitle>최신 개봉</ST.sectionTitle>
+      <ST.SectionTitle>최신 개봉</ST.SectionTitle>
       <MovieListSlider data={latestData ?? []} listSize={listSize} />
-      <ST.sectionTitle>Top 평점</ST.sectionTitle>
+      <ST.SectionTitle>Top 평점</ST.SectionTitle>
       <MovieListSlider data={topRatedData ?? []} listSize={listSize} />
     </ST.SlidersContainer>
   );

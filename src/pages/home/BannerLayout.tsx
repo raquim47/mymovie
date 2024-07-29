@@ -13,13 +13,13 @@ const BannerLayout = ({
     <ST.BannersContainer>
       {leftData && (
         <div>
-          <ST.sectionTitle>이번 주 신작</ST.sectionTitle>
+          <ST.SectionTitle>이번 주 신작</ST.SectionTitle>
           <Banner data={leftData} />
         </div>
       )}
       {rightData && (
         <div>
-          <ST.sectionTitle>개봉 예정</ST.sectionTitle>
+          <ST.SectionTitle>개봉 예정</ST.SectionTitle>
           <Banner data={rightData} />
         </div>
       )}

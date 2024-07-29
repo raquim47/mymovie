@@ -14,7 +14,7 @@ const SlidersContainer = styled.section`
   padding-top: 20px;
 `;
 
-const sectionTitle = styled.h3`
+const SectionTitle = styled.h3`
   font-size: 32px;
   font-weight: 500;
 
@@ -23,5 +23,4 @@ const sectionTitle = styled.h3`
   }
 `;
 
-const ST = { BannersContainer, SlidersContainer, sectionTitle }
-export default ST;
+export default { BannersContainer, SlidersContainer, SectionTitle };
