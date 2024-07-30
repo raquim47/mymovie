@@ -5,7 +5,7 @@ import { RATING_MESSAGE } from './rating-message';
 
 const RatingAction = ({ movie }: { movie: IMovie }) => {
   const { rating, handleChange, isPending, key } = useSetMovieRating(movie.id);
-  
+  console.log(rating);
   return (
     <li>
       <button disabled={isPending}>
