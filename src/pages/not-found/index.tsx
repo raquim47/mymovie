@@ -1,5 +1,15 @@
+import ST from './styles';
+
 function NotFound() {
-  return <h1>404 Not Found.</h1>;
+  return (
+    <ST.Container>
+      <ST.Content>
+        <ST.Title>404</ST.Title>
+        <ST.Subtitle>페이지를 찾을 수 없습니다.</ST.Subtitle>
+        <ST.HomeButton to="/">Home</ST.HomeButton>
+      </ST.Content>
+    </ST.Container>
+  );
 }
 
 export default NotFound;
