@@ -1,3 +1,4 @@
+import useGetMyMovieReview from 'hooks/users/useGetMyMovieReview';
 import ST from './styles';
 
 const CommentForm = ({
@@ -9,11 +10,13 @@ const CommentForm = ({
   submitComment: (event: React.FormEvent<HTMLFormElement>) => void;
   isPending: boolean;
 }) => {
+  const { comment } = useGetMyMovieReview();
   return (
     <ST.CommentForm onSubmit={submitComment}>
       <textarea
         placeholder="작품에 대한 코멘트를 남겨주세요"
         required
+        defaultValue={comment}
         maxLength={80}
         name="comment"
       />

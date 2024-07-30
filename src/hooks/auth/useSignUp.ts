@@ -11,6 +11,9 @@ const requestSignUp = async ({ email, password, nickName }: ISignUpCredentials) 
   await setDoc(doc(db, 'users', user.uid), {
     email,
     nickName,
+    photoUrl: '',
+    watchList: {},
+    reviewList: {},
   });
 };
 

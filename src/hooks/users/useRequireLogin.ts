@@ -1,15 +1,14 @@
 import { useAppSelector } from 'store';
-import { useDispatch } from 'react-redux';
-import { addToast } from 'store/toast';
 import { ERRORS } from 'utils/error';
+import useToast from 'hooks/ui/useToast';
 
 const useRequireLogin = () => {
   const user = useAppSelector((state) => state.user.userData);
-  const dispatch = useDispatch();
+  const toast = useToast();
 
   const requireLogin = () => {
     if (!user) {
-      dispatch(addToast(ERRORS.REQUIRED_LOGIN));
+      toast(ERRORS.REQUIRED_LOGIN);
       return false;
     }
     return true;

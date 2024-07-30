@@ -13,19 +13,19 @@ const Actions = styled.section`
   li {
     text-align: center;
   }
-
-  li button {
+  
+  li > button {
     margin: 0 auto;
     white-space: nowrap;
     height: 40px;
     font-size: 24px;
   }
 
-  li button.heart {
+  li > button.heart {
     color: red;
   }
 
-  li span {
+  li > span {
     display: block;
     font-size: 13px;
     font-weight: 300;

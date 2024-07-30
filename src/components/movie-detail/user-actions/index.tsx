@@ -6,11 +6,15 @@ import CommentAction from './comment/CommentAction';
 import CommentForm from './comment/CommentForm';
 import useSetMovieComment from 'hooks/users/useSetMovieComment';
 
-
-
 const UserActions = ({ movie }: { movie: IMovieSummary }) => {
-  const { onCommentForm, onComment, offComment, submitComment, isPending } =
-    useSetMovieComment(movie.id);
+  const {
+    onCommentForm,
+    onComment,
+    offComment,
+    submitComment,
+    removeComment,
+    isPending,
+  } = useSetMovieComment(movie.id);
 
   return (
     <ST.Actions>
@@ -25,7 +29,11 @@ const UserActions = ({ movie }: { movie: IMovieSummary }) => {
         <ul>
           <WatchListAction movie={movie} />
           <RatingAction movie={movie} />
-          <CommentAction onComment={onComment} />
+          <CommentAction
+            onComment={onComment}
+            removeComment={removeComment}
+            isPending={isPending}
+          />
         </ul>
       )}
     </ST.Actions>

@@ -1,13 +1,12 @@
 import { queryClient } from 'config';
 import { MutationFunction, useMutation } from '@tanstack/react-query';
-import { useDispatch } from 'react-redux';
-import { addToast } from 'store/toast';
+import useToast from 'hooks/ui/useToast';
 
 const useUsersMutation = <T = unknown>(
   mutationFn: MutationFunction<void, T>,
   movieId?: number
 ) => {
-  const dispatch = useDispatch();
+  const toast = useToast();
 
   return useMutation({
     mutationFn,
@@ -15,9 +14,7 @@ const useUsersMutation = <T = unknown>(
       if (movieId) queryClient.invalidateQueries({ queryKey: ['movies', movieId] });
       queryClient.invalidateQueries({ queryKey: ['initUser'] });
     },
-    onError: (error) => {
-      dispatch(addToast(error.message));
-    },
+    onError: (error) => toast(error.message),
   });
 };
 

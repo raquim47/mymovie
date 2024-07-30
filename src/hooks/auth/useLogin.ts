@@ -27,6 +27,9 @@ const requestGoogleLogin = async () => {
     await setDoc(doc(db, 'users', user.uid), {
       email: user.email,
       nickName: Math.random().toString(36).slice(2, 9),
+      photoUrl: '',
+      watchList: {},
+      reviewList: {},
     });
   }
 };

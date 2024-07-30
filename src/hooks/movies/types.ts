@@ -39,7 +39,7 @@ export interface IMovieSummary {
 
 export interface IReviewListMovie extends IMovieSummary {
   rating: number;
-  comment?: string;
+  comment: string;
 }
 
 export interface IGenre {

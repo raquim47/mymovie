@@ -24,6 +24,7 @@ const updateMovieRating = async ({
         [`reviewList.${movie.id}`]: {
           ...movie,
           rating,
+          comment: '',
           timestamp: Date.now(),
         },
       };

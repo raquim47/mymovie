@@ -1,11 +1,10 @@
 import { doc, getDoc, writeBatch } from 'firebase/firestore';
-import { useAppSelector } from 'store';
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { db, getCurrentUser } from 'utils/firebase';
-import { addToast } from 'store/toast';
 import { ERRORS } from 'utils/error';
 import useUsersMutation from './useUsersMutation';
+import useToast from 'hooks/ui/useToast';
+import useGetMyMovieReview from './useGetMyMovieReview';
 
 export const updateMovieComment = async ({
   comment,
@@ -44,33 +43,34 @@ export const updateMovieComment = async ({
 };
 
 const useSetMovieComment = (movieId: number) => {
-  const dispatch = useDispatch();
+  const toast = useToast();
   const { mutate, isPending } = useUsersMutation(updateMovieComment, movieId);
-  const user = useAppSelector((state) => state.user.userData);
-  const rating = (user?.reviewList && user.reviewList[movieId]?.rating) || 0;
-
+  const { rating } = useGetMyMovieReview();
   const [onCommentForm, setOnCommentForm] = useState(false);
-  const offComment = () => setOnCommentForm(false);
-  const onComment = () => {
-    if (!rating) return dispatch(addToast(ERRORS.REQUIRED_RATING));
 
+  const onComment = () => {
+    if (!rating) return toast(ERRORS.REQUIRED_RATING);
     setOnCommentForm(true);
   };
-
+  const offComment = () => setOnCommentForm(false);
   const submitComment = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const comment = formData.get('comment') as string | undefined;
 
-    if (!comment || comment.length > 80) {
-      dispatch(addToast(ERRORS.INVALID_INPUT));
-      return;
-    }
+    if (!comment || comment.length > 80) return toast(ERRORS.INVALID_INPUT);
 
     mutate({ comment, movieId }, { onSuccess: offComment });
   };
-
-  return { onCommentForm, onComment, offComment, submitComment, isPending };
+  const removeComment = () => mutate({ comment: '', movieId });
+  return {
+    onCommentForm,
+    onComment,
+    offComment,
+    submitComment,
+    removeComment,
+    isPending,
+  };
 };
 
 export default useSetMovieComment;

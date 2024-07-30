@@ -10,7 +10,7 @@ import { FirebaseError } from 'firebase/app';
 const useAuthMutation = <T = void>(mutationFn: MutationFunction<void, T>) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  
   return useMutation({
     mutationFn,
     onSuccess: () => {

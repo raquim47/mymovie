@@ -1,21 +1,20 @@
 import { useAppSelector } from 'store';
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 import { Navigate, Outlet } from 'react-router-dom';
-import { addToast } from 'store/toast';
 import { ERRORS } from 'utils/error';
+import useToast from 'hooks/ui/useToast';
 
 const PrivateRoute = () => {
   const { userData: user, isInitialized } = useAppSelector((state) => state.user);
-  const dispatch = useDispatch();
+  const toast = useToast();
 
   useEffect(() => {
     if (isInitialized && !user) {
-      dispatch(addToast(ERRORS.REQUIRED_LOGIN));
+      toast(ERRORS.REQUIRED_LOGIN);
     }
-  }, [user, isInitialized, dispatch]);
+  }, [user, isInitialized, toast]);
 
-  if(!isInitialized) return null;
+  if (!isInitialized) return null;
 
   return user ? <Outlet /> : <Navigate to="/login" />;
 };
