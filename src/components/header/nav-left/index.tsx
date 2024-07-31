@@ -7,6 +7,7 @@ import UserBrief from '../user-brief';
 import { NavLink } from 'react-router-dom';
 import AuthAction from './AuthAction';
 import ST from './styles';
+import PATH from 'utils/path';
 
 const NavLeft = () => {
   return (
@@ -16,20 +17,20 @@ const NavLeft = () => {
       <nav>
         <ul>
           <ST.NavItem>
-            <NavLink to="/">
+            <NavLink to={PATH.HOME}>
               <FontAwesomeIcon icon={faFilm} />홈
             </NavLink>
           </ST.NavItem>
           <ST.NavItem>
-            <NavLink to="/rated">
-              <FontAwesomeIcon icon={faStar} />
-              평가한 영화
+            <NavLink to={PATH.WATCHLIST}>
+              <FontAwesomeIcon icon={faHeart} />
+              찜한 영화
             </NavLink>
           </ST.NavItem>
           <ST.NavItem>
-            <NavLink to="/favorite">
-              <FontAwesomeIcon icon={faHeart} />
-              찜한 영화
+            <NavLink to={PATH.REVIEWED}>
+              <FontAwesomeIcon icon={faStar} />
+              평가한 영화
             </NavLink>
           </ST.NavItem>
           <AuthAction />

@@ -24,8 +24,8 @@ export const updateMovieComment = async ({
 
   const batch = writeBatch(db);
   const userCommentData = {
-    [`reviewList.${movieId}.comment`]: comment,
-    [`reviewList.${movieId}.timestamp`]: Date.now(),
+    [`reviewed.${movieId}.comment`]: comment,
+    [`reviewed.${movieId}.timestamp`]: Date.now(),
   };
 
   const reviewsData = {

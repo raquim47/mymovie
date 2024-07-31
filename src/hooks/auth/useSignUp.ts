@@ -13,7 +13,7 @@ const requestSignUp = async ({ email, password, nickName }: ISignUpCredentials) 
     nickName,
     photoUrl: '',
     watchList: {},
-    reviewList: {},
+    reviewed: {},
   });
 };
 

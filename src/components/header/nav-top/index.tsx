@@ -1,4 +1,5 @@
 import { NavLink } from 'react-router-dom';
+import PATH from 'utils/path';
 import Logo from '../logo';
 import SearchForm from '../search-form';
 import AuthLink from './AuthLink';
@@ -15,13 +16,13 @@ const NavTop = () => {
       <ST.Nav>
         <ul>
           <li>
-            <NavLink to="/">홈</NavLink>
+            <NavLink to={PATH.HOME}>홈</NavLink>
           </li>
           <li>
-            <NavLink to="/rated">평가한 영화</NavLink>
+            <NavLink to={PATH.WATCHLIST}>찜한 영화</NavLink>
           </li>
           <li>
-            <NavLink to="/favorite">찜한 영화</NavLink>
+            <NavLink to={PATH.REVIEWED}>평가한 영화</NavLink>
           </li>
         </ul>
       </ST.Nav>

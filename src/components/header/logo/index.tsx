@@ -1,8 +1,9 @@
+import PATH from 'utils/path';
 import ST from './styles';
 
 const Logo = () => {
   return (
-    <ST.Link to="/">
+    <ST.Link to={PATH.HOME}>
       <ST.Svg
         xmlns="http://www.w3.org/2000/svg"
         width="1024"

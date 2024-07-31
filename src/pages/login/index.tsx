@@ -2,6 +2,7 @@ import AuthForm from 'components/auth-form/AuthForm';
 import InputField from 'components/auth-form/InputField';
 import Buttons from 'components/ui/buttons';
 import useLogin from 'hooks/auth/useLogin';
+import PATH from 'utils/path';
 
 import { validateLogin } from './validate';
 
@@ -19,7 +20,7 @@ const LoginPage = () => {
       <Buttons.Base type="button" onClick={() => googleLogin()} disabled={isPending}>
         Google 로그인
       </Buttons.Base>
-      <Buttons.Link to="/signup" className={isPending ? 'disabled' : ''}>
+      <Buttons.Link to={PATH.SIGNUP} className={isPending ? 'disabled' : ''}>
         회원가입
       </Buttons.Link>
     </AuthForm>

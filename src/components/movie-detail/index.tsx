@@ -9,9 +9,8 @@ import UserActions from './user-actions';
 import Reviews from './reviews';
 
 const MovieDetail = () => {
-  const { movieId } = useParams();
+  const movieId = useParams().id || '';
   const { data: movie, isLoading, error } = useGetMovieDetail(Number(movieId!));
-
   return (
     <Modal>
       {isLoading && <Loader />}

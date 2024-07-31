@@ -2,6 +2,7 @@ import AuthForm from 'components/auth-form/AuthForm';
 import InputField from 'components/auth-form/InputField';
 import Buttons from 'components/ui/buttons';
 import useSignUp from 'hooks/auth/useSignUp';
+import PATH from 'utils/path';
 import { validateSignUp } from './validate';
 
 const SignUpPage = () => {
@@ -15,7 +16,7 @@ const SignUpPage = () => {
       <Buttons.Base type="submit" accent disabled={isPending}>
         가입하기
       </Buttons.Base>
-      <Buttons.Link to="/login" className={isPending ? 'disabled' : ''}>
+      <Buttons.Link to={PATH.LOGIN} className={isPending ? 'disabled' : ''}>
         로그인
       </Buttons.Link>
     </AuthForm>

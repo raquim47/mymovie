@@ -37,7 +37,7 @@ export interface IMovieSummary {
   timestamp?: number;
 }
 
-export interface IReviewListMovie extends IMovieSummary {
+export interface IReviewedMovie extends IMovieSummary {
   rating: number;
   comment: string;
 }

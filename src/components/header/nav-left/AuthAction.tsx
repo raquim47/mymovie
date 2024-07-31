@@ -3,13 +3,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRightToBracket, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import ST from './styles';
 import { useAppSelector } from 'store';
+import PATH from 'utils/path';
 
 const AuthAction = () => {
   const { userData: user, isInitialized } = useAppSelector((state) => state.user);
   return (
     <ST.NavItem>
       {isInitialized && !user && (
-        <NavLink to="/login">
+        <NavLink to={PATH.LOGIN}>
           <FontAwesomeIcon icon={faRightToBracket} />
           로그인
         </NavLink>

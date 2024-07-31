@@ -1,11 +1,11 @@
-import { IMovieSummary, IReviewListMovie } from 'hooks/movies/types';
+import { IMovieSummary, IReviewedMovie } from 'hooks/movies/types';
 
 export interface IUser {
   email: string;
   nickName: string;
   photoUrl: string;
   watchList: { [key: string]: IMovieSummary };
-  reviewList: { [key: string]: IReviewListMovie };
+  reviewed: { [key: string]: IReviewedMovie };
 }
 
 export interface IUserState {

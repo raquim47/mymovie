@@ -19,9 +19,9 @@ const updateMovieRating = async ({
 
   const batch = writeBatch(db);
   const userRatingData = isCancel
-    ? { [`reviewList.${movie.id}`]: deleteField() }
+    ? { [`reviewed.${movie.id}`]: deleteField() }
     : {
-        [`reviewList.${movie.id}`]: {
+        [`reviewed.${movie.id}`]: {
           ...movie,
           rating,
           comment: '',
@@ -44,7 +44,7 @@ const useSetMovieRating = (movieId: number) => {
   const { user, requireLogin } = useRequireLogin();
   const { mutate, isPending } = useUsersMutation(updateMovieRating, movieId);
 
-  const rating = (user?.reviewList && user.reviewList[movieId]?.rating) || 0;
+  const rating = user?.reviewed[movieId]?.rating || 0;
   const [key, setKey] = useState(0);
 
   const handleChange = (newRating: number, movie: IMovieSummary) => {

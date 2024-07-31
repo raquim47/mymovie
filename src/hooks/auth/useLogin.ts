@@ -29,7 +29,7 @@ const requestGoogleLogin = async () => {
       nickName: Math.random().toString(36).slice(2, 9),
       photoUrl: '',
       watchList: {},
-      reviewList: {},
+      reviewed: {},
     });
   }
 };
