@@ -1,5 +1,5 @@
 import { TMDB_CONFIG } from 'config';
-import { ERRORS } from './error';
+import { ERRORS } from './errors';
 
 export const handleRequestTMDB = async <T>(path: string): Promise<T> => {
   const querySeparator = path.includes('?') ? '&' : '?';

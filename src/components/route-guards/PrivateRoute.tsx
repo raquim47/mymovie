@@ -1,7 +1,7 @@
 import { useAppSelector } from 'store';
 import { useEffect } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
-import { ERRORS } from 'utils/error';
+import { ERRORS } from 'utils/errors';
 import useToast from 'hooks/ui/useToast';
 import PATH from 'utils/path';
 

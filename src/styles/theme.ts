@@ -16,7 +16,7 @@ export const theme: DefaultTheme = {
     gray: '#303133',
     purple: {
       dark: '#462EB2',
-      normal: '#BD69D4',
+      normal: '#783ebb',
     },
   },
 

@@ -6,7 +6,7 @@ import { auth, getUserDoc } from 'utils/firebase';
 import { addToast } from 'store/toast';
 import { setUserState } from 'store/user';
 import { IUser } from 'store/user/types';
-import { ERRORS } from 'utils/error';
+import { ERRORS } from 'utils/errors';
 
 const requestUserState = (): Promise<IUser | null> =>
   new Promise((resolve, reject) => {

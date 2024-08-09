@@ -49,8 +49,9 @@ const RatioBox = styled.div`
 `;
 
 const Observer = styled.div`
-  height: 10px;
+  height: 100px;
 `
 
 const ST = { Keyword, SearchResults, RatioBox, Observer };
+
 export default ST;

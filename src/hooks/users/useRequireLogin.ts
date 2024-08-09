@@ -1,5 +1,5 @@
 import { useAppSelector } from 'store';
-import { ERRORS } from 'utils/error';
+import { ERRORS } from 'utils/errors';
 import useToast from 'hooks/ui/useToast';
 
 const useRequireLogin = () => {

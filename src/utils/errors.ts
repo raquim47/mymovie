@@ -1,15 +1,15 @@
 export const FIREBASE_AUTH_ERRORS: Record<string, Error | undefined> = {
   'auth/user-not-found': {
     message: '이메일 또는 패스워드가 유효하지 않습니다.',
-    name: 'global',
+    name: 'form',
   },
   'auth/wrong-password': {
     message: '이메일 또는 패스워드가 유효하지 않습니다.',
-    name: 'global',
+    name: 'form',
   },
-  'auth/invalid-password': {
+  'auth/weak-password': {
     message: '비밀번호를 6글자 이상 입력해주세요.',
-    name: 'email',
+    name: 'password',
   },
   'auth/invalid-email': { message: '유효하지 않은 이메일 주소입니다.', name: 'email' },
   'auth/email-already-in-use': { message: '이미 사용중인 이메일입니다.', name: 'email' },
@@ -19,10 +19,21 @@ export const FIREBASE_AUTH_ERRORS: Record<string, Error | undefined> = {
   },
   'auth/popup-closed-by-user': {
     message: '구글 로그인 팝업 닫힘.',
-    name: 'popup-close',
+    name: 'form',
+  },
+  INVALID_NICKNAME: {
+    message: '닉네임은 2자 이상, 8자 이하여야 합니다.',
+    name: 'nickName',
   },
 };
 
+export const FIREBASE_ERRORS = {
+  'auth/user-not-found': '이메일 또는 패스워드가 유효하지 않습니다.',
+  'auth/wrong-password': '이메일 또는 패스워드가 유효하지 않습니다.',
+  'auth/invalid-password': '비밀번호를 6글자 이상 입력해주세요.',
+  'auth/invalid-email': '비밀번호를 6글자 이상 입력해주세요.',
+  'auth/email-already-in-use': '이미 사용중인 이메일입니다.',
+};
 export const ERRORS = {
   REQUEST_ERROR: '요청이 실패했습니다. 다시 시도해주세요.',
   INVALID_USER: '유효하지 않은 사용자입니다.',

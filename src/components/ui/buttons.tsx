@@ -11,7 +11,7 @@ export const buttonStyles = css`
   text-align: center;
 
   :hover {
-    background-color: ${(props) => props.theme.color.purple.dark};
+    background-color: ${(props) => props.theme.color.purple.normal};
   }
 
   :disabled {
@@ -23,22 +23,30 @@ export const buttonStyles = css`
 const Base = styled.button<{ accent?: boolean }>`
   ${buttonStyles}
   background-color: ${(props) =>
-    props.accent ? props.theme.color.purple.normal : props.theme.color.gray};
+    props.accent ? props.theme.color.purple.dark : props.theme.color.gray};
 `;
 
-const Link = styled(RouterLink)`
+const Link = styled(RouterLink)<{ disabled?: boolean }>`
   ${buttonStyles}
   display: inline-block;
+  ${(props) =>
+    props.disabled &&
+    `
+    pointer-events: none;
+    background-color: ${props.theme.color.gray};    
+    `}
 `;
 
-const Label = styled.label`
+const Label = styled.label<{ disabled?: boolean }>`
   ${buttonStyles}
   display: block;
   cursor: pointer;
-
-  &.disabled {
+  ${(props) =>
+    props.disabled &&
+    `
     pointer-events: none;
-  }
+    background-color: ${props.theme.color.gray};    
+    `}
 `;
 
 const Buttons = { Base, Link, Label };

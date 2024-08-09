@@ -2,7 +2,7 @@ import { updateDoc } from 'firebase/firestore';
 import { useAppSelector } from 'store';
 import { useState } from 'react';
 import { getCurrentUser } from 'utils/firebase';
-import { ERRORS } from 'utils/error';
+import { ERRORS } from 'utils/errors';
 import useUsersMutation from './useUsersMutation';
 
 const updateNickName = async (nickName: string) => {

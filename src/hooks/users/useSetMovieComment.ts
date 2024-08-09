@@ -1,7 +1,7 @@
 import { doc, getDoc, writeBatch } from 'firebase/firestore';
 import { useState } from 'react';
 import { db, getCurrentUser } from 'utils/firebase';
-import { ERRORS } from 'utils/error';
+import { ERRORS } from 'utils/errors';
 import useUsersMutation from './useUsersMutation';
 import useToast from 'hooks/ui/useToast';
 import useGetMyMovieReview from './useGetMyMovieReview';

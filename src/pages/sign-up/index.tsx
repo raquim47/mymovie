@@ -1,25 +1,48 @@
-import AuthForm from 'components/auth-form/AuthForm';
-import InputField from 'components/auth-form/InputField';
+import BasicForm from 'components/form/basic-form';
+import FormCommonError from 'components/form/common-error';
+import InputField from 'components/form/input-field';
 import Buttons from 'components/ui/buttons';
-import useSignUp from 'hooks/auth/useSignUp';
+import { requestSignUp } from 'hooks/auth/useLoginSuccess';
+import useLoginSuccess from 'hooks/auth/useOnLoginSuccess';
+import useForm from 'hooks/ui/useForm';
+import {
+  validateEmail,
+  validateNickName,
+  validatePasswordConfirm,
+  validatePasswordForSignUp,
+} from 'utils/form-validation';
 import PATH from 'utils/path';
-import { validateSignUp } from './validate';
 
 const SignUpPage = () => {
-  const { isPending, mutate: signUp } = useSignUp();
+  const onLogin = useLoginSuccess();
+  const { isLoading, handleSubmit, register, commonError } = useForm([
+    'email',
+    'nickName',
+    'password',
+    'passwordConfirm',
+  ]);
   return (
-    <AuthForm title="회원가입" submitAction={signUp} validate={validateSignUp}>
-      <InputField name="email" type="email" label="이메일" />
-      <InputField name="nickName" label="닉네임" />
-      <InputField name="password" type="password" label="비밀번호" />
-      <InputField name="confirmPassword" type="password" label="비밀번호 확인" />
-      <Buttons.Base type="submit" accent disabled={isPending}>
+    <BasicForm title="회원가입" onSubmit={handleSubmit(requestSignUp, onLogin)}>
+      <InputField {...register('email', validateEmail)} label="이메일" autoFocus />
+      <InputField {...register('nickName', validateNickName)} label="닉네임" />
+      <InputField
+        {...register('password', validatePasswordForSignUp)}
+        type="password"
+        label="비밀번호"
+      />
+      <InputField
+        {...register('passwordConfirm', validatePasswordConfirm)}
+        type="password"
+        label="비밀번호 확인"
+      />
+      {commonError && <FormCommonError message={commonError} />}
+      <Buttons.Base type="submit" accent disabled={isLoading}>
         가입하기
       </Buttons.Base>
-      <Buttons.Link to={PATH.LOGIN} className={isPending ? 'disabled' : ''}>
+      <Buttons.Link to={PATH.LOGIN} disabled={isLoading}>
         로그인
       </Buttons.Link>
-    </AuthForm>
+    </BasicForm>
   );
 };
 

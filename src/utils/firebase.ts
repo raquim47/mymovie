@@ -4,7 +4,7 @@ import { getAuth } from 'firebase/auth';
 import { doc, getDoc, getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 import { IUser } from 'store/user/types';
-import { ERRORS } from 'utils/error';
+import { ERRORS } from 'utils/errors';
 
 const app = initializeApp(FIREBASE_CONFIG);
 const auth = getAuth(app);
