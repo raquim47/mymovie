@@ -1,45 +1,51 @@
 import { useState, useCallback, ChangeEvent, FormEvent } from 'react';
 
-const useForm = <T extends string>(fields: T[]) => {
-  const defaultErrors = fields.reduce(
-    (acc, field) => ({ ...acc, [field]: null }),
+type Validator<T extends string> = (
+  value: string,
+  values?: Record<T, string>
+) => string | null;
+type Values<T extends string> = Record<T, string>;
+type Validators<T extends string> = Partial<Record<T, Validator<T>>>;
+
+const getErrors = <T extends string>(
+  fields: T[],
+  values = {} as Values<T>,
+  validators: Validators<T> = {}
+) =>
+  fields.reduce(
+    (acc, field) => ({
+      ...acc,
+      [field]: validators[field]?.(values[field], values) ?? null,
+    }),
     {} as Record<T | 'form', string | null>
   );
-  const [values, setValues] = useState(
-    fields.reduce((acc, field) => ({ ...acc, [field]: '' }), {} as Record<T, string>)
+
+const useForm = <T extends string>(fields: T[]) => {
+  const [values, setValues] = useState(() =>
+    fields.reduce((acc, field) => ({ ...acc, [field]: '' }), {} as Values<T>)
   );
-  const [errors, setErrors] = useState(defaultErrors);
+  const [errors, setErrors] = useState(() => getErrors(fields));
   const [isLoading, setIsLoading] = useState(false);
-  const [validators, setValidators] = useState<
-    Partial<Record<T, (value: string) => string | null>>
-  >({});
+  const [validators, setValidators] = useState<Validators<T>>({});
   const [focusField, setFocusField] = useState<T | null>(null);
 
   const handleChange = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
-      console.log('handleChange')
       const { name, value } = event.target;
       setValues((prev) => ({ ...prev, [name]: value }));
-
       if (errors[name as T]) setErrors((prevErrors) => ({ ...prevErrors, [name]: null }));
     },
     [errors]
   );
 
   const handleSubmit =
-    (onSubmit: (values: Record<T, string>) => Promise<void>, onSuccess?: () => void) =>
+    (onSubmit: (values: Values<T>) => Promise<void>, onSuccess?: () => void) =>
     async (event: FormEvent) => {
       event.preventDefault();
-      setErrors(defaultErrors);
-
-      const newErrors = fields.reduce(
-        (acc, field) => ({
-          ...acc,
-          [field]: validators[field] ? validators[field]!(values[field]) : null,
-        }),
-        {} as Record<T | 'form', string | null>
-      );
+      setErrors(getErrors(fields));
       await new Promise((resolve) => setTimeout(resolve, 50));
+
+      const newErrors = getErrors(fields, values, validators);
       setErrors(newErrors);
       setFocusField(fields.find((field) => newErrors[field] !== null) || null);
       setIsLoading(true);
@@ -62,15 +68,11 @@ const useForm = <T extends string>(fields: T[]) => {
     };
 
   const register = useCallback(
-    (
-      name: T,
-      validate?: (value: string, values?: Record<T, string>) => string | null
-    ) => {
-      console.log('register', name)
+    (name: T, validate?: Validator<T>) => {
       if (validate && !validators[name]) {
         setValidators((prev) => ({
           ...prev,
-          [name]: (value: string) => validate(value, values),
+          [name]: validate,
         }));
       }
       return {
@@ -83,12 +85,13 @@ const useForm = <T extends string>(fields: T[]) => {
     },
     [values, errors, validators, handleChange, focusField]
   );
+  
   return {
     isLoading,
     values,
     handleSubmit,
     register,
-    commonError: errors.form,
+    errors,
   };
 };
 

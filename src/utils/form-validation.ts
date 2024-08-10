@@ -27,6 +27,7 @@ export const validatePasswordConfirm = (
   value: string,
   values: Record<string, string> = {}
 ) => {
+  console.log('validatePasswordConfirm', values);
   if (!value) return '비밀번호 확인을 입력하세요.';
   if (value !== values.password) return '비밀번호가 일치하지 않습니다.';
   return null;

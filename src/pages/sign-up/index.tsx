@@ -15,7 +15,7 @@ import PATH from 'utils/path';
 
 const SignUpPage = () => {
   const onLogin = useLoginSuccess();
-  const { isLoading, handleSubmit, register, commonError } = useForm([
+  const { isLoading, handleSubmit, register, errors } = useForm([
     'email',
     'nickName',
     'password',
@@ -35,7 +35,7 @@ const SignUpPage = () => {
         type="password"
         label="비밀번호 확인"
       />
-      {commonError && <FormCommonError message={commonError} />}
+      {errors.form && <FormCommonError message={errors.form} />}
       <Buttons.Base type="submit" accent disabled={isLoading}>
         가입하기
       </Buttons.Base>

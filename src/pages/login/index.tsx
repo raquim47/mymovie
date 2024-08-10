@@ -10,7 +10,7 @@ import useLoginSuccess from 'hooks/auth/useOnLoginSuccess';
 
 const LoginPage = () => {
   const onLogin = useLoginSuccess();
-  const { isLoading, handleSubmit, register, commonError } = useForm([
+  const { isLoading, handleSubmit, register, errors } = useForm([
     'email',
     'password',
   ]);
@@ -22,7 +22,7 @@ const LoginPage = () => {
         type="password"
         label="비밀번호"
       />
-      {commonError && <FormCommonError message={commonError} />}
+      {errors.form && <FormCommonError message={errors.form} />}
       <Buttons.Base accent type="submit" disabled={isLoading}>
         로그인
       </Buttons.Base>
