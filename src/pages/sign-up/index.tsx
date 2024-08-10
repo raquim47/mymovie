@@ -2,9 +2,9 @@ import BasicForm from 'components/form/basic-form';
 import FormCommonError from 'components/form/common-error';
 import InputField from 'components/form/input-field';
 import Buttons from 'components/ui/buttons';
-import { requestSignUp } from 'hooks/auth/useLoginSuccess';
-import useLoginSuccess from 'hooks/auth/useOnLoginSuccess';
+import useLoginSuccess from 'hooks/auth/useLoginSuccess';
 import useForm from 'hooks/ui/useForm';
+import { requestSignUp } from 'services/auth';
 import {
   validateEmail,
   validateNickName,

@@ -1,4 +1,5 @@
 import { useState, useCallback, ChangeEvent, FormEvent } from 'react';
+import { ERRORS } from 'utils/errors';
 
 type Validator<T extends string> = (
   value: string,
@@ -17,7 +18,7 @@ const getErrors = <T extends string>(
       ...acc,
       [field]: validators[field]?.(values[field], values) ?? null,
     }),
-    {} as Record<T | 'form', string | null>
+    {} as Record<T | 'common', string | null>
   );
 
 const useForm = <T extends string>(fields: T[]) => {
@@ -56,8 +57,9 @@ const useForm = <T extends string>(fields: T[]) => {
           if (onSuccess) onSuccess();
         }
       } catch (error) {
-        const { name = 'form', message = '알 수 없는 오류가 발생했습니다.' } =
+        const { name = 'common', message = ERRORS.REQUEST_ERROR } =
           error instanceof Error ? error : {};
+        console.log(error);
         setErrors((prev) => ({
           ...prev,
           [name]: message,
@@ -85,11 +87,12 @@ const useForm = <T extends string>(fields: T[]) => {
     },
     [values, errors, validators, handleChange, focusField]
   );
-  
+
   return {
     isLoading,
     values,
     handleSubmit,
+    setErrors,
     register,
     errors,
   };

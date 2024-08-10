@@ -19,6 +19,7 @@ const InputField = ({
     <InputRow isError={!!error}>
       <input
         {...props}
+        id={props.name}
         placeholder=" "
         autoComplete={props.name === 'password' ? 'off' : props.name}
         ref={inputRef}

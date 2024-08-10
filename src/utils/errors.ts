@@ -1,47 +1,43 @@
-export const FIREBASE_AUTH_ERRORS: Record<string, Error | undefined> = {
-  'auth/user-not-found': {
-    message: '이메일 또는 패스워드가 유효하지 않습니다.',
-    name: 'form',
-  },
-  'auth/wrong-password': {
-    message: '이메일 또는 패스워드가 유효하지 않습니다.',
-    name: 'form',
-  },
-  'auth/weak-password': {
-    message: '비밀번호를 6글자 이상 입력해주세요.',
-    name: 'password',
-  },
-  'auth/invalid-email': { message: '유효하지 않은 이메일 주소입니다.', name: 'email' },
-  'auth/email-already-in-use': { message: '이미 사용중인 이메일입니다.', name: 'email' },
-  'auth/invalid-display-name': {
-    message: '유효하지 않은 닉네임입니다.',
-    name: 'nickName',
-  },
-  'auth/popup-closed-by-user': {
-    message: '구글 로그인 팝업 닫힘.',
-    name: 'form',
-  },
-  INVALID_NICKNAME: {
-    message: '닉네임은 2자 이상, 8자 이하여야 합니다.',
-    name: 'nickName',
-  },
+export class CustomError extends Error {
+  name: string;
+  constructor(message: string, name: string = 'common') {
+    super(message);
+    this.name = name;
+  }
+}
+
+export const FIREBASE_ERRORS: Record<string, Error> = {
+  'auth/invalid-email': new CustomError('유효하지 않은 이메일 주소입니다.', 'email'),
+  'auth/email-already-in-use': new CustomError('이미 사용중인 이메일입니다.', 'email'),
+  'auth/user-not-found': new CustomError('이메일 또는 패스워드가 유효하지 않습니다.'),
+  'auth/wrong-password': new CustomError('이메일 또는 패스워드가 유효하지 않습니다.'),
+  'auth/weak-password': new CustomError(
+    '비밀번호를 6글자 이상 입력해주세요.',
+    'password'
+  ),
+  'auth/popup-closed-by-user': new CustomError('구글 로그인 팝업 닫힘', 'ignore'),
 };
 
-export const FIREBASE_ERRORS = {
-  'auth/user-not-found': '이메일 또는 패스워드가 유효하지 않습니다.',
-  'auth/wrong-password': '이메일 또는 패스워드가 유효하지 않습니다.',
-  'auth/invalid-password': '비밀번호를 6글자 이상 입력해주세요.',
-  'auth/invalid-email': '비밀번호를 6글자 이상 입력해주세요.',
-  'auth/email-already-in-use': '이미 사용중인 이메일입니다.',
-};
 export const ERRORS = {
-  REQUEST_ERROR: '요청이 실패했습니다. 다시 시도해주세요.',
-  INVALID_USER: '유효하지 않은 사용자입니다.',
+  REQUEST_ERROR: '요청이 실패했습니다.',
+  // 이메일
+  EMPTY_EMAIL: '이메일을 입력하세요.',
+  INVALID_EMAIL: '유효한 이메일 주소를 입력하세요.',
+  // 비밀번호
+  EMPTY_PASSWORD: '비밀번호를 입력하세요.',
+  INVALID_PASSWORD: '비밀번호를 6글자 이상 입력해주세요.',
+  PASSWORD_MISMATCH: '비밀번호가 일치하지 않습니다.',
+  EMPTY_PASSWORD_CONFIRM: '비밀번호 확인을 입력하세요.',
+  // 닉네임
+  EMPTY_NICKNAME: '닉네임을 입력하세요.',
   INVALID_NICKNAME: '닉네임은 2자 이상, 8자 이하여야 합니다.',
-  AUTH_ERROR: '인증 상태 확인 중 오류가 발생했습니다.',
+
   REQUIRED_LOGIN: '로그인이 필요합니다.',
   ALREADY_LOGGED_IN: '이미 로그인 상태입니다.',
   REQUIRED_RATING: '별점을 먼저 남겨주세요.',
   NOT_FOUND_REVIEWS: '평가 정보를 찾을 수 없습니다.',
   INVALID_INPUT: '유효한 입력값이 아닙니다.',
+
+  AUTH_ERROR: '인증 상태 확인 중 오류가 발생했습니다.',
+  INVALID_USER: '유효하지 않은 사용자입니다.',
 };
