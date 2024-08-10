@@ -18,7 +18,7 @@ const getErrors = <T extends string>(
       ...acc,
       [field]: validators[field]?.(values[field], values) ?? null,
     }),
-    {} as Record<T | 'common', string | null>
+    { common: null } as Record<T | 'common', string | null>
   );
 
 const useForm = <T extends string>(fields: T[]) => {

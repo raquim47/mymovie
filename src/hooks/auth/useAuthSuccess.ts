@@ -1,7 +1,7 @@
 import { queryClient } from 'config';
 import { useNavigate } from 'react-router-dom';
 
-const useLoginSuccess = () => {
+const useAuthSuccess = () => {
   const navigate = useNavigate();
   return () => {
     queryClient.invalidateQueries({ queryKey: ['initUser'] });
@@ -9,4 +9,4 @@ const useLoginSuccess = () => {
   };
 };
 
-export default useLoginSuccess;
+export default useAuthSuccess;

@@ -3,9 +3,9 @@ import {
   GoogleAuthProvider,
   signInWithEmailAndPassword,
   signInWithPopup,
+  signOut,
 } from 'firebase/auth';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
-import { CustomError } from 'utils/errors';
 import { auth, db } from 'utils/firebase';
 import handleRequest from 'utils/request-handler';
 import { ILoginCredentials, ISignUpCredentials } from './types';
@@ -13,7 +13,6 @@ import { ILoginCredentials, ISignUpCredentials } from './types';
 // 회원가입
 export const requestSignUp = async ({ email, password, nickName }: ISignUpCredentials) =>
   handleRequest(async () => {
-    
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
 
@@ -50,3 +49,6 @@ export const requestGoogleLogin = () =>
       });
     }
   });
+
+// 로그아웃
+export const requestLogout = handleRequest(() => signOut(auth));

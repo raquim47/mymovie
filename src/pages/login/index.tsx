@@ -5,40 +5,29 @@ import FormCommonError from 'components/form/common-error';
 import useForm from 'hooks/ui/useForm';
 import { validateEmail, validatePassword } from 'utils/form-validation';
 import PATH from 'utils/path';
-import useLoginSuccess from 'hooks/auth/useLoginSuccess';
+import useAuthSuccess from 'hooks/auth/useAuthSuccess';
 import { requestGoogleLogin, requestLogin } from 'services/auth';
 import { useMutation } from '@tanstack/react-query';
-import { useEffect } from 'react';
 
 const LoginPage = () => {
-  const onLogin = useLoginSuccess();
+  const onAuthSuccess = useAuthSuccess();
   const { isLoading, handleSubmit, register, errors, setErrors } = useForm([
     'email',
     'password',
   ]);
-  const {
-    isPending,
-    mutate: googleLogin,
-    error: googleLoginError,
-  } = useMutation({
+  const { isPending, mutate: googleLogin } = useMutation({
     mutationFn: requestGoogleLogin,
-    onSuccess: onLogin,
+    onSuccess: onAuthSuccess,
+    onError: (error) => {
+      if (error?.name === 'common') {
+        setErrors((prev) => ({ ...prev, common: error.message }));
+      }
+    },
   });
   const isAllLoading = isLoading || isPending;
-  console.log(
-    'googleLoginError',
-    'name',
-    googleLoginError?.name,
-    'message',
-    googleLoginError?.message
-  );
-  useEffect(() => {
-    if (googleLoginError?.name !== 'common') return;
-    setErrors((prev) => ({ ...prev, common: googleLoginError.message }));
-  }, [googleLoginError]);
 
   return (
-    <BasicForm title="로그인" onSubmit={handleSubmit(requestLogin, onLogin)}>
+    <BasicForm title="로그인" onSubmit={handleSubmit(requestLogin, onAuthSuccess)}>
       <InputField {...register('email', validateEmail)} label="이메일" autoFocus />
       <InputField
         {...register('password', validatePassword)}

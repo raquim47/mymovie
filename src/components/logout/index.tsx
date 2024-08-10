@@ -1,5 +1,7 @@
-import useLogout from 'hooks/auth/useLogout';
+import { useMutation } from '@tanstack/react-query';
+import useAuthSuccess from 'hooks/auth/useAuthSuccess';
 import { ReactNode } from 'react';
+import { requestLogout } from 'services/auth';
 
 const LogoutButton = ({
   children,
@@ -8,9 +10,13 @@ const LogoutButton = ({
   children: ReactNode;
   className?: string;
 }) => {
-  const { isPending, mutate: logout } = useLogout();
+  const onAuthSuccess = useAuthSuccess();
+  const { isPending, mutate } = useMutation({
+    mutationFn: requestLogout,
+    onSuccess: onAuthSuccess,
+  });
   return (
-    <button onClick={() => logout()} disabled={isPending} className={className}>
+    <button onClick={() => mutate()} disabled={isPending} className={className}>
       {children}
     </button>
   );
