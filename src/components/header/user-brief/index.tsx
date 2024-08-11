@@ -1,10 +1,10 @@
-import { useAppSelector } from 'store';
 import { Link } from 'react-router-dom';
 import ST from './styles';
 import PATH from 'utils/path';
+import useGetUser from 'hooks/users/useGetUser';
 
 const UserBrief = () => {
-  const user = useAppSelector((state) => state.user.userData);
+  const { user } = useGetUser();
   if (!user) return null;
 
   return (

@@ -51,4 +51,4 @@ export const requestGoogleLogin = () =>
   });
 
 // 로그아웃
-export const requestLogout = handleRequest(() => signOut(auth));
+export const requestLogout = () => handleRequest(() => signOut(auth));

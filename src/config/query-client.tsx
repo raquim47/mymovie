@@ -1,5 +1,6 @@
-import { ReactNode } from 'react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { QueryCache, QueryClient } from '@tanstack/react-query';
+import { store } from 'store';
+import { addToast } from 'store/toast';
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -8,8 +9,9 @@ export const queryClient = new QueryClient({
       refetchOnWindowFocus: false,
     },
   },
+  queryCache: new QueryCache({
+    onError: (error) => {
+      store.dispatch(addToast(error.message));
+    },
+  }),
 });
-
-export const QueryProvider = ({ children }: { children: ReactNode }) => (
-  <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-);

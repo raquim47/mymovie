@@ -43,13 +43,13 @@ export const updateMovieComment = async ({
 };
 
 const useSetMovieComment = (movieId: number) => {
-  const toast = useToast();
+  const { addToast } = useToast();
   const { mutate, isPending } = useUsersMutation(updateMovieComment, movieId);
   const { rating } = useGetMyMovieReview();
   const [onCommentForm, setOnCommentForm] = useState(false);
 
   const onComment = () => {
-    if (!rating) return toast(ERRORS.REQUIRED_RATING);
+    if (!rating) return addToast(ERRORS.REQUIRED_RATING);
     setOnCommentForm(true);
   };
   const offComment = () => setOnCommentForm(false);
@@ -58,7 +58,7 @@ const useSetMovieComment = (movieId: number) => {
     const formData = new FormData(event.currentTarget);
     const comment = formData.get('comment') as string | undefined;
 
-    if (!comment || comment.length > 80) return toast(ERRORS.INVALID_INPUT);
+    if (!comment || comment.length > 80) return addToast(ERRORS.INVALID_INPUT);
 
     mutate({ comment, movieId }, { onSuccess: offComment });
   };

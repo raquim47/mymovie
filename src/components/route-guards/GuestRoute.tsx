@@ -1,22 +1,24 @@
-import { useAppSelector } from 'store';
-import { useEffect } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
-import { ERRORS } from 'utils/errors';
 import useToast from 'hooks/ui/useToast';
+import useGetUser from 'hooks/users/useGetUser';
+import { ERRORS } from 'utils/errors';
+import { useEffect } from 'react';
+import PATH from 'utils/path';
+import Loader from 'components/ui/Loader';
 
 const GuestRoute = () => {
-  const { userData: user, isInitialized } = useAppSelector((state) => state.user);
-  const toast = useToast();
+  const { user, isLoading } = useGetUser();
+  const { addToast } = useToast();
 
   useEffect(() => {
-    if (isInitialized && user) {
-      toast(ERRORS.ALREADY_LOGGED_IN);
+    if (!isLoading && user) {
+      addToast(ERRORS.ALREADY_LOGGED_IN);
     }
-  }, [user, isInitialized, toast]);
+  }, [isLoading, user]);
 
-  if (!isInitialized) return null;
+  if (isLoading) return <Loader />;
 
-  return user ? <Navigate to=".." /> : <Outlet />;
+  return user ? <Navigate to={PATH.HOME} /> : <Outlet />;
 };
 
 export default GuestRoute;

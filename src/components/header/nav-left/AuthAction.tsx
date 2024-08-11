@@ -2,20 +2,20 @@ import { NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRightToBracket, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import ST from './styles';
-import { useAppSelector } from 'store';
 import PATH from 'utils/path';
+import useGetUser from 'hooks/users/useGetUser';
 
 const AuthAction = () => {
-  const { userData: user, isInitialized } = useAppSelector((state) => state.user);
+  const { user, isLoading } = useGetUser();
   return (
     <ST.NavItem>
-      {isInitialized && !user && (
+      {!isLoading && !user && (
         <NavLink to={PATH.LOGIN}>
           <FontAwesomeIcon icon={faRightToBracket} />
           로그인
         </NavLink>
       )}
-      {isInitialized && user && (
+      {!isLoading && user && (
         <ST.LogoutBtn>
           <FontAwesomeIcon icon={faRightFromBracket} />
           로그아웃

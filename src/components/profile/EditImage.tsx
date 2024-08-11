@@ -1,12 +1,12 @@
-import { useAppSelector } from 'store';
 import Buttons from 'components/ui/buttons';
 import ST from './styles';
 import Loader from 'components/ui/Loader';
 import useSetUserImage from 'hooks/users/useSetUserImage';
+import useGetUser from 'hooks/users/useGetUser';
 
 const EditImage = () => {
-  const photoUrl = useAppSelector((state) => state.user.userData?.photoUrl);
- 
+  const { user } = useGetUser();
+
   const { handleUpload, handleRemove, handleImageError, isPending } = useSetUserImage();
 
   return (
@@ -16,7 +16,7 @@ const EditImage = () => {
           <Loader />
         ) : (
           <img
-            src={photoUrl || require('assets/profile.png')}
+            src={user?.photoUrl || require('assets/profile.png')}
             alt="프로필 이미지"
             onError={handleImageError}
           />

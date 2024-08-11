@@ -6,21 +6,22 @@ import { GlobalStyle } from './styles/grobalStyle';
 import { theme } from './styles/theme';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
-import { QueryProvider } from 'config';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { queryClient } from 'config';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
 root.render(
   // <React.StrictMode>
   <Provider store={store}>
-    <QueryProvider>
+    <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={theme}>
         <GlobalStyle />
         <BrowserRouter basename="">
           <App />
         </BrowserRouter>
       </ThemeProvider>
-    </QueryProvider>
+    </QueryClientProvider>
   </Provider>
   // </React.StrictMode>
 );

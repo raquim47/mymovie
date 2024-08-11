@@ -1,23 +1,21 @@
-// components/Toast.tsx
 import { useAppSelector } from 'store';
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { removeToast } from 'store/toast';
 import ST from './styles';
+import useToast from 'hooks/ui/useToast';
 
 const Toast = () => {
-  const dispatch = useDispatch();
+  const { removeToast } = useToast();
   const messages = useAppSelector((state) => state.toast.messages);
 
   useEffect(() => {
     messages.forEach((message) => {
       const timer = setTimeout(() => {
-        dispatch(removeToast(message.id));
+        removeToast(message.id);
       }, message.duration);
 
       return () => clearTimeout(timer);
     });
-  }, [messages, dispatch]);
+  }, [messages]);
 
   return (
     <ST.Container>
@@ -31,9 +29,7 @@ const Toast = () => {
           layoutId={message.id}
         >
           {message.description}
-          <ST.CloseButton onClick={() => dispatch(removeToast(message.id))}>
-            ×
-          </ST.CloseButton>
+          <ST.CloseButton onClick={() => removeToast(message.id)}>×</ST.CloseButton>
           <ST.ProgressBar duration={message.duration} />
         </ST.Message>
       ))}

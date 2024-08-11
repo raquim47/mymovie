@@ -1,4 +1,4 @@
-import { IMovieSummary, IReviewedMovie } from 'hooks/movies/types';
+import { IMovieSummary, IReviewedMovie } from "hooks/movies/types";
 
 export interface IUser {
   email: string;

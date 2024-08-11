@@ -1,10 +1,12 @@
 import { useDispatch } from 'react-redux';
-import { addToast } from 'store/toast';
+import { addToast, removeToast } from 'store/toast';
 
 const useToast = () => {
   const dispatch = useDispatch();
-  const toast = (message: string) => dispatch(addToast(message));
-  return toast;
+  return {
+    addToast: (message: string) => dispatch(addToast(message)),
+    removeToast: (id: string) => dispatch(removeToast(id)),
+  };
 };
 
 export default useToast;

@@ -6,7 +6,7 @@ const useUsersMutation = <T = unknown>(
   mutationFn: MutationFunction<void, T>,
   movieId?: number
 ) => {
-  const toast = useToast();
+  const { addToast } = useToast();
 
   return useMutation({
     mutationFn,
@@ -14,7 +14,7 @@ const useUsersMutation = <T = unknown>(
       if (movieId) queryClient.invalidateQueries({ queryKey: ['movies', movieId] });
       queryClient.invalidateQueries({ queryKey: ['initUser'] });
     },
-    onError: (error) => toast(error.message),
+    onError: (error) => addToast(error.message),
   });
 };
 
