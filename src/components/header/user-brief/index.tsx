@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import ST from './styles';
 import PATH from 'utils/path';
 import useGetUser from 'hooks/users/useGetUser';
+import ProfileImage from 'components/profile/profile-image';
 
 const UserBrief = () => {
   const { user } = useGetUser();
@@ -9,11 +10,7 @@ const UserBrief = () => {
 
   return (
     <ST.UserBrief>
-      <img
-        className="user-image"
-        src={user?.photoUrl || require('assets/profile.png')}
-        alt="유저 이미지"
-      />
+      <ProfileImage imageUrl={user.photoUrl} name={user.nickName} />
       <ST.UserInfo>
         <h4>
           <Link to={PATH.PROFILE}>{user?.nickName}</Link>

@@ -9,10 +9,9 @@ const UserBrief = styled.div`
   border-top: 1px solid ${(props) => props.theme.color.gray};
   border-bottom: 1px solid ${(props) => props.theme.color.gray};
 
-  .user-image {
+  img {
     width: 60px;
     height: 60px;
-    border-radius: 50%;
   }
 `;
 

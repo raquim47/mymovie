@@ -12,10 +12,9 @@ const Header = styled.header`
   background-color: ${(props) => props.theme.color.black.normal};
   background-color: black;
 
-  .user-image {
+  img {
     width: 40px;
     height: 40px;
-    border-radius: 50%;
     border: 2px solid ${(props) => props.theme.color.gray};
   }
 

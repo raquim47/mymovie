@@ -6,6 +6,7 @@ import { useMutation } from '@tanstack/react-query';
 import { ChangeEvent } from 'react';
 import { updateUserImage } from 'services/users/user-image';
 import { invalidateUser } from 'utils/invalidate';
+import ProfileImage from '../profile-image';
 
 const EditImage = () => {
   const { user } = useGetUser();
@@ -13,7 +14,7 @@ const EditImage = () => {
     mutationFn: updateUserImage,
     onSuccess: invalidateUser,
   });
-  
+
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -28,11 +29,7 @@ const EditImage = () => {
         {isPending ? (
           <Loader />
         ) : (
-          <img
-            src={user?.photoUrl || require('assets/profile.png')}
-            alt={`${user?.nickName} 프로필 이미지`}
-            onError={(e) => (e.currentTarget.src = require('assets/profile.png'))}
-          />
+          <ProfileImage imageUrl={user?.photoUrl} name={user?.nickName} />
         )}
       </div>
       <input id="file" type="file" accept="image/*" onChange={handleFileChange} />
