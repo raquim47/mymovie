@@ -11,7 +11,7 @@ import { useMutation } from '@tanstack/react-query';
 
 const LoginPage = () => {
   const onAuthSuccess = useAuthSuccess();
-  const { isLoading, handleSubmit, register, errors, setErrors } = useForm([
+  const { isLoading, handleSubmit, register, errors, setErrors, errorFocus } = useForm([
     'email',
     'password',
   ]);
@@ -28,11 +28,19 @@ const LoginPage = () => {
 
   return (
     <BasicForm title="로그인" onSubmit={handleSubmit(requestLogin, onAuthSuccess)}>
-      <InputField {...register('email', validateEmail)} label="이메일" autoFocus />
+      <InputField
+        {...register('email', validateEmail)}
+        label="이메일"
+        error={errors.email}
+        isFocus={errorFocus === 'email'}
+        autoFocus
+      />
       <InputField
         {...register('password', validatePassword)}
         type="password"
         label="비밀번호"
+        error={errors.password}
+        isFocus={errorFocus === 'password'}
       />
       {errors.common && <FormCommonError message={errors.common} />}
       <Buttons.Base accent type="submit" disabled={isAllLoading}>

@@ -1,14 +1,19 @@
 import Buttons from 'components/ui/buttons';
-import ST from './styles';
+import * as S from './styles';
 import Loader from 'components/ui/Loader';
-import useSetUserImage, { updateUserImage } from 'hooks/users/useSetUserImage';
 import useGetUser from 'hooks/users/useGetUser';
 import { useMutation } from '@tanstack/react-query';
 import { ChangeEvent } from 'react';
+import { updateUserImage } from 'services/users/user-image';
+import { invalidateUser } from 'utils/invalidate';
 
 const EditImage = () => {
   const { user } = useGetUser();
-  const { mutate, isPending } = useMutation({ mutationFn: updateUserImage });
+  const { mutate, isPending } = useMutation({
+    mutationFn: updateUserImage,
+    onSuccess: invalidateUser,
+  });
+  
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -18,7 +23,7 @@ const EditImage = () => {
   };
 
   return (
-    <ST.EditImage>
+    <S.EditImage>
       <div className="profile-image">
         {isPending ? (
           <Loader />
@@ -37,7 +42,7 @@ const EditImage = () => {
       <Buttons.Base disabled={isPending} onClick={() => mutate(null)}>
         이미지 삭제
       </Buttons.Base>
-    </ST.EditImage>
+    </S.EditImage>
   );
 };
 

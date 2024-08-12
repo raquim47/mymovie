@@ -2,7 +2,7 @@ import { ERRORS } from 'utils/errors';
 import { auth, getUserDoc } from 'utils/firebase';
 import handleRequest from 'utils/request-handler';
 
-const getCurrentUser = async () => {
+export const getCurrentUser = async () => {
   const userId = auth.currentUser?.uid;
   if (!userId) throw new Error(ERRORS.INVALID_USER);
 
@@ -12,14 +12,12 @@ const getCurrentUser = async () => {
   return { userRef, userData, userId };
 };
 
-const requestUser = () =>
+export const requestUser = () =>
   handleRequest(async () => {
     await auth.authStateReady();
     const userId = auth.currentUser?.uid;
-    if(!userId) return null;
+    if (!userId) return null;
 
-    const user = await getUserDoc(userId)
+    const user = await getUserDoc(userId);
     return user.userData;
   });
-
-export default requestUser;

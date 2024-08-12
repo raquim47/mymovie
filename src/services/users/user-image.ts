@@ -1,14 +1,11 @@
 import { updateDoc } from 'firebase/firestore';
 import { deleteObject, getDownloadURL, ref, uploadBytes } from 'firebase/storage';
-import { auth, getUserDoc, storage } from 'utils/firebase';
+import { storage } from 'utils/firebase';
 import { uuidv4 } from '@firebase/util';
-import { ERRORS } from 'utils/errors';
+import { getCurrentUser } from './user';
 
 export const updateUserImage = async (file: File | null) => {
-  const userId = auth.currentUser?.uid;
-  if (!userId) throw new Error(ERRORS.INVALID_USER);
-  
-  const { userRef, userData } = await getUserDoc(userId);
+  const { userId, userRef, userData } = await getCurrentUser();
   const photoUrl = userData.photoUrl;
 
   if (photoUrl) {

@@ -44,6 +44,6 @@ export const InputRow = styled.div<{ isError: boolean }>`
     right: 15px;
     bottom: 32px;
     font-size: 12px;
-    color: red;
+    color: #f05650;
   }
 `;

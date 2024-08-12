@@ -8,6 +8,15 @@ type Validator<T extends string> = (
 type Values<T extends string> = Record<T, string>;
 type Validators<T extends string> = Partial<Record<T, Validator<T>>>;
 
+const initializeValues = <T extends string>(
+  fields: T[],
+  initialValues?: Partial<Values<T>>
+): Values<T> =>
+  fields.reduce(
+    (acc, field) => ({ ...acc, [field]: initialValues?.[field] || '' }),
+    {} as Values<T>
+  );
+
 const getErrors = <T extends string>(
   fields: T[],
   values = {} as Values<T>,
@@ -21,14 +30,12 @@ const getErrors = <T extends string>(
     { common: null } as Record<T | 'common', string | null>
   );
 
-const useForm = <T extends string>(fields: T[]) => {
-  const [values, setValues] = useState(() =>
-    fields.reduce((acc, field) => ({ ...acc, [field]: '' }), {} as Values<T>)
-  );
+const useForm = <T extends string>(fields: T[], initialValues?: Partial<Values<T>>) => {
+  const [values, setValues] = useState(() => initializeValues(fields, initialValues));
   const [errors, setErrors] = useState(() => getErrors(fields));
   const [isLoading, setIsLoading] = useState(false);
   const [validators, setValidators] = useState<Validators<T>>({});
-  const [focusField, setFocusField] = useState<T | null>(null);
+  const [errorFocus, setErrorFocus] = useState<T | null>(null);
 
   const handleChange = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
@@ -48,7 +55,7 @@ const useForm = <T extends string>(fields: T[]) => {
 
       const newErrors = getErrors(fields, values, validators);
       setErrors(newErrors);
-      setFocusField(fields.find((field) => newErrors[field] !== null) || null);
+      setErrorFocus(fields.find((field) => newErrors[field] !== null) || null);
       setIsLoading(true);
 
       try {
@@ -59,7 +66,6 @@ const useForm = <T extends string>(fields: T[]) => {
       } catch (error) {
         const { name = 'common', message = ERRORS.REQUEST_ERROR } =
           error instanceof Error ? error : {};
-        console.log(error);
         setErrors((prev) => ({
           ...prev,
           [name]: message,
@@ -80,13 +86,19 @@ const useForm = <T extends string>(fields: T[]) => {
       return {
         name,
         value: values[name],
-        error: errors[name],
         onChange: handleChange,
-        isFocus: focusField === name,
       };
     },
-    [values, errors, validators, handleChange, focusField]
+    [values, validators, handleChange]
   );
+
+  const reset = useCallback(() => {
+    setValues((currentValues) =>
+      initializeValues(fields, { ...initialValues, ...currentValues })
+    );
+    setErrors(getErrors(fields));
+    setErrorFocus(null);
+  }, [fields, initialValues]);
 
   return {
     isLoading,
@@ -95,6 +107,8 @@ const useForm = <T extends string>(fields: T[]) => {
     setErrors,
     register,
     errors,
+    errorFocus,
+    reset,
   };
 };
 

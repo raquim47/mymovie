@@ -16,6 +16,7 @@ export const FIREBASE_ERRORS: Record<string, Error> = {
     'password'
   ),
   'auth/popup-closed-by-user': new CustomError('구글 로그인 팝업 닫힘', 'ignore'),
+  'auth/user-cancelled': new CustomError('구글 로그인 취소', 'ignore'),
 };
 
 export const ERRORS = {
