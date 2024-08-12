@@ -26,9 +26,11 @@ export const requestSignUp = async ({ email, password, nickName }: ISignUpCreden
   });
 
 // 로그인
-export const requestLogin = ({ email, password }: ILoginCredentials) =>
-  handleRequest(() => signInWithEmailAndPassword(auth, email, password));
-
+export const requestLogin = async ({ email, password }: ILoginCredentials) =>
+  handleRequest(async () => {
+    await signInWithEmailAndPassword(auth, email, password);
+  });
+  
 // 구글 로그인
 export const requestGoogleLogin = () =>
   handleRequest(async () => {

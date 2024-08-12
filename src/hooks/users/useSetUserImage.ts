@@ -5,7 +5,7 @@ import { getCurrentUser, storage } from 'utils/firebase';
 import useUsersMutation from './useUsersMutation';
 import { updateDoc } from 'firebase/firestore';
 
-const updateUserImage = async (file: File | null) => {
+export const updateUserImage = async (file: File | null) => {
   const { userRef, userId, userData } = await getCurrentUser();
   const photoUrl = userData.photoUrl;
 

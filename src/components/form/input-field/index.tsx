@@ -21,7 +21,7 @@ const InputField = ({
         {...props}
         id={props.name}
         placeholder=" "
-        autoComplete={props.name === 'password' ? 'off' : props.name}
+        autoComplete={props.type === 'password' ? 'off' : props.name?.toLowerCase()}
         ref={inputRef}
       />
       {label && <label htmlFor={props.name}>{label}</label>}

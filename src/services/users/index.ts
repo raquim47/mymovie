@@ -1,1 +1,0 @@
-export { default as requestUser } from './request-user';

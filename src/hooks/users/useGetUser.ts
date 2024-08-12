@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
-import { requestUser } from 'services/users';
+import requestUser from 'services/users/user';
 
 const useGetUser = () => {
   const { data, isLoading } = useQuery({
-    queryKey: ['initUser'],
+    queryKey: ['user'],
     queryFn: requestUser,
   });
   return { user: data, isLoading };

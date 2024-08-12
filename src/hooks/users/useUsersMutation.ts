@@ -12,7 +12,7 @@ const useUsersMutation = <T = unknown>(
     mutationFn,
     onSuccess: () => {
       if (movieId) queryClient.invalidateQueries({ queryKey: ['movies', movieId] });
-      queryClient.invalidateQueries({ queryKey: ['initUser'] });
+      queryClient.invalidateQueries({ queryKey: ['user'] });
     },
     onError: (error) => addToast(error.message),
   });

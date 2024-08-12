@@ -3,13 +3,14 @@ import { CustomError, ERRORS, FIREBASE_ERRORS } from './errors';
 
 const handleRequest = async <T>(request: () => Promise<T>) => {
   try {
-    await request();
+    const result = await request();
+    return result;
   } catch (error) {
     if (error instanceof FirebaseError && FIREBASE_ERRORS[error.code]) {
       throw FIREBASE_ERRORS[error.code];
     }
     throw new CustomError(
-      `${ERRORS.REQUEST_ERROR} ${error instanceof Error && error.message}`
+      `${ERRORS.REQUEST_ERROR} ${error instanceof Error ? error.message : String(error)}`
     );
   }
 };
