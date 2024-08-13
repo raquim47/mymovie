@@ -1,10 +1,10 @@
 import EditImage from 'components/profile/edit-image';
 import NickNameForm from 'components/profile/edit-nickname';
 import ST from './styles';
-import useGetUser from 'hooks/users/useGetUser';
+import useCurrentUser from 'hooks/useCurrentUser';
 
 const ProfilePage = () => {
-  const { user } = useGetUser();
+  const { user } = useCurrentUser();
   return (
     <ST.Container>
       <ST.LeftSection>

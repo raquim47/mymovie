@@ -1,9 +1,7 @@
 import styled from 'styled-components';
 
-const Content = styled.article`
+export const MovieDetailBlock = styled.article`
   display: flex;
   flex-direction: column;
   gap: 10px;
 `;
-
-export default { Content };

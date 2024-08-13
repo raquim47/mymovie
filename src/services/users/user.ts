@@ -1,6 +1,7 @@
 import { ERRORS } from 'utils/errors';
-import { auth, getUserDoc } from 'utils/firebase';
-import handleRequest from 'utils/request-handler';
+import { auth, db, getUserDoc } from 'services/firebase';
+import { handleRequest } from 'utils/request-handler';
+import { doc, getDoc } from 'firebase/firestore';
 
 export const getCurrentUser = async () => {
   const userId = auth.currentUser?.uid;
@@ -12,7 +13,7 @@ export const getCurrentUser = async () => {
   return { userRef, userData, userId };
 };
 
-export const requestUser = () =>
+export const fetchCurrentUser = () =>
   handleRequest(async () => {
     await auth.authStateReady();
     const userId = auth.currentUser?.uid;
@@ -21,3 +22,13 @@ export const requestUser = () =>
     const user = await getUserDoc(userId);
     return user.userData;
   });
+
+export const fetchUserDetails = async (userId: string) => {
+  const userRef = doc(db, 'users', userId);
+  const userDoc = await getDoc(userRef);
+
+  if (!userDoc.exists()) throw new Error(ERRORS.REQUEST_ERROR);
+
+  const { nickName, photoUrl } = userDoc.data();
+  return { id: userId, nickName: nickName as string, photoUrl: photoUrl as string };
+};

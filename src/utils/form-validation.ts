@@ -19,8 +19,7 @@ export const validatePasswordForSignUp = (value: string) => {
 
 export const validateNickName = (value: string) => {
   if (!value) return ERRORS.EMPTY_NICKNAME;
-  if (value.length < 2 || value.length > 8)
-    return ERRORS.INVALID_NICKNAME;
+  if (value.length < 2 || value.length > 8) return ERRORS.INVALID_NICKNAME;
   return null;
 };
 
@@ -30,5 +29,11 @@ export const validatePasswordConfirm = (
 ) => {
   if (!value) return ERRORS.EMPTY_PASSWORD_CONFIRM;
   if (value !== values.password) return ERRORS.PASSWORD_MISMATCH;
+  return null;
+};
+
+export const validateComment = (value: string) => {
+  if (!value) return ERRORS.EMPTY_COMMENT;
+  if (value.length < 2 || value.length > 80) return ERRORS.INVALID_COMMENT;
   return null;
 };

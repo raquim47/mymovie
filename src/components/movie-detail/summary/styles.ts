@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const Summary = styled.section`
+export const SummaryBlock = styled.section`
   padding: 16px;
   background-color: ${(state) => state.theme.color.black.dark};
 
@@ -28,6 +28,3 @@ const Summary = styled.section`
     line-height: 1.4;
   }
 `;
-
-const ST = { Summary };
-export default ST;

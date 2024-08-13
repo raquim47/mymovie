@@ -1,21 +1,40 @@
-import { useSlider } from 'hooks/ui/slider';
-import { ComponentType } from 'react';
-import Slide from './Slide';
-import SlideBtns from './SlideBtns';
-import ST from './styles';
-import { IListProps } from './types';
+import { ComponentType, useState } from 'react';
+import SlideBtns from './buttons';
+import Slide from './slide';
+import * as S from './styles';
+import { Direction, IListProps } from './types';
 
-const withSlider = <T,>(ListComponent: ComponentType<IListProps<T>>) => {
+const withSlider = <T,>(List: ComponentType<IListProps<T>>) => {
   return ({ data, listSize }: IListProps<T>) => {
-    const { index, slicedData, handleClickSlideBtn, direction, exitAnimating } =
-      useSlider(data, listSize);
+    const [index, setIndex] = useState(0);
+    const [direction, setDirection] = useState<Direction>('next');
+    const [isAnimating, setIsAnimating] = useState(false);
+    const maxIndex = Math.floor((data.length - 1) / listSize);
+    const slicedData = data.slice(listSize * index, listSize * index + listSize);
+
+    const handleNext = () => {
+      if (isAnimating) return;
+      setDirection('next');
+      setIndex((prevIndex) => (prevIndex + 1 > maxIndex ? 0 : prevIndex + 1));
+    };
+
+    const handlePrev = () => {
+      if (isAnimating) return;
+      setDirection('prev');
+      setIndex((prevIndex) => (prevIndex - 1 < 0 ? maxIndex : prevIndex - 1));
+    };
+
+    const exitAnimating = () => {
+      setIsAnimating(false);
+    };
+
     return (
-      <ST.Container>
+      <S.WithSliderBox>
         <Slide index={index} direction={direction} exitAnimating={exitAnimating}>
-          <ListComponent data={slicedData} listSize={listSize} />
+          <List data={slicedData} listSize={listSize} />
         </Slide>
-        <SlideBtns onClickSlideBtn={handleClickSlideBtn} />
-      </ST.Container>
+        <SlideBtns handleNext={handleNext} handlePrev={handlePrev} />
+      </S.WithSliderBox>
     );
   };
 };

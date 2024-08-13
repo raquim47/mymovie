@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const Header = styled.header`
+export const Header = styled.header`
   position: relative;
 
   .backdrop {
@@ -9,7 +9,7 @@ const Header = styled.header`
   }
 `;
 
-const Inner = styled.div`
+export const Inner = styled.div`
   position: relative;
   margin-top: 10px;
   padding: 16px;
@@ -29,7 +29,7 @@ const Inner = styled.div`
   }
 `;
 
-const Info = styled.div`
+export const Info = styled.div`
   color: ${(state) => state.theme.color.white.normal};
 
   h2 {
@@ -71,7 +71,7 @@ const Info = styled.div`
   }
 `;
 
-const Poster = styled.img`
+export const Poster = styled.img`
   position: absolute;
   left: 50%;
   bottom: calc(100% + 50px);
@@ -93,6 +93,3 @@ const Poster = styled.img`
     height: 240px;
   }
 `;
-
-const ST = { Header, Inner, Info, Poster };
-export default ST;

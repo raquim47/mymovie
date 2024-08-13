@@ -1,42 +1,40 @@
-import ST from './styles';
-import { IMovieSummary } from 'hooks/movies/types';
+import * as S from './styles';
 import WatchListAction from './watch-list-action';
 import RatingAction from './rating-action';
-import CommentAction from './comment/CommentAction';
-import CommentForm from './comment/CommentForm';
-import useSetMovieComment from 'hooks/users/useSetMovieComment';
+import { IMovieSummary } from 'services/movies/types';
+import CommentForm from './comment-form';
+import CommentAction from './comment-action';
+import useCurrentUser from 'hooks/useCurrentUser';
+import { useState } from 'react';
 
 const UserActions = ({ movie }: { movie: IMovieSummary }) => {
-  const {
-    onCommentForm,
-    onComment,
-    offComment,
-    submitComment,
-    removeComment,
-    isPending,
-  } = useSetMovieComment(movie.id);
-
+  const [showCommentForm, setShowCommentForm] = useState(false);
+  const { user } = useCurrentUser();
+  const comment = user?.reviewed[movie.id]?.comment || '';
+  const openCommentForm = () => setShowCommentForm(true);
+  const closeCommentForm = () => setShowCommentForm(false);
   return (
-    <ST.Actions>
+    <S.ActionsBlock>
       <h3 className="sr-only">사용자 액션</h3>
-      {onCommentForm ? (
+      {showCommentForm && (
         <CommentForm
-          offComment={offComment}
-          submitComment={submitComment}
-          isPending={isPending}
+          comment={comment}
+          movieId={movie.id}
+          closeCommentForm={closeCommentForm}
         />
-      ) : (
-        <ul>
+      )}
+      {!showCommentForm && (
+        <S.ActionList>
           <WatchListAction movie={movie} />
           <RatingAction movie={movie} />
           <CommentAction
-            onComment={onComment}
-            removeComment={removeComment}
-            isPending={isPending}
+            comment={comment}
+            movieId={movie.id}
+            openCommentForm={openCommentForm}
           />
-        </ul>
+        </S.ActionList>
       )}
-    </ST.Actions>
+    </S.ActionsBlock>
   );
 };
 

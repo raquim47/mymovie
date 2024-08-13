@@ -1,13 +1,13 @@
 import { Link as RouterLink } from 'react-router-dom';
 import styled from 'styled-components';
 
-const Link = styled(RouterLink)`
+export const Link = styled(RouterLink)`
   display: flex;
   align-items: flex-end;
   gap: 10px;
 `;
 
-const Svg = styled.svg`
+export const Svg = styled.svg`
   width: 50px;
   height: 50px;
   fill: url(#grad1);
@@ -34,7 +34,7 @@ const Svg = styled.svg`
   }
 `;
 
-const Text = styled.h1`
+export const Text = styled.h1`
   font-size: 28px;
   font-weight: 800;
   @media only screen and (max-width: 960px) {
@@ -44,6 +44,3 @@ const Text = styled.h1`
     display: none;
   }
 `;
-
-const ST = { Link, Svg, Text }
-export default ST;

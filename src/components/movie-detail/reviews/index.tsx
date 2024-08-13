@@ -1,29 +1,47 @@
+import { useQueries } from '@tanstack/react-query';
+import ProfileImage from 'components/profile/profile-image';
+import Loader from 'components/ui/Loader';
 import ReactStars from 'react-stars';
-import { IReviews } from 'hooks/movies/types';
+import { IReviews } from 'services/movies/types';
+import { fetchUserDetails } from 'services/users/user';
 import formatDate from 'utils/date';
-import ST from './styles';
+import * as S from './styles';
 
-const Reviews = ({ reviews }: { reviews?: IReviews }) => {
-  if (!reviews) return null;
+const Reviews = ({ reviews }: { reviews: IReviews }) => {
+  const userQueries = useQueries({
+    queries: Object.keys(reviews).map((userId) => ({
+      queryKey: ['users', userId],
+      queryFn: () => fetchUserDetails(userId),
+    })),
+  });
 
+  if (userQueries.some((query) => query.isLoading)) {
+    return <Loader />;
+  }
   return (
-    <ST.Reviews>
+    <S.Reviews>
       <ul>
-        {Object.entries(reviews).map(([userId, data]) => (
-          <ST.Review key={userId}>
-            <img src={data.photoUrl} alt={`${data.nickName} 프로필 이미지`} />
-            <div className="user-info">
-              <h4>{data.nickName}</h4>
-              <ReactStars edit={false} value={data.rating} />
-            </div>
-            <p>{data.comment}</p>
-            <time dateTime={new Date(data.timestamp).toISOString()}>
-              {formatDate(data.timestamp)}
-            </time>
-          </ST.Review>
-        ))}
+        {userQueries.map((userQuery) => {
+          const user = userQuery.data;
+          if (!user) return null;
+          const review = reviews[user.id];
+
+          return (
+            <S.Review key={user.id}>
+              <ProfileImage imageUrl={user.photoUrl} name={user.nickName} />
+              <S.UserInfo>
+                <h4>{user.nickName}</h4>
+                <ReactStars edit={false} value={review.rating} />
+              </S.UserInfo>
+              {review.comment && <p>{review.comment}</p>}
+              <time dateTime={new Date(review.timestamp).toISOString()}>
+                {formatDate(review.timestamp)}
+              </time>
+            </S.Review>
+          );
+        })}
       </ul>
-    </ST.Reviews>
+    </S.Reviews>
   );
 };
 

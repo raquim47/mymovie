@@ -13,7 +13,3 @@ export interface ISlideProps {
   direction: Direction;
   exitAnimating: () => void;
 }
-
-export interface ISlideBtnsProps {
-  onClickSlideBtn: (direction: Direction) => void;
-}

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const UserBrief = styled.div`
+export const UserBriefBlock = styled.div`
   display: flex;
   align-items: center;
   gap: 12px;
@@ -15,7 +15,7 @@ const UserBrief = styled.div`
   }
 `;
 
-const UserInfo = styled.div`
+export const UserInfo = styled.div`
   h4 {
     font-size: 14px;
     color: ${(props) => props.theme.color.white.dark};
@@ -26,7 +26,7 @@ const UserInfo = styled.div`
   }
 `;
 
-const UserMovieBrief = styled.div`
+export const UserMovieBrief = styled.div`
   display: flex;
   gap: 12px;
   margin-top: 6px;
@@ -41,6 +41,3 @@ const UserMovieBrief = styled.div`
     text-decoration: underline;
   }
 `;
-
-const ST = { UserBrief, UserInfo, UserMovieBrief }
-export default ST;

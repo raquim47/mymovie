@@ -2,18 +2,20 @@ import { NavLink } from 'react-router-dom';
 import PATH from 'utils/path';
 import Logo from '../logo';
 import SearchForm from '../search-form';
-import AuthLink from './AuthLink';
-import ST from './styles';
+import AuthLink from './auth-link';
+import * as S from './styles';
 
 const NavTop = () => {
   return (
     <>
-      <ST.Header>
+      <S.Header>
         <Logo />
         <SearchForm />
-        <AuthLink />
-      </ST.Header>
-      <ST.Nav>
+        <S.AuthLinkBlock>
+          <AuthLink />
+        </S.AuthLinkBlock>
+      </S.Header>
+      <S.Nav>
         <ul>
           <li>
             <NavLink to={PATH.HOME}>홈</NavLink>
@@ -25,7 +27,7 @@ const NavTop = () => {
             <NavLink to={PATH.REVIEWED}>평가한 영화</NavLink>
           </li>
         </ul>
-      </ST.Nav>
+      </S.Nav>
     </>
   );
 };

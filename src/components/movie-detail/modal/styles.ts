@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const Overay = styled.div`
+export const Overay = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -13,7 +13,7 @@ const Overay = styled.div`
   z-index: ${(props) => props.theme.zIndex.popup};
 `;
 
-const Inner = styled.div`
+export const Inner = styled.div`
   position: relative;
   width: 100%;
   height: 100%;
@@ -50,7 +50,7 @@ const Inner = styled.div`
   }
 `;
 
-const CloseBtn = styled.button`
+export const CloseBtn = styled.button`
   position: absolute;
   top: 16px;
   right: 14px;
@@ -68,6 +68,3 @@ const CloseBtn = styled.button`
     height: 20px;
   }
 `;
-
-const ST = { Overay, Inner, CloseBtn };
-export default ST;

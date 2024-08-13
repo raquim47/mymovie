@@ -1,4 +1,4 @@
-import { IMovie } from 'hooks/movies/types';
+import { IMovie } from "services/movies/types";
 
 export interface IMovieListProps {
   data: IMovie[];

@@ -32,10 +32,13 @@ export const ERRORS = {
   // 닉네임
   EMPTY_NICKNAME: '닉네임을 입력하세요.',
   INVALID_NICKNAME: '닉네임은 2자 이상, 8자 이하여야 합니다.',
-
+  // 코멘트
+  EMPTY_COMMENT: '코멘트를 입력하세요.',
+  INVALID_COMMENT: '2자 이상, 80자 이하로 입력해주세요.',
+  REQUIRED_RATING: '별점을 먼저 남겨주세요.',
+  
   REQUIRED_LOGIN: '로그인이 필요합니다.',
   ALREADY_LOGGED_IN: '이미 로그인 상태입니다.',
-  REQUIRED_RATING: '별점을 먼저 남겨주세요.',
   NOT_FOUND_REVIEWS: '평가 정보를 찾을 수 없습니다.',
   INVALID_INPUT: '유효한 입력값이 아닙니다.',
 

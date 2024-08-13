@@ -1,11 +1,23 @@
-import { IMovieSummary } from 'hooks/movies/types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart as faHeartFill } from '@fortawesome/free-solid-svg-icons';
 import { faHeart } from '@fortawesome/free-regular-svg-icons';
-import useSetWatchList from 'hooks/users/useSetWatchList';
+import { IMovieSummary } from 'services/movies/types';
+import useRequireLogin from 'hooks/useRequireLogin';
+import { useMutation } from '@tanstack/react-query';
+import { invalidateUserMe } from 'utils/invalidate';
+import { updateWatchList } from 'services/users/watchlist';
 
 const WatchListAction = ({ movie }: { movie: IMovieSummary }) => {
-  const { handleClick, isPending, isOnWatchList } = useSetWatchList(movie.id);
+  const { user, requireLogin } = useRequireLogin();
+  const { mutate, isPending } = useMutation({
+    mutationFn: updateWatchList,
+    onSuccess: invalidateUserMe,
+  });
+
+  const isOnWatchList = user?.watchList && user?.watchList[movie.id];
+
+  const handleClick = (movie: IMovieSummary) => requireLogin() && mutate(movie);
+  
   return (
     <li>
       <button

@@ -1,21 +1,21 @@
-import useForm from 'hooks/ui/useForm';
-import useGetUser from 'hooks/users/useGetUser';
+import useForm from 'hooks/useForm';
+import useCurrentUser from 'hooks/useCurrentUser';
 import { useState } from 'react';
-import { updateNickName } from 'services/users/user-nickname';
+import { updateNickName } from 'services/users/nickname';
 import { validateNickName } from 'utils/form-validation';
-import { invalidateUser } from 'utils/invalidate';
+import { invalidateUserMe } from 'utils/invalidate';
 import * as S from './styles';
 
 const NickNameForm = () => {
   const [onEdit, setOnEdit] = useState(false);
-  const { user } = useGetUser();
+  const { user } = useCurrentUser();
   const { isLoading, handleSubmit, register, errors, reset } = useForm(['nickName'], {
     nickName: user?.nickName,
   });
 
   const toggleOnEdit = () => setOnEdit((prev) => !prev);
   const onSubmit = handleSubmit(updateNickName, async () => {
-    await invalidateUser();
+    await invalidateUserMe();
     reset();
     toggleOnEdit();
   });

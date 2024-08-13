@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const Form = styled.form`
+export const Form = styled.form`
   display: flex;
   align-items: center;
   position: relative;
@@ -11,7 +11,7 @@ const Form = styled.form`
   background-color: ${(props) => props.theme.color.gray};
 `;
 
-const Input = styled.input`
+export const Input = styled.input`
   width: 100%;
   border: none;
   outline: none;
@@ -20,13 +20,10 @@ const Input = styled.input`
   color: ${(props) => props.theme.color.white.dark};
 `;
 
-const Button = styled.button`
+export const Button = styled.button`
   padding: 0;
 
   &:hover {
     color: ${(props) => props.theme.color.white.normal};
   }
 `;
-
-const ST = { Form, Input, Button }
-export default ST;

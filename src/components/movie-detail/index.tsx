@@ -1,24 +1,34 @@
 import { useParams } from 'react-router-dom';
 import Modal from './modal';
-import ST from './styles';
-import { useGetMovieDetail } from 'hooks/movies/useGetMovieDetail';
+import * as S from './styles';
 import Loader from 'components/ui/Loader';
 import MDHeader from './header';
 import MDSummary from './summary';
 import UserActions from './user-actions';
 import Reviews from './reviews';
+import { useQuery } from '@tanstack/react-query';
+import { getMovieDetail } from 'services/movies/detail';
+import ErrorView from 'components/error-view';
+import PATH from 'utils/path';
 
 const MovieDetail = () => {
-  const movieId = useParams().id || '';
-  const { data: movie, isLoading, error } = useGetMovieDetail(Number(movieId!));
+  const { id } = useParams();
+  const {
+    data: movie,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ['movies', id],
+    queryFn: () => getMovieDetail(Number(id)),
+  });
   return (
     <Modal>
       {isLoading && <Loader />}
       {!isLoading && error ? (
-        <p>error</p>
+        <ErrorView code={404} message="데이터를 불러올 수 없습니다." to={PATH.HOME} />
       ) : (
         movie && (
-          <ST.Content>
+          <S.MovieDetailBlock>
             <MDHeader movie={movie} />
             <UserActions
               movie={{
@@ -29,8 +39,10 @@ const MovieDetail = () => {
               }}
             />
             <MDSummary tagline={movie.tagline} overview={movie.overview} />
-            <Reviews reviews={movie.reviews} />
-          </ST.Content>
+            {movie.reviews && Object.keys(movie.reviews).length > 0 && (
+              <Reviews reviews={movie.reviews} />
+            )}
+          </S.MovieDetailBlock>
         )
       )}
     </Modal>

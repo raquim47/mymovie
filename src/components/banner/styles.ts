@@ -45,20 +45,6 @@ const Caption = styled.div`
       font-size: 36px;
     }
   }
-
-  p {
-    font-size: 32px;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-
-    @media (min-width: 769px) {
-      font-size: 2vw;
-    }
-    @media (min-width: 961px) {
-      font-size: 1.5vw;
-    }
-  }
 `;
 
 const ST = { Link, Caption };

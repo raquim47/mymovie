@@ -8,6 +8,11 @@ export const queryClient = new QueryClient({
       retry: false,
       refetchOnWindowFocus: false,
     },
+    mutations: {
+      onError: (error) => {
+        store.dispatch(addToast(error.message));
+      },
+    },
   },
   queryCache: new QueryCache({
     onError: (error) => {

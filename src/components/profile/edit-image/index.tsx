@@ -1,18 +1,18 @@
 import Buttons from 'components/ui/buttons';
 import * as S from './styles';
 import Loader from 'components/ui/Loader';
-import useGetUser from 'hooks/users/useGetUser';
+import useCurrentUser from 'hooks/useCurrentUser';
 import { useMutation } from '@tanstack/react-query';
 import { ChangeEvent } from 'react';
 import { updateUserImage } from 'services/users/user-image';
-import { invalidateUser } from 'utils/invalidate';
+import { invalidateUserMe } from 'utils/invalidate';
 import ProfileImage from '../profile-image';
 
 const EditImage = () => {
-  const { user } = useGetUser();
+  const { user } = useCurrentUser();
   const { mutate, isPending } = useMutation({
     mutationFn: updateUserImage,
-    onSuccess: invalidateUser,
+    onSuccess: invalidateUserMe,
   });
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {

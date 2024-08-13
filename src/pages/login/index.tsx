@@ -2,10 +2,10 @@ import BasicForm from 'components/form/basic-form';
 import InputField from 'components/form/input-field';
 import Buttons from 'components/ui/buttons';
 import FormCommonError from 'components/form/common-error';
-import useForm from 'hooks/ui/useForm';
+import useForm from 'hooks/useForm';
 import { validateEmail, validatePassword } from 'utils/form-validation';
 import PATH from 'utils/path';
-import useAuthSuccess from 'hooks/auth/useAuthSuccess';
+import useAuthSuccess from 'hooks/useAuthSuccess';
 import { requestGoogleLogin, requestLogin } from 'services/auth';
 import { useMutation } from '@tanstack/react-query';
 

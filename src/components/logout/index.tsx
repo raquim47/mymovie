@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import useAuthSuccess from 'hooks/auth/useAuthSuccess';
+import useAuthSuccess from 'hooks/useAuthSuccess';
 import { ReactNode } from 'react';
 import { requestLogout } from 'services/auth';
 

@@ -1,7 +1,7 @@
 import { useAppSelector } from 'store';
 import { useEffect } from 'react';
 import ST from './styles';
-import useToast from 'hooks/ui/useToast';
+import useToast from 'hooks/useToast';
 
 const Toast = () => {
   const { removeToast } = useToast();
@@ -15,7 +15,7 @@ const Toast = () => {
 
       return () => clearTimeout(timer);
     });
-  }, [messages]);
+  }, [messages, removeToast]);
 
   return (
     <ST.Container>

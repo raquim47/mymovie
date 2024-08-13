@@ -1,38 +1,39 @@
 import MovieList from 'components/movie-list';
 import Loader from 'components/ui/Loader';
-import useInfiniteMovies, { getSearchedMovies } from 'hooks/movies/useInfiniteMovies';
-import useSetListSize from 'hooks/ui/list-size';
+import useInfiniteMovies from 'hooks/useInfiniteMovies';
+import useListSize from 'hooks/useListSize';
 import { Outlet, useLocation } from 'react-router-dom';
-import ST from './styles';
+import { getSearchedMovies } from 'services/movies/search';
+import * as S from './styles';
 
 const SearchPage = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const keyword = queryParams.get('keyword') || '';
 
-  const listSize = useSetListSize({
+  const listSize = useListSize({
     default: 3,
     576: 4,
     1200: 5,
   });
-  const { movies, isFetching, hasNextPage, observerRef } = useInfiniteMovies(
-    ['movies', keyword],
+
+  const { movies, isFetching, observerRef, hasNextPage } = useInfiniteMovies(
+    ['movies', 'search', keyword],
     (page) => getSearchedMovies(page, keyword),
     listSize
   );
-
   return (
     <>
-      <ST.Keyword>'{keyword}' 으로 검색한 결과입니다.</ST.Keyword>
-      <ST.SearchResults>
+      <S.Keyword>'{keyword}' 으로 검색한 결과입니다.</S.Keyword>
+      <S.SearchResults>
         {movies.map((list, index) => (
-          <ST.RatioBox key={index}>
+          <S.RatioBox key={index}>
             <MovieList data={list} listSize={listSize} imageType="poster" />
-          </ST.RatioBox>
+          </S.RatioBox>
         ))}
         {isFetching && <Loader />}
-        {hasNextPage && <ST.Observer ref={observerRef} />}
-      </ST.SearchResults>
+        {hasNextPage && <S.Observer ref={observerRef} />}
+      </S.SearchResults>
       <Outlet />
     </>
   );

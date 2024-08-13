@@ -1,21 +1,21 @@
 import { Link } from 'react-router-dom';
-import ST from './styles';
+import * as S from './styles';
 import PATH from 'utils/path';
-import useGetUser from 'hooks/users/useGetUser';
+import useCurrentUser from 'hooks/useCurrentUser';
 import ProfileImage from 'components/profile/profile-image';
 
 const UserBrief = () => {
-  const { user } = useGetUser();
+  const { user } = useCurrentUser();
   if (!user) return null;
 
   return (
-    <ST.UserBrief>
+    <S.UserBriefBlock>
       <ProfileImage imageUrl={user.photoUrl} name={user.nickName} />
-      <ST.UserInfo>
+      <S.UserInfo>
         <h4>
           <Link to={PATH.PROFILE}>{user?.nickName}</Link>
         </h4>
-        <ST.UserMovieBrief>
+        <S.UserMovieBrief>
           <h5>
             평가 :{' '}
             <Link to={PATH.REVIEWED}>{Object.keys(user.reviewed || {}).length}</Link>
@@ -24,9 +24,9 @@ const UserBrief = () => {
             찜 :{' '}
             <Link to={PATH.WATCHLIST}>{Object.keys(user.watchList || {}).length}</Link>
           </h5>
-        </ST.UserMovieBrief>
-      </ST.UserInfo>
-    </ST.UserBrief>
+        </S.UserMovieBrief>
+      </S.UserInfo>
+    </S.UserBriefBlock>
   );
 };
 

@@ -1,5 +1,10 @@
 import { queryClient } from 'config';
 
-export const invalidateUser = async () => {
-  await queryClient.invalidateQueries({ queryKey: ['user'] });
-};
+export const invalidateUserMe = () =>
+  queryClient.invalidateQueries({ queryKey: ['users', 'me'] });
+
+export const invalidateUsers = () =>
+  queryClient.invalidateQueries({ queryKey: ['users'] });
+
+export const invalidateMovieDetail = (id: number) =>
+  queryClient.invalidateQueries({ queryKey: ['movies', String(id)] });

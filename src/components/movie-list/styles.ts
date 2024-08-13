@@ -1,14 +1,14 @@
 import { Link as RouterLink } from 'react-router-dom';
 import styled from 'styled-components';
 
-const List = styled.ul<{ listSize: number }>`
+export const List = styled.ul<{ listSize: number }>`
   height: 100%;
   display: grid;
   grid-template-columns: ${({ listSize }) => `repeat(${listSize}, 1fr)`};
   gap: 1%;
 `;
 
-const ItemInfo = styled.div`
+export const ItemInfo = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -50,7 +50,7 @@ const ItemInfo = styled.div`
   }
 `;
 
-const ListItem = styled.li`
+export const ListItem = styled.li`
   position: relative;
   transition: transform 0.3s ease, margin 0.3s ease;
 
@@ -86,15 +86,16 @@ const ListItem = styled.li`
   }
 `;
 
-const Link = styled(RouterLink)<{ bg: string }>`
+export const Link = styled(RouterLink)`
   display: block;
   position: relative;
   height: 100%;
   border-radius: 4px;
   overflow: hidden;
-  background: url(${(props) => props.bg}) no-repeat center center;
-  background-size: cover;
+  
+  img {
+    height: 100%;
+    position: absolute;
+    object-fit: cover;
+  }
 `;
-
-const ST = { List, ListItem, ItemInfo, Link };
-export default ST;

@@ -1,7 +1,6 @@
-import LogoutButton from 'components/logout';
 import styled, { css } from 'styled-components';
 
-const Header = styled.header`
+export const Header = styled.header`
   display: none;
 
   @media (min-width: 961px) {
@@ -19,7 +18,7 @@ const Header = styled.header`
   }
 `;
 
-const navItemStyles = css`
+export const navItemStyles = css`
   display: flex;
   align-items: center;
   gap: 12px;
@@ -45,7 +44,7 @@ const navItemStyles = css`
   }
 `;
 
-const NavItem = styled.li`
+export const NavItem = styled.li`
   .logout,
   a {
     ${navItemStyles}
@@ -57,9 +56,3 @@ const NavItem = styled.li`
   }
 `;
 
-const LogoutBtn = styled(LogoutButton)`
-  ${navItemStyles}
-`;
-
-const ST = { Header, NavItem, LogoutBtn };
-export default ST;

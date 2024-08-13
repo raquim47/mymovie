@@ -6,8 +6,8 @@ import {
   signOut,
 } from 'firebase/auth';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
-import { auth, db } from 'utils/firebase';
-import handleRequest from 'utils/request-handler';
+import { auth, db } from 'services/firebase';
+import { handleRequest } from 'utils/request-handler';
 import { ILoginCredentials, ISignUpCredentials } from './types';
 
 // 회원가입
@@ -30,7 +30,7 @@ export const requestLogin = async ({ email, password }: ILoginCredentials) =>
   handleRequest(async () => {
     await signInWithEmailAndPassword(auth, email, password);
   });
-  
+
 // 구글 로그인
 export const requestGoogleLogin = () =>
   handleRequest(async () => {

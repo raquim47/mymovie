@@ -1,26 +1,38 @@
-import useSetMovieRating from 'hooks/users/useSetMovieRating';
+import { useMutation } from '@tanstack/react-query';
+import useRequireLogin from 'hooks/useRequireLogin';
 import ReactStars from 'react-stars';
-import { IMovie } from 'hooks/movies/types';
+import { IMovie } from 'services/movies/types';
+import { updateMovieRating } from 'services/movies/rating';
+import { invalidateMovieDetail, invalidateUserMe } from 'utils/invalidate';
 import { RATING_MESSAGE } from './rating-message';
 
 const RatingAction = ({ movie }: { movie: IMovie }) => {
-  const { rating, handleChange, isPending, key } = useSetMovieRating(movie.id);
+  const { user, requireLogin } = useRequireLogin();
+  const { mutate, isPending } = useMutation({
+    mutationFn: updateMovieRating,
+    onSuccess: async () => {
+      await invalidateUserMe();
+      await invalidateMovieDetail(movie.id)
+    },
+  });
+  const currentRating = user?.reviewed[movie.id]?.rating || 0;
+  const handleChange = (rating: number) =>
+    requireLogin() && mutate({ rating, movie, isCancel: currentRating === rating });
   return (
     <li>
       <button disabled={isPending}>
         <ReactStars
-          key={key}
           count={5}
           color1="#E6E6E6"
           color2="#FFCC33"
           half
           size={28}
           edit={true}
-          value={rating}
-          onChange={(newRating) => handleChange(newRating, movie)}
+          value={currentRating}
+          onChange={handleChange}
         />
       </button>
-      <span>{RATING_MESSAGE[rating]}</span>
+      <span>{RATING_MESSAGE[currentRating]}</span>
     </li>
   );
 };

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const Header = styled.header`
+export const Header = styled.header`
   display: grid;
   grid-template-columns: 1fr auto auto;
   align-items: center;
@@ -32,7 +32,7 @@ const Header = styled.header`
   }
 `;
 
-const AuthLink = styled.div`
+export const AuthLinkBlock = styled.div`
   font-size: 14px;
   width: 40px;
 
@@ -48,7 +48,7 @@ const AuthLink = styled.div`
   }
 `;
 
-const Nav = styled.nav`
+export const Nav = styled.nav`
   padding: 10px 30px 0;
 
   ul {
@@ -88,5 +88,3 @@ const Nav = styled.nav`
     }
   }
 `;
-
-export default { Header, AuthLink, Nav };

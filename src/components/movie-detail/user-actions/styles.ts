@@ -1,19 +1,19 @@
 import styled from 'styled-components';
 
-const Actions = styled.section`
+export const ActionsBlock = styled.section`
   padding: 16px;
   background-color: ${(state) => state.theme.color.black.dark};
+`;
 
-  ul {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    margin: 0 -16px;
-  }
+export const ActionList = styled.ul`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin: 0 -16px;
 
   li {
     text-align: center;
   }
-  
+
   li > button {
     margin: 0 auto;
     white-space: nowrap;
@@ -46,6 +46,3 @@ const Actions = styled.section`
     }
   }
 `;
-
-const ST = { Actions };
-export default ST;
