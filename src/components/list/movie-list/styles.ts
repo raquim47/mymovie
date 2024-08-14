@@ -9,7 +9,7 @@ export const List = styled.ul<{ listSize: number }>`
   gap: 1%;
 `;
 
-export const Link = styled(RouterLink)<{ starMode: boolean }>`
+export const Link = styled(RouterLink)<{ $starMode: boolean }>`
   display: block;
   position: relative;
   height: 100%;
@@ -20,7 +20,7 @@ export const Link = styled(RouterLink)<{ starMode: boolean }>`
     height: 100%;
     position: absolute;
     object-fit: cover;
-    filter: ${props => props.starMode ? 'brightness(60%)' : 'brightness(100%)'};
+    filter: ${props => props.$starMode ? 'brightness(60%)' : 'brightness(100%)'};
   }
 `;
 

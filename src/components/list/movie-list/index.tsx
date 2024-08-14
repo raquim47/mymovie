@@ -15,11 +15,13 @@ const MovieList = ({
   listSize: number;
   imageType?: 'poster' | 'backdrop';
 }) => {
-  const { search } = useLocation();
+  const location = useLocation();
   const [hoveredIndex, setHoveredIndex] = useState(-1);
   const handleHoverChange = (index: number) => {
     setHoveredIndex(index);
   };
+  const queryParams = new URLSearchParams(location.search);
+  const keyword = queryParams.get('keyword');
   return (
     <S.List listSize={listSize}>
       {data.map((movie, index) => (
@@ -29,7 +31,12 @@ const MovieList = ({
           onMouseEnter={() => handleHoverChange(index)}
           onMouseLeave={() => handleHoverChange(-1)}
         >
-          <S.Link to={`movies/${movie.id}${search || ''}`} starMode={!!movie.rating}>
+          {/* <S.Link to={`movies/${movie.id}${search || ''}`} starMode={!!movie.rating}> */}
+          <S.Link
+            to={`/movies/${movie.id}`}
+            state={{ path: location.pathname, keyword }}
+            $starMode={!!movie.rating}
+          >
             <img src={getMovieImagePath(movie, imageType, 'w500')} alt="" />
             <S.ItemInfo>
               <h4>{movie.title}</h4>

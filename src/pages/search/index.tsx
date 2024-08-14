@@ -6,10 +6,10 @@ import { Outlet, useLocation } from 'react-router-dom';
 import { getSearchedMovies } from 'services/movies/search';
 import * as S from './styles';
 
-const SearchPage = () => {
+const SearchPage = (props: { keyword?: string }) => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const keyword = queryParams.get('keyword') || '';
+  const keyword = props.keyword || queryParams.get('keyword') || '';
 
   const listSize = useListSize({
     default: 3,

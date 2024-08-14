@@ -1,14 +1,16 @@
 import Header from 'components/header';
-import { ReactNode } from 'react';
+import { Outlet } from 'react-router-dom';
 import * as S from './styles';
 
-const Layout = ({ children }: { children: ReactNode }) => {
+const MainLayout = () => {
   return (
     <S.Container>
       <Header />
-      <S.Main>{children}</S.Main>
+      <S.Main>
+        <Outlet />
+      </S.Main>
     </S.Container>
   );
 };
 
-export default Layout;
+export default MainLayout;

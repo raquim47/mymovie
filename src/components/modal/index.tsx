@@ -15,9 +15,15 @@ const Modal = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const navigate = useNavigate();
-  const { search } = useLocation();
-  const closeModal = () => navigate('..' + (search || ''));
-  
+  const locationState = useLocation().state;
+  const closeModal = () => {
+    if (locationState.path) {
+      navigate(-1);
+    } else {
+      navigate('/');
+    }
+  };
+
   return createPortal(
     <S.Overlay onClick={closeModal}>
       <AnimatePresence>
