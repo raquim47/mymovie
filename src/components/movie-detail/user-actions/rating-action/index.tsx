@@ -1,18 +1,18 @@
 import { useMutation } from '@tanstack/react-query';
 import useRequireLogin from 'hooks/useRequireLogin';
 import ReactStars from 'react-stars';
-import { IMovie } from 'services/movies/types';
+import { IMovieSummary } from 'services/movies/types';
 import { updateMovieRating } from 'services/movies/rating';
 import { invalidateMovieDetail, invalidateUserMe } from 'utils/invalidate';
 import { RATING_MESSAGE } from './rating-message';
 
-const RatingAction = ({ movie }: { movie: IMovie }) => {
+const RatingAction = ({ movie }: { movie: IMovieSummary }) => {
   const { user, requireLogin } = useRequireLogin();
   const { mutate, isPending } = useMutation({
     mutationFn: updateMovieRating,
     onSuccess: async () => {
       await invalidateUserMe();
-      await invalidateMovieDetail(movie.id)
+      await invalidateMovieDetail(movie.id);
     },
   });
   const currentRating = user?.reviewed[movie.id]?.rating || 0;

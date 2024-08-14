@@ -1,5 +1,5 @@
-export interface IMovieList {
-  results: IMovie[];
+export interface IMovieList<T = IMovie> {
+  results: T[];
   page: number;
   total_pages: number;
 }
@@ -35,12 +35,10 @@ export interface IMovieSummary {
   title: string;
   poster_path?: string;
   genres?: IGenre[];
+  genre_ids?: number[];
   timestamp?: number;
-}
-
-export interface IReviewedMovie extends IMovieSummary {
-  rating: number;
-  comment: string;
+  rating?: number;
+  comment?: string;
 }
 
 export interface IGenre {

@@ -37,7 +37,7 @@ export const ActionList = styled.ul`
       font-size: 24px;
 
       &.heart {
-        color: red;
+        color: ${(props) => props.theme.color.red};
       }
     }
 

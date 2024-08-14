@@ -10,7 +10,7 @@ export const Form = styled.form`
 
 export const InputRow = styled.div<{ isError: boolean }>`
   position: relative;
-  background-color: white;
+  background-color: ${props => props.theme.color.white.normal};
   padding: 27px 15px 8px;
   border-radius: 4px;
   border: ${(props) => (props.isError ? '1px solid red' : '1px solid transparent')};
@@ -44,6 +44,6 @@ export const InputRow = styled.div<{ isError: boolean }>`
     right: 15px;
     bottom: 32px;
     font-size: 12px;
-    color: #f05650;
+    color: ${props => props.theme.color.red};
   }
 `;

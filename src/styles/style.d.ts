@@ -18,6 +18,7 @@ declare module 'styled-components' {
         dark: string;
         normal: string;
       };
+      red: string;
     };
 
     zIndex: {

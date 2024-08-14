@@ -18,6 +18,7 @@ export const theme: DefaultTheme = {
       dark: '#462EB2',
       normal: '#783ebb',
     },
+    red : '#f05650'
   },
 
   // // fontSize

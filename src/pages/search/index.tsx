@@ -1,5 +1,5 @@
-import MovieList from 'components/movie-list';
-import Loader from 'components/ui/Loader';
+import InfiniteList from 'components/list/infinite-list';
+import MovieList from 'components/list/movie-list';
 import useInfiniteMovies from 'hooks/useInfiniteMovies';
 import useListSize from 'hooks/useListSize';
 import { Outlet, useLocation } from 'react-router-dom';
@@ -25,15 +25,15 @@ const SearchPage = () => {
   return (
     <>
       <S.Keyword>'{keyword}' 으로 검색한 결과입니다.</S.Keyword>
-      <S.SearchResults>
-        {movies.map((list, index) => (
-          <S.RatioBox key={index}>
-            <MovieList data={list} listSize={listSize} imageType="poster" />
-          </S.RatioBox>
-        ))}
-        {isFetching && <Loader />}
-        {hasNextPage && <S.Observer ref={observerRef} />}
-      </S.SearchResults>
+      <InfiniteList
+        data={movies}
+        isFetching={isFetching}
+        hasNextPage={hasNextPage}
+        observerRef={observerRef}
+        renderItem={(list) => (
+          <MovieList data={list} listSize={listSize} imageType="poster" />
+        )}
+      />
       <Outlet />
     </>
   );

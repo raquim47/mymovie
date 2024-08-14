@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import { InfiniteData, QueryKey, useInfiniteQuery } from '@tanstack/react-query';
 import { IMovieList } from 'services/movies/types';
 
-const chunkMovies = (data: InfiniteData<IMovieList>, listSize: number) => {
+const chunkMovies = <T>(data: InfiniteData<IMovieList<T>>, listSize: number) => {
   const allMovies = data.pages.flatMap((page) => page.results) || [];
   const chunkedMovies = [];
   for (let i = 0; i < allMovies.length; i += listSize) {
@@ -11,16 +11,16 @@ const chunkMovies = (data: InfiniteData<IMovieList>, listSize: number) => {
   return chunkedMovies;
 };
 
-const useInfiniteMovies = (
+const useInfiniteMovies = <T>(
   queryKey: QueryKey,
-  queryFn: (page: number) => Promise<IMovieList>,
+  queryFn: (page: number) => Promise<IMovieList<T>>,
   listSize: number
 ) => {
   const { data, isFetching, fetchNextPage, hasNextPage } = useInfiniteQuery({
     queryKey,
     queryFn: ({ pageParam = 1 }) => queryFn(pageParam),
     initialPageParam: 1,
-    getNextPageParam: (lastPage: IMovieList) =>
+    getNextPageParam: (lastPage: IMovieList<T>) =>
       lastPage.page < lastPage.total_pages ? lastPage.page + 1 : undefined,
   });
   const movies = data ? chunkMovies(data, listSize) : [];

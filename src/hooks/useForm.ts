@@ -99,7 +99,6 @@ const useForm = <T extends string>(fields: T[], initialValues?: Partial<Values<T
     setErrors(getErrors(fields));
     setErrorFocus(null);
   }, [fields, initialValues]);
-  console.log(values);
   return {
     isLoading,
     values,

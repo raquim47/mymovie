@@ -5,7 +5,7 @@ import { IMovieSummary } from 'services/movies/types';
 import useRequireLogin from 'hooks/useRequireLogin';
 import { useMutation } from '@tanstack/react-query';
 import { invalidateUserMe } from 'utils/invalidate';
-import { updateWatchList } from 'services/users/watchlist';
+import { updateWatchList } from 'services/movies/watchlist';
 
 const WatchListAction = ({ movie }: { movie: IMovieSummary }) => {
   const { user, requireLogin } = useRequireLogin();

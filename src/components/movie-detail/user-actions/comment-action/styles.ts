@@ -5,8 +5,9 @@ export const MyComment = styled.li`
 
   h5 {
     height: 40px;
+    padding-top: 6px;
     font-size: 14px;
-    font-weight: 300;
+    font-weight: 600;
     overflow: auto;
     white-space: pre-wrap;
     word-break: break-all;

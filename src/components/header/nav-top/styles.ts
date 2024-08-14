@@ -10,7 +10,6 @@ export const Header = styled.header`
   padding: 16px 30px;
   z-index: ${(props) => props.theme.zIndex.topMenu};
   background-color: ${(props) => props.theme.color.black.normal};
-  background-color: black;
 
   img {
     width: 40px;

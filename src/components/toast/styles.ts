@@ -38,7 +38,7 @@ export const ProgressBar = styled.div<{ duration: number }>`
   left: 0;
   width: 100%;
   height: 5px;
-  background-color: red;
+  background-color: ${(props) => props.theme.color.red};
   animation: progressBar linear ${({ duration }) => `${duration}ms`};
 
   @keyframes progressBar {

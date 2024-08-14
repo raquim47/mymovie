@@ -2,10 +2,26 @@ import { Link as RouterLink } from 'react-router-dom';
 import styled from 'styled-components';
 
 export const List = styled.ul<{ listSize: number }>`
+  min-width: 400px;
   height: 100%;
   display: grid;
   grid-template-columns: ${({ listSize }) => `repeat(${listSize}, 1fr)`};
   gap: 1%;
+`;
+
+export const Link = styled(RouterLink)<{ starMode: boolean }>`
+  display: block;
+  position: relative;
+  height: 100%;
+  border-radius: 4px;
+  overflow: hidden;
+  
+  img {
+    height: 100%;
+    position: absolute;
+    object-fit: cover;
+    filter: ${props => props.starMode ? 'brightness(60%)' : 'brightness(100%)'};
+  }
 `;
 
 export const ItemInfo = styled.div`
@@ -53,7 +69,7 @@ export const ItemInfo = styled.div`
 export const ListItem = styled.li`
   position: relative;
   transition: transform 0.3s ease, margin 0.3s ease;
-
+  
   &:last-of-type {
     transform-origin: center right;
   }
@@ -86,16 +102,9 @@ export const ListItem = styled.li`
   }
 `;
 
-export const Link = styled(RouterLink)`
-  display: block;
-  position: relative;
-  height: 100%;
-  border-radius: 4px;
-  overflow: hidden;
-  
-  img {
-    height: 100%;
-    position: absolute;
-    object-fit: cover;
-  }
-`;
+export const StarsBlock = styled.div`
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+`

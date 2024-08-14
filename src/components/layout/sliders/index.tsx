@@ -1,4 +1,3 @@
-import MovieList from 'components/movie-list';
 import withSlider from 'hoc/with-slider';
 import * as S from './styles';
 import { useQuery } from '@tanstack/react-query';
@@ -9,6 +8,7 @@ import {
 } from 'services/movies/collections';
 import Loader from 'components/ui/Loader';
 import useListSize from 'hooks/useListSize';
+import MovieList from 'components/list/movie-list';
 
 const Sliders = () => {
   const listSize = useListSize({
