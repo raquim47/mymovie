@@ -41,11 +41,12 @@ export const Info = styled.div`
     margin: 4px 0 10px;
     font-size: 20px;
   }
+`;
 
-  ul {
-    display: flex;
-    gap: 30px;
-  }
+export const Details = styled.ul`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 15px;
 
   li {
     position: relative;
@@ -58,16 +59,20 @@ export const Info = styled.div`
     }
   }
 
-  li ~ li:before {
-    content: '';
-    position: absolute;
-    right: calc(100% + 15px);
-    top: 50%;
-    transform: translateY(-50%);
-    width: 3px;
-    height: 3px;
-    border-radius: 50%;
-    background-color: ${(props) => props.theme.color.white.dark};
+  @media (min-width: 480px) {
+    gap: 10px 30px;
+    
+    li ~ li:before {
+      content: '';
+      position: absolute;
+      right: calc(100% + 15px);
+      top: 50%;
+      transform: translateY(-50%);
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background-color: ${(props) => props.theme.color.white.dark};
+    }
   }
 `;
 

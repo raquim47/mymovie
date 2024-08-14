@@ -32,7 +32,7 @@ const RatingAction = ({ movie }: { movie: IMovie }) => {
           onChange={handleChange}
         />
       </button>
-      <span>{RATING_MESSAGE[currentRating]}</span>
+      <h4>{RATING_MESSAGE[currentRating]}</h4>
     </li>
   );
 };

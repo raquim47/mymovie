@@ -27,7 +27,7 @@ const WatchListAction = ({ movie }: { movie: IMovieSummary }) => {
       >
         <FontAwesomeIcon icon={isOnWatchList ? faHeartFill : faHeart} />
       </button>
-      <span>찜하기</span>
+      <h4>찜하기</h4>
     </li>
   );
 };

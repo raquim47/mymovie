@@ -10,7 +10,7 @@ const MDHeader = ({ movie }: { movie: IMovie }) => {
         <S.Info>
           <h2>{movie?.title}</h2>
           <h3>{movie?.original_title}</h3>
-          <ul>
+          <S.Details>
             <li>{movie?.release_date}</li>
             <li>{movie?.runtime} 분</li>
             <li className="genres">
@@ -18,7 +18,7 @@ const MDHeader = ({ movie }: { movie: IMovie }) => {
                 <span key={genre.id}>{genre.name}</span>
               ))}
             </li>
-          </ul>
+          </S.Details>
         </S.Info>
         <S.Poster src={getMovieImagePath(movie, 'poster', 'w500')} />
       </S.Inner>

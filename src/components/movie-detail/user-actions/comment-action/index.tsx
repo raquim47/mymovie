@@ -36,7 +36,7 @@ const CommentAction = ({
       <button onClick={openCommentForm}>
         <FontAwesomeIcon icon={faPenToSquare} />
       </button>
-      <span>코멘트 남기기</span>
+      <h4>코멘트 남기기</h4>
     </li>
   );
 };
