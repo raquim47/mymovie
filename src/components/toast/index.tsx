@@ -1,7 +1,8 @@
 import { useAppSelector } from 'store';
 import { useEffect } from 'react';
-import ST from './styles';
+import * as S from './styles';
 import useToast from 'hooks/useToast';
+import { createPortal } from 'react-dom';
 
 const Toast = () => {
   const { removeToast } = useToast();
@@ -17,10 +18,10 @@ const Toast = () => {
     });
   }, [messages, removeToast]);
 
-  return (
-    <ST.Container>
+  return createPortal(
+    <S.ToastBlock>
       {messages.map((message) => (
-        <ST.Message
+        <S.MessageBlock
           key={message.id}
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
@@ -29,11 +30,12 @@ const Toast = () => {
           layoutId={message.id}
         >
           {message.description}
-          <ST.CloseButton onClick={() => removeToast(message.id)}>×</ST.CloseButton>
-          <ST.ProgressBar duration={message.duration} />
-        </ST.Message>
+          <S.CloseButton onClick={() => removeToast(message.id)}>×</S.CloseButton>
+          <S.ProgressBar duration={message.duration} />
+        </S.MessageBlock>
       ))}
-    </ST.Container>
+    </S.ToastBlock>,
+    document.getElementById('toast-root') as HTMLElement
   );
 };
 

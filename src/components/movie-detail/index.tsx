@@ -1,5 +1,4 @@
 import { useParams } from 'react-router-dom';
-import Modal from './modal';
 import * as S from './styles';
 import Loader from 'components/ui/Loader';
 import MDHeader from './header';
@@ -10,6 +9,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getMovieDetail } from 'services/movies/detail';
 import ErrorView from 'components/error-view';
 import PATH from 'utils/path';
+import Modal from 'components/modal';
 
 const MovieDetail = () => {
   const { id } = useParams();

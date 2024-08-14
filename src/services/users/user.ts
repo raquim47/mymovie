@@ -18,7 +18,6 @@ export const fetchCurrentUser = () =>
     await auth.authStateReady();
     const userId = auth.currentUser?.uid;
     if (!userId) return null;
-
     const user = await getUserDoc(userId);
     return user.userData;
   });

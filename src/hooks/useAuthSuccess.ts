@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 const useAuthSuccess = () => {
   const navigate = useNavigate();
   return () => {
-    queryClient.invalidateQueries({ queryKey: ['user'] });
+    queryClient.invalidateQueries({ queryKey: ['users', 'me'] });
     navigate('/');
   };
 };

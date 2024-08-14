@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import * as S from './styles';
 import { AnimatePresence } from 'framer-motion';
+import { createPortal } from 'react-dom';
 
 const Modal = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
@@ -16,8 +17,9 @@ const Modal = ({ children }: { children: ReactNode }) => {
   const navigate = useNavigate();
   const { search } = useLocation();
   const closeModal = () => navigate('..' + (search || ''));
-  return (
-    <S.Overay onClick={closeModal}>
+  
+  return createPortal(
+    <S.Overlay onClick={closeModal}>
       <AnimatePresence>
         <S.Inner onClick={(e) => e.stopPropagation()}>
           <S.CloseBtn onClick={closeModal}>
@@ -26,7 +28,8 @@ const Modal = ({ children }: { children: ReactNode }) => {
           {children}
         </S.Inner>
       </AnimatePresence>
-    </S.Overay>
+    </S.Overlay>,
+    document.getElementById('modal-root') as HTMLElement
   );
 };
 

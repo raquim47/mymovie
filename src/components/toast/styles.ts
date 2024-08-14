@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 
-const Container = styled.div`
+export const ToastBlock = styled.div`
   position: fixed;
   top: 20px;
   right: 20px;
@@ -12,7 +12,7 @@ const Container = styled.div`
   z-index: 1000;
 `;
 
-const Message = styled(motion.div)`
+export const MessageBlock = styled(motion.div)`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -26,13 +26,13 @@ const Message = styled(motion.div)`
   overflow: hidden;
 `;
 
-const CloseButton = styled.button`
+export const CloseButton = styled.button`
   align-self: flex-end;
   font-size: 24px;
   color: ${(props) => props.theme.color.gray};
 `;
 
-const ProgressBar = styled.div<{ duration: number }>`
+export const ProgressBar = styled.div<{ duration: number }>`
   position: absolute;
   bottom: 0;
   left: 0;
@@ -50,5 +50,3 @@ const ProgressBar = styled.div<{ duration: number }>`
     }
   }
 `;
-
-export default { Container, Message, CloseButton, ProgressBar };

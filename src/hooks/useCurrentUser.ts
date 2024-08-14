@@ -5,6 +5,7 @@ const useCurrentUser = () => {
   const { data, isLoading } = useQuery({
     queryKey: ['users', 'me'],
     queryFn: fetchCurrentUser,
+    staleTime: 300000,
   });
   return { user: data, isLoading };
 };

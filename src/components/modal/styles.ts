@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const Overay = styled.div`
+export const Overlay = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
