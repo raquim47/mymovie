@@ -37,4 +37,5 @@ export const ERRORS = {
   NOT_FOUND_REVIEWS: '평가 정보를 찾을 수 없습니다.',
   INVALID_USER: '유효하지 않은 사용자입니다.',
   AUTH_ERROR: '인증 상태 확인 중 오류가 발생했습니다.',
+  UNKNOWN_ERROR: '알 수 없는 오류가 발생했습니다.',
 };

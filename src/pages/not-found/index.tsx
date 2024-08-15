@@ -1,4 +1,4 @@
-import ErrorView from 'components/error-view';
+import ErrorView from 'components/error/error-view';
 import PATH from 'utils/path';
 
 function NotFound() {

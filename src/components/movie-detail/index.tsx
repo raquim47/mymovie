@@ -7,7 +7,7 @@ import UserActions from './user-actions';
 import Reviews from './reviews';
 import { useQuery } from '@tanstack/react-query';
 import { fetchMovieDetail } from 'services/movies/detail';
-import ErrorView from 'components/error-view';
+import ErrorView from 'components/error/error-view';
 import PATH from 'utils/path';
 import Modal from 'components/modal';
 import ModalBackground from 'components/modal-background';
