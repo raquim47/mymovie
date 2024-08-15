@@ -21,27 +21,20 @@ export const FIREBASE_ERRORS: Record<string, Error> = {
 
 export const ERRORS = {
   REQUEST_ERROR: '요청이 실패했습니다.',
-  // 이메일
   EMPTY_EMAIL: '이메일을 입력하세요.',
   INVALID_EMAIL: '유효한 이메일 주소를 입력하세요.',
-  // 비밀번호
   EMPTY_PASSWORD: '비밀번호를 입력하세요.',
   INVALID_PASSWORD: '비밀번호를 6글자 이상 입력해주세요.',
   PASSWORD_MISMATCH: '비밀번호가 일치하지 않습니다.',
   EMPTY_PASSWORD_CONFIRM: '비밀번호 확인을 입력하세요.',
-  // 닉네임
   EMPTY_NICKNAME: '닉네임을 입력하세요.',
   INVALID_NICKNAME: '닉네임은 2자 이상, 8자 이하여야 합니다.',
-  // 코멘트
   EMPTY_COMMENT: '코멘트를 입력하세요.',
   INVALID_COMMENT: '2자 이상, 80자 이하로 입력해주세요.',
   REQUIRED_RATING: '별점을 먼저 남겨주세요.',
-  
   REQUIRED_LOGIN: '로그인이 필요합니다.',
   ALREADY_LOGGED_IN: '이미 로그인 상태입니다.',
   NOT_FOUND_REVIEWS: '평가 정보를 찾을 수 없습니다.',
-  INVALID_INPUT: '유효한 입력값이 아닙니다.',
-
-  AUTH_ERROR: '인증 상태 확인 중 오류가 발생했습니다.',
   INVALID_USER: '유효하지 않은 사용자입니다.',
+  AUTH_ERROR: '인증 상태 확인 중 오류가 발생했습니다.',
 };

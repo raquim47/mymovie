@@ -1,7 +1,7 @@
 import { Link as RouterLink } from 'react-router-dom';
 import styled from 'styled-components';
 
-const Link = styled(RouterLink)<{ bg: string }>`
+export const Link = styled(RouterLink)<{ bg: string }>`
   display: block;
   position: relative;
   margin-top: 12px;
@@ -27,7 +27,7 @@ const Link = styled(RouterLink)<{ bg: string }>`
   }
 `;
 
-const Caption = styled.div`
+export const Caption = styled.div`
   position: absolute;
   width: 100%;
   bottom: 8%;
@@ -46,6 +46,3 @@ const Caption = styled.div`
     }
   }
 `;
-
-const ST = { Link, Caption };
-export default ST;

@@ -101,7 +101,6 @@ const useForm = <T extends string>(fields: T[], initialValues?: Partial<Values<T
   }, [fields, initialValues]);
   return {
     isLoading,
-    values,
     handleSubmit,
     setErrors,
     register,
