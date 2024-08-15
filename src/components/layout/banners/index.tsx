@@ -1,17 +1,17 @@
 import { useQuery } from '@tanstack/react-query';
 import Banner from 'components/banner';
 import Loader from 'components/ui/Loader';
-import { getLatestMovies, getUpcomingMovies } from 'services/movies/collections';
+import { fetchLatestMovies, fetchUpcomingMovies } from 'services/movies/collections';
 import * as S from './styles';
 
-const Banners = ({}: {}) => {
+const Banners = () => {
   const { data: latestMovies, isLoading: isLoadingLeft } = useQuery({
     queryKey: ['movies', 'latest'],
-    queryFn: getLatestMovies,
+    queryFn: fetchLatestMovies,
   });
   const { data: upcomingMovies, isLoading: isLoadingRight } = useQuery({
     queryKey: ['movies', 'upcoming'],
-    queryFn: getUpcomingMovies,
+    queryFn: fetchUpcomingMovies,
   });
 
   if (isLoadingLeft || isLoadingRight) {

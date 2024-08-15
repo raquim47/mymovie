@@ -6,7 +6,7 @@ import MDSummary from './summary';
 import UserActions from './user-actions';
 import Reviews from './reviews';
 import { useQuery } from '@tanstack/react-query';
-import { getMovieDetail } from 'services/movies/detail';
+import { fetchMovieDetail } from 'services/movies/detail';
 import ErrorView from 'components/error-view';
 import PATH from 'utils/path';
 import Modal from 'components/modal';
@@ -21,7 +21,7 @@ const MovieDetail = () => {
     error,
   } = useQuery({
     queryKey: ['movies', id],
-    queryFn: () => getMovieDetail(Number(id)),
+    queryFn: () => fetchMovieDetail(Number(id)),
   });
   return (
     <>

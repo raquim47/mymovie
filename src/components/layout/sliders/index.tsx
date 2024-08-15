@@ -2,9 +2,9 @@ import withSlider from 'hoc/with-slider';
 import * as S from './styles';
 import { useQuery } from '@tanstack/react-query';
 import {
-  getLatestMovies,
-  getTopRatedMovies,
-  getTrendingMovies,
+  fetchLatestMovies,
+  fetchTopRatedMovies,
+  fetchTrendingMovies,
 } from 'services/movies/collections';
 import Loader from 'components/ui/Loader';
 import useListSize from 'hooks/useListSize';
@@ -21,17 +21,17 @@ const Sliders = () => {
 
   const { data: trendingData, isLoading: isLoadingTrending } = useQuery({
     queryKey: ['movies', 'trending'],
-    queryFn: getTrendingMovies,
+    queryFn: fetchTrendingMovies,
   });
 
   const { data: latestData, isLoading: isLoadingLatest } = useQuery({
     queryKey: ['movies', 'latest'],
-    queryFn: getLatestMovies,
+    queryFn: fetchLatestMovies,
   });
 
   const { data: topRatedData, isLoading: isLoadingTopRated } = useQuery({
     queryKey: ['movies', 'topRated'],
-    queryFn: getTopRatedMovies,
+    queryFn: fetchTopRatedMovies,
   });
 
   if (isLoadingTrending || isLoadingLatest || isLoadingTopRated) return <Loader />;

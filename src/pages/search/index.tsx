@@ -3,7 +3,7 @@ import MovieList from 'components/list/movie-list';
 import useInfiniteMovies from 'hooks/useInfiniteMovies';
 import useListSize from 'hooks/useListSize';
 import { Outlet, useLocation } from 'react-router-dom';
-import { getSearchedMovies } from 'services/movies/search';
+import { fetchSearchedMovies } from 'services/movies/search';
 import * as S from './styles';
 
 const SearchPage = (props: { keyword?: string }) => {
@@ -19,7 +19,7 @@ const SearchPage = (props: { keyword?: string }) => {
 
   const { movies, isFetching, observerRef, hasNextPage } = useInfiniteMovies(
     ['movies', 'search', keyword],
-    (page) => getSearchedMovies(page, keyword),
+    (page) => fetchSearchedMovies(page, keyword),
     listSize
   );
   return (

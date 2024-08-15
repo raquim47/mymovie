@@ -9,7 +9,7 @@ const getMovieReviews = async (movieId: number) => {
   return reviewsDoc.exists() ? (reviewsDoc.data() as IReviews) : undefined;
 };
 
-export const getMovieDetail = async (movieId: number) => {
+export const fetchMovieDetail = async (movieId: number) => {
   const movie = await handleRequestTMDB<IMovie>(`movie/${movieId}`);
   movie.reviews = await getMovieReviews(movieId);
   return movie;
