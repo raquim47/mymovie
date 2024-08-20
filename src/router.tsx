@@ -7,7 +7,7 @@ import MovieDetail from 'components/movie-detail';
 import ProfilePage from 'pages/profile';
 import SearchPage from 'pages/search';
 import PrivateRoute from 'components/route-guards/PrivateRoute';
-import GuestRoute from 'components/route-guards/GuestRoute';
+import PublicRoute from 'components/route-guards/PublicRoute';
 import WatchListPage from 'pages/watchlist';
 import PATH from 'utils/path';
 import ReviewedPage from 'pages/reviewed';
@@ -25,7 +25,7 @@ const MainRoute = () => {
           <Route path={PATH.WATCHLIST} element={<WatchListPage />} />
           <Route path={PATH.REVIEWED} element={<ReviewedPage />} />
         </Route>
-        <Route element={<GuestRoute />}>
+        <Route element={<PublicRoute />}>
           <Route path={PATH.LOGIN} element={<LoginPage />} />
           <Route path={PATH.SIGNUP} element={<SignUpPage />} />
         </Route>

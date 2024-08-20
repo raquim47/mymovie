@@ -5,11 +5,13 @@ import * as S from './styles';
 
 const MainLayout = () => {
   const { pathname } = useLocation();
+
   useEffect(() => {
     if (!pathname.startsWith('/movies')) {
       window.scrollTo(0, 0);
     }
   }, [pathname]);
+
   return (
     <S.Container>
       <Header />

@@ -18,7 +18,7 @@ root.render(
       <QueryClientProvider client={queryClient}>
         <ThemeProvider theme={theme}>
           <GlobalStyle />
-          <BrowserRouter basename="">
+          <BrowserRouter>
             <App />
           </BrowserRouter>
         </ThemeProvider>

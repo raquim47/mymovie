@@ -6,10 +6,9 @@ import { useEffect } from 'react';
 import PATH from 'utils/path';
 import Loader from 'components/ui/Loader';
 
-const GuestRoute = () => {
+const PublicRoute = () => {
   const { user, isLoading } = useCurrentUser();
   const { addToast } = useToast();
-
   useEffect(() => {
     if (!isLoading && user) {
       addToast(ERRORS.ALREADY_LOGGED_IN);
@@ -21,4 +20,4 @@ const GuestRoute = () => {
   return user ? <Navigate to={PATH.HOME} /> : <Outlet />;
 };
 
-export default GuestRoute;
+export default PublicRoute;

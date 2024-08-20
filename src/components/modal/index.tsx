@@ -17,7 +17,7 @@ const Modal = ({ children }: { children: ReactNode }) => {
   const navigate = useNavigate();
   const locationState = useLocation().state;
   const closeModal = () => {
-    if (locationState.path) {
+    if (locationState?.path) {
       navigate(-1);
     } else {
       navigate('/');

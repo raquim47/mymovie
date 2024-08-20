@@ -3,6 +3,7 @@ import { auth, db, getUserDoc } from 'services/firebase';
 import { handleRequest } from 'utils/request-handler';
 import { doc, getDoc } from 'firebase/firestore';
 
+// getLoggedInUser
 export const getCurrentUser = async () => {
   const userId = auth.currentUser?.uid;
   if (!userId) throw new Error(ERRORS.INVALID_USER);

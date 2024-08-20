@@ -1,27 +1,17 @@
 import { useAppSelector } from 'store';
-import { useEffect } from 'react';
 import * as S from './styles';
-import useToast from 'hooks/useToast';
 import { createPortal } from 'react-dom';
-
+import ToastMessage from './message';
+import { motion } from 'framer-motion';
+import useToast from 'hooks/useToast';
+import { useLocation, useNavigate } from 'react-router-dom';
 const Toast = () => {
-  const { removeToast } = useToast();
   const messages = useAppSelector((state) => state.toast.messages);
-
-  useEffect(() => {
-    messages.forEach((message) => {
-      const timer = setTimeout(() => {
-        removeToast(message.id);
-      }, message.duration);
-
-      return () => clearTimeout(timer);
-    });
-  }, [messages, removeToast]);
 
   return createPortal(
     <S.ToastBlock>
       {messages.map((message) => (
-        <S.MessageBlock
+        <motion.div
           key={message.id}
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
@@ -29,10 +19,8 @@ const Toast = () => {
           transition={{ type: 'spring', stiffness: 260, damping: 20 }}
           layoutId={message.id}
         >
-          {message.description}
-          <S.CloseButton onClick={() => removeToast(message.id)}>×</S.CloseButton>
-          <S.ProgressBar duration={message.duration} />
-        </S.MessageBlock>
+          <ToastMessage message={message} />
+        </motion.div>
       ))}
     </S.ToastBlock>,
     document.getElementById('toast-root') as HTMLElement

@@ -6,8 +6,8 @@ import SearchForm from '../search-form';
 import UserBrief from '../user-brief';
 import { NavLink } from 'react-router-dom';
 import AuthLink from './auth-link';
-import * as S from './styles';
 import PATH from 'utils/path';
+import * as S from './styles';
 
 const NavLeft = () => {
   return (

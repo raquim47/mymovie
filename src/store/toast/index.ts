@@ -2,7 +2,7 @@ import { createSlice, PayloadAction, nanoid } from '@reduxjs/toolkit';
 import { IToastMessage, IToastState } from './types';
 
 const initialState: IToastState = {
-  messages: []
+  messages: [],
 };
 
 const toastSlice = createSlice({
@@ -17,15 +17,14 @@ const toastSlice = createSlice({
         payload: {
           id: nanoid(),
           description,
-          createdAt: Date.now(),
-          duration
-        }
-      })
+          duration,
+        },
+      }),
     },
     removeToast: (state, action: PayloadAction<string>) => {
-      state.messages = state.messages.filter(message => message.id !== action.payload);
-    }
-  }
+      state.messages = state.messages.filter((message) => message.id !== action.payload);
+    },
+  },
 });
 
 export const { addToast, removeToast } = toastSlice.actions;
