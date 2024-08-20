@@ -1,17 +1,20 @@
 import { ERRORS } from 'utils/errors';
-import { auth, db, getUserDoc } from 'services/firebase';
+import { auth, db } from 'services/firebase';
 import { handleRequest } from 'utils/request-handler';
 import { doc, getDoc } from 'firebase/firestore';
+import { IUser } from './types';
 
-// getLoggedInUser
-export const getCurrentUser = async () => {
+export const getLoggedInUser = async () => {
   const userId = auth.currentUser?.uid;
   if (!userId) throw new Error(ERRORS.INVALID_USER);
 
-  const { userRef, userData } = await getUserDoc(userId);
-  if (!userData) throw new Error(ERRORS.INVALID_USER);
+  const userRef = doc(db, 'users', userId);
+  const userDoc = await getDoc(userRef);
+  if (!userDoc.exists()) {
+    throw new Error(ERRORS.INVALID_USER);
+  }
 
-  return { userRef, userData, userId };
+  return { userRef, userData: userDoc.data() as IUser, userId };
 };
 
 export const fetchCurrentUser = () =>
@@ -19,8 +22,11 @@ export const fetchCurrentUser = () =>
     await auth.authStateReady();
     const userId = auth.currentUser?.uid;
     if (!userId) return null;
-    const user = await getUserDoc(userId);
-    return user.userData;
+
+    const userRef = doc(db, 'users', userId);
+    const userDoc = await getDoc(userRef);
+
+    return userDoc.data() as IUser || null;
   });
 
 export const fetchUserDetails = async (userId: string) => {

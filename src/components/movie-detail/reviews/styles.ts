@@ -10,6 +10,7 @@ export const Review = styled.li`
   flex-wrap: wrap;
   padding: 10px 20px;
   gap: 14px;
+  align-items: center;
   background-color: ${(state) => state.theme.color.gray};
   border-radius: 4px;
   font-size: 14px;
@@ -44,10 +45,8 @@ export const UserInfo = styled.div`
   display: flex;
   flex-shrink: 0;
   gap: 10px;
-  margin-top: 16px;
 
   @media (min-width: 768px) {
     display: block;
-    margin-top: 6px;
   }
 `;

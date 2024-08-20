@@ -39,6 +39,7 @@ export interface IMovieSummary {
   timestamp?: number;
   rating?: number;
   comment?: string;
+  isWatchList?: boolean;
 }
 
 export interface IGenre {

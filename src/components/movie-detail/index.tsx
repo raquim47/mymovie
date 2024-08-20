@@ -34,14 +34,7 @@ const MovieDetail = () => {
           movie && (
             <S.MovieDetailBlock>
               <MDHeader movie={movie} />
-              <UserActions
-                movie={{
-                  id: movie?.id,
-                  title: movie?.title,
-                  poster_path: movie?.poster_path,
-                  genres: movie?.genres,
-                }}
-              />
+              <UserActions movie={movie} />
               <MDSummary tagline={movie.tagline} overview={movie.overview} />
               {movie.reviews && Object.keys(movie.reviews).length > 0 && (
                 <Reviews reviews={movie.reviews} />

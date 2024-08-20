@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const CommentForm = styled.form`
   display: flex;
-
+  position: relative;
   textarea {
     flex: 1;
     padding: 8px 16px;
@@ -13,6 +13,11 @@ export const CommentForm = styled.form`
     ::placeholder {
       color: #a6adbd;
     }
+  }
+  .error-message {
+    position: absolute;
+    top: 100%;
+    left: 4px;
   }
 `;
 

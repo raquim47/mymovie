@@ -1,4 +1,5 @@
 import { memo, useRef, InputHTMLAttributes } from 'react';
+import ErrorMessage from '../error-message';
 import { InputRow } from './styles';
 
 const InputField = ({
@@ -25,7 +26,7 @@ const InputField = ({
         ref={inputRef}
       />
       {label && <label htmlFor={props.name}>{label}</label>}
-      {error && <span className="error">{error}</span>}
+      {error && <ErrorMessage message={error} />}
     </InputRow>
   );
 };

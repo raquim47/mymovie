@@ -5,7 +5,7 @@ import useInfiniteMovies from 'hooks/useInfiniteMovies';
 import useListSize from 'hooks/useListSize';
 import useSort from 'hooks/useSort';
 import { Outlet } from 'react-router-dom';
-import { fetchUserReviewedMovies } from 'services/movies/comment';
+import { fetchUserReviewedMovies } from 'services/movies/reviews';
 
 const ReviewedPage = () => {
   const listSize = useListSize({

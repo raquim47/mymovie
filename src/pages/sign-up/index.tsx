@@ -1,5 +1,5 @@
 import BasicForm from 'components/form/basic-form';
-import FormCommonError from 'components/form/common-error';
+import ErrorMessage from 'components/form/error-message';
 import InputField from 'components/form/input-field';
 import Buttons from 'components/ui/buttons';
 import useAuthSuccess from 'hooks/useAuthSuccess';
@@ -50,7 +50,7 @@ const SignUpPage = () => {
         label="비밀번호 확인"
         isFocus={errorFocus === 'passwordConfirm'}
       />
-      {errors.common && <FormCommonError message={errors.common} />}
+      {errors.common && <ErrorMessage message={errors.common} />}
       <Buttons.Base type="submit" accent disabled={isLoading}>
         가입하기
       </Buttons.Base>

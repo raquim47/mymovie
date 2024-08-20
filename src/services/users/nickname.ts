@@ -1,9 +1,9 @@
 import { updateDoc } from 'firebase/firestore';
 import { handleRequest } from 'utils/request-handler';
-import { getCurrentUser } from './user';
+import { getLoggedInUser } from './user';
 
 export const updateNickName = ({ nickName }: { nickName: string }) =>
   handleRequest(async () => {
-    const { userRef } = await getCurrentUser();
+    const { userRef } = await getLoggedInUser();
     await updateDoc(userRef, { nickName });
   });

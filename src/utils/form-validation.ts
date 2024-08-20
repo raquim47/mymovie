@@ -33,7 +33,8 @@ export const validatePasswordConfirm = (
 };
 
 export const validateComment = (value: string) => {
-  if (!value) return ERRORS.EMPTY_COMMENT;
-  if (value.length < 2 || value.length > 80) return ERRORS.INVALID_COMMENT;
+  const text = value.replace(/\s/g, '');
+  if (!text) return ERRORS.EMPTY_COMMENT;
+  if (text.length < 2 || text.length > 80) return ERRORS.INVALID_COMMENT;
   return null;
 };

@@ -1,37 +1,31 @@
+import ErrorMessage from 'components/form/error-message';
 import useForm from 'hooks/useForm';
-import useToast from 'hooks/useToast';
-import { useEffect } from 'react';
-import { updateMovieComment } from 'services/movies/comment';
+import { updateUserReview } from 'services/movies/reviews';
+import { IMovieSummary } from 'services/movies/types';
 import { validateComment } from 'utils/form-validation';
 import { invalidateMovieDetail, invalidateUserMe } from 'utils/invalidate';
 import * as S from './styles';
 
 const CommentForm = ({
-  comment,
-  movieId,
+  movie,
   closeCommentForm,
 }: {
-  comment: string;
-  movieId: number;
+  movie: IMovieSummary;
   closeCommentForm: () => void;
 }) => {
-  const { addToast } = useToast();
   const { register, isLoading, handleSubmit, errors } = useForm(['comment'], {
-    comment,
+    comment: movie.comment,
   });
 
   const onSubmit = handleSubmit(
-    (values) => updateMovieComment({ ...values, movieId }),
+    (values) => updateUserReview({ ...movie, ...values }),
     async () => {
       await invalidateUserMe();
-      await invalidateMovieDetail(movieId);
+      await invalidateMovieDetail(movie.id);
       closeCommentForm();
     }
   );
-
-  useEffect(() => {
-    if (errors.comment) addToast(errors.comment);
-  }, [errors, addToast]);
+  const error = errors.comment || errors.common;
 
   return (
     <S.CommentForm onSubmit={onSubmit}>
@@ -50,6 +44,7 @@ const CommentForm = ({
           취소
         </button>
       </S.Buttons>
+      {error && <ErrorMessage message={error} />}
     </S.CommentForm>
   );
 };

@@ -39,11 +39,9 @@ export const InputRow = styled.div<{ isError: boolean }>`
     cursor: pointer;
   }
 
-  .error {
+  .error-message {
     position: absolute;
     right: 15px;
     bottom: 32px;
-    font-size: 12px;
-    color: ${props => props.theme.color.red};
   }
 `;

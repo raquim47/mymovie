@@ -2,29 +2,33 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare } from '@fortawesome/free-regular-svg-icons';
 import * as S from './styles';
 import { useMutation } from '@tanstack/react-query';
-import { updateMovieComment } from 'services/movies/comment';
+import { IMovieSummary } from 'services/movies/types';
+import { updateUserReview } from 'services/movies/reviews';
+import { invalidateMovieDetail, invalidateUserMe } from 'utils/invalidate';
 
 const CommentAction = ({
-  comment,
-  movieId,
+  movie,
   openCommentForm,
 }: {
-  comment: string;
-  movieId: number;
+  movie: IMovieSummary;
   openCommentForm: () => void;
 }) => {
-  const {} = useMutation({
-    mutationFn: () => updateMovieComment({ comment: '', movieId }),
+  const { isPending, mutate } = useMutation({
+    mutationFn: updateUserReview,
+    onSuccess: async () => {
+      await invalidateUserMe();
+      await invalidateMovieDetail(movie.id);
+    },
   });
-  if (comment)
+  if (movie.comment)
     return (
       <S.MyComment>
-        <h5>{comment}</h5>
+        <h5>{movie.comment}</h5>
         <S.ButtonsBlock>
-          <button onClick={openCommentForm} disabled={false}>
+          <button onClick={openCommentForm} disabled={isPending}>
             수정
           </button>
-          <button onClick={() => null} disabled={false}>
+          <button onClick={() => mutate({ ...movie, comment: '' })} disabled={isPending}>
             삭제
           </button>
         </S.ButtonsBlock>

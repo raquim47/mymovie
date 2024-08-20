@@ -31,9 +31,9 @@ const Reviews = ({ reviews }: { reviews: IReviews }) => {
               <ProfileImage imageUrl={user.photoUrl} name={user.nickName} />
               <S.UserInfo>
                 <h4>{user.nickName}</h4>
-                <ReactStars edit={false} value={review.rating} />
+                {!!review.rating && <ReactStars edit={false} value={review.rating} />}
               </S.UserInfo>
-              {review.comment && <p>{review.comment}</p>}
+              {!!review.comment && <p>{review.comment}</p>}
               <time dateTime={new Date(review.timestamp).toISOString()}>
                 {formatDate(review.timestamp)}
               </time>

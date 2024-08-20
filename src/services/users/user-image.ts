@@ -2,12 +2,12 @@ import { updateDoc } from 'firebase/firestore';
 import { deleteObject, getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { storage } from 'services/firebase';
 import { uuidv4 } from '@firebase/util';
-import { getCurrentUser } from './user';
+import { getLoggedInUser } from './user';
 import { handleRequest } from 'utils/request-handler';
 
 export const updateUserImage = async (file: File | null) =>
   handleRequest(async () => {
-    const { userId, userRef, userData } = await getCurrentUser();
+    const { userId, userRef, userData } = await getLoggedInUser();
     const photoUrl = userData.photoUrl;
 
     if (photoUrl) {

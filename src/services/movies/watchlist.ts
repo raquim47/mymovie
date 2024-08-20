@@ -1,11 +1,11 @@
 import { updateDoc } from 'firebase/firestore';
 import { IMovieSummary } from 'services/movies/types';
 import { handleRequest } from 'utils/request-handler';
-import { getCurrentUser } from '../users/user';
+import { getLoggedInUser } from '../users/user';
 
 export const updateWatchList = (movie: IMovieSummary) =>
   handleRequest(async () => {
-    const { userRef, userData } = await getCurrentUser();
+    const { userRef, userData } = await getLoggedInUser();
     const watchList = userData.watchList || {};
 
     if (watchList[movie.id]) {
@@ -21,7 +21,7 @@ export const updateWatchList = (movie: IMovieSummary) =>
 
 export const fetchUserWatchList = async (page: number, size: number = 20) =>
   handleRequest(async () => {
-    const { userData } = await getCurrentUser();
+    const { userData } = await getLoggedInUser();
     const watchList = userData.watchList || {};
 
     const allMovies = Object.values(watchList) as IMovieSummary[];
